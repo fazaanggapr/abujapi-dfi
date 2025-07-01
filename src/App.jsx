@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
@@ -39,3 +40,21 @@ export default function App() {
     </div>
   )
 }
+=======
+// src/App.jsx
+import Sidebar from './components/Sidebar';
+
+
+function App() {
+  return (
+    <div className="flex">
+      <Sidebar />
+      {/* Konten utama di samping sidebar */}
+      <div className="flex-1 p-10">
+        <h1 className="text-3xl font-bold">Selamat Datang</h1>
+      </div>
+    </div>
+  );
+}
+export default App;
+>>>>>>> master

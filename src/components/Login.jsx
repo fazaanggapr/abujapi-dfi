@@ -46,21 +46,22 @@ const LoginComponent = () => {
     <div className="absolute top-0 left-[40%] w-full h-full bg-[#ff5722] transform -skew-x-12 origin-top-left z-0"></div>
 
     {/* Kiri - Gambar Ilustrasi */}
-    <div className="flex-1 flex items-center justify-center z-10 h-full">
-      <div className="w-[70%] max-w-[400px]">
+    <div className="flex-1 flex items-center justify-center z-10 h-full hidden md:flex">
+      <div className="w-[80%] max-w-[600px]">
         <img
-          src="public/assets/Door-Person.jpg"
+          src="public/assets/Door-Person.png"
           alt="Ilustrasi Orang Masuk Pintu"
-          className="w-full h-auto object-contain"
+          className="w-full h-auto object-contain m-3 rounded-lg shadow-lg"
         />
       </div>
     </div>
 
     {/* Kanan - Form Login */}
-    <div className="flex-1 flex items-center justify-center z-10 h-full">
-      <div className="bg-white p-10 rounded-lg shadow-lg w-[350px]">
+    <div className="flex-1 flex items-center justify-center z-10 h-full ">
+     
+      <div className="bg-white p-10 rounded-lg shadow-lg w-[70%] h-[500px] m-3">
         <h2 className="text-center text-[22px] font-bold text-[#0d3551] mb-8">
-          ADMIN LOGIN
+          ABUJAPI LOGIN
         </h2>
 
         <form>
@@ -80,12 +81,12 @@ const LoginComponent = () => {
             className="w-full mb-6 p-3 border border-gray-300 rounded-md"
             required
           />
-<Link
-  to="/dashboard"
-  className="block w-full text-center py-[15px] bg-[#0d3551] text-white rounded-md text-base font-bold hover:bg-[#133f63] transition-colors"
->
-  Login
-</Link>
+    <Link
+      to="/dashboard"
+      className="block w-full bg-[#0d3551] text-white text-center py-3 rounded-md hover:bg-[#ff5722]/90 transition-colors duration-200 shadow-md hover:shadow-lg font-semibold hover:text-white"
+    >
+      Login
+    </Link>
         </form>
 
 <div className="text-center mt-4">

@@ -1,159 +1,241 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import Sidebar from "./Sidebar";
-import { FaUser, FaCalendarAlt, FaChevronLeft, FaChevronRight, FaQrcode, FaSearch, FaTimes, FaEye, FaFileAlt, FaClock, FaChartLine, FaUsers, FaIdBadge, FaCheckCircle, FaTimesCircle, FaExclamationCircle, FaQuestionCircle } from 'react-icons/fa';
+import React, { useState, useEffect } from 'react';
+import { 
+  FaUser, 
+  FaClock, 
+  FaFileAlt, 
+  FaCalendarAlt, 
+  FaChevronLeft, 
+  FaChevronRight, 
+  FaSearch, 
+  FaQrcode,
+  FaBars,
+  FaTimes,
+  FaCheck,
+  FaTimes as FaX,
+  FaExclamationTriangle,
+  FaDownload
+} from 'react-icons/fa';
+import Sidebar from './Sidebar';
 
-const Dashboard = () => {
-  const navigate = useNavigate();
 
-  const [currentPage, setCurrentPage] = useState(1);
-  const [currentWeekStart, setCurrentWeekStart] = useState(new Date());
-  const [searchTerm, setSearchTerm] = useState("");
-  const [isQRModalOpen, setIsQRModalOpen] = useState(false);
-  const itemsPerPage = 3;
+const QRModal = ({ isOpen, onClose }) => {
+  if (!isOpen) return null;
 
-  const employees = [
-    { id: "019", name: "Inukai Atsuhiro", status: "HADIR", statusClass: "bg-green-100 text-green-800 border-green-200" },
-    { id: "022", name: "Yamada Akiko", status: "IZIN", statusClass: "bg-yellow-100 text-yellow-800 border-yellow-200" },
-    { id: "020", name: "Sato Yuki", status: "TIDAK HADIR", statusClass: "bg-red-100 text-red-800 border-red-200" },
-    { id: "022", name: "Akiko Takeshi", status: "IZIN", statusClass: "bg-yellow-100 text-yellow-800 border-yellow-200" },
-    { id: "023", name: "Yuki Kato", status: "TIDAK HADIR", statusClass: "bg-red-100 text-red-800 border-red-200" },
-    { id: "021", name: "Atsuhiro Yamada", status: "HADIR", statusClass: "bg-green-100 text-green-800 border-green-200" },
-    { id: "024", name: "Inukai Kamshimida", status: "HADIR", statusClass: "bg-green-100 text-green-800 border-green-200" },
-    { id: "025", name: "Yamada Honda", status: "IZIN", statusClass: "bg-yellow-100 text-yellow-800 border-yellow-200" },
-    { id: "026", name: "Sato Suzuki", status: "TIDAK HADIR", statusClass: "bg-red-100 text-red-800 border-red-200" },
-  ];
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+      <div className="bg-white rounded-lg max-w-md w-full p-6">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-lg font-semibold">QR Code Generator</h3>
+          <button onClick={onClose} className="text-gray-500 hover:text-gray-700">
+            <FaTimes />
+          </button>
+        </div>
+        <div className="text-center">
+          <div className="w-48 h-48 bg-gray-100 mx-auto mb-4 flex items-center justify-center rounded-lg">
+            <FaQrcode className="text-6xl text-gray-400" />
+          </div>
+          <p className="text-sm text-gray-600 mb-4">
+            Scan this QR code to mark attendance
+          </p>
+          <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+            Download QR Code
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
 
-  const today = new Date(2025, 5, 18); // Juni 18, 2025
-
-  useEffect(() => {
-    setCurrentWeekStart(getWeekStart(today));
-  }, []);
-
-  const getWeekStart = (date) => {
-    const d = new Date(date);
-    const day = d.getDay();
-    const diff = d.getDate() - day + (day === 0 ? -6 : 1);
-    return new Date(d.setDate(diff));
-  };
-
-  const formatDate = (date) => {
-    const days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
-    const months = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
-    return {
-      day: days[date.getDay()],
-      date: date.getDate(),
-      month: months[date.getMonth()],
-      year: date.getFullYear(),
-      isToday: date.toDateString() === today.toDateString(),
-    };
-  };
-
-  const getStatusIcon = (status) => {
+const AttendanceStatus = ({ status }) => {
+  const getStatusConfig = (status) => {
     switch (status) {
-      case "HADIR":
-        return <FaCheckCircle className="mr-1" />;
-      case "TIDAK HADIR":
-        return <FaTimesCircle className="mr-1" />;
-      case "IZIN":
-        return <FaExclamationCircle className="mr-1" />;
+      case 'present':
+        return { icon: FaCheck, color: 'text-green-600', bg: 'bg-green-50', text: 'Hadir' };
+      case 'absent':
+        return { icon: FaX, color: 'text-red-600', bg: 'bg-red-50', text: 'Tidak Hadir' };
+      case 'late':
+        return { icon: FaExclamationTriangle, color: 'text-yellow-600', bg: 'bg-yellow-50', text: 'Terlambat' };
       default:
-        return <FaQuestionCircle className="mr-1" />;
+        return { icon: FaExclamationTriangle, color: 'text-gray-600', bg: 'bg-gray-50', text: 'Tidak Ada Data' };
     }
   };
 
-  const getCurrentDate = () => {
-    const now = new Date();
-    const day = now.getDate();
-    const months = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
-    const month = months[now.getMonth()];
-    const year = now.getFullYear();
-    return `${day} ${month} ${year}`;
+  const config = getStatusConfig(status);
+  const Icon = config.icon;
+
+  return (
+    <div className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${config.color} ${config.bg}`}>
+      <Icon className="mr-1 text-xs" />
+      {config.text}
+    </div>
+  );
+};
+
+const ResponsiveAttendanceTable = () => {
+  const [currentWeek, setCurrentWeek] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [isQRModalOpen, setIsQRModalOpen] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(new Date());
+  const itemsPerPage = 10;
+
+  // Sample data
+  const employees = [
+    { id: 1, name: 'Ahmad Wijaya', attendance: 'present', report: 'Completed', avatar: 'AW' },
+    { id: 2, name: 'Siti Nurhaliza', attendance: 'late', report: 'Pending', avatar: 'SN' },
+    { id: 3, name: 'Budi Santoso', attendance: 'absent', report: 'Not Submitted', avatar: 'BS' },
+    { id: 4, name: 'Dewi Kartika', attendance: 'present', report: 'Completed', avatar: 'DK' },
+    { id: 5, name: 'Rizky Pratama', attendance: 'present', report: 'Completed', avatar: 'RP' },
+    { id: 6, name: 'Maya Sari', attendance: 'late', report: 'Pending', avatar: 'MS' },
+    { id: 7, name: 'Andi Setiawan', attendance: 'present', report: 'Completed', avatar: 'AS' },
+    { id: 8, name: 'Lina Wati', attendance: 'absent', report: 'Not Submitted', avatar: 'LW' },
+    { id: 9, name: 'Hendra Kusuma', attendance: 'present', report: 'Completed', avatar: 'HK' },
+    { id: 10, name: 'Putri Indah', attendance: 'present', report: 'Completed', avatar: 'PI' },
+    { id: 11, name: 'Arif Rahman', attendance: 'late', report: 'Pending', avatar: 'AR' },
+    { id: 12, name: 'Sari Dewi', attendance: 'present', report: 'Completed', avatar: 'SD' },
+  ];
+
+  const monthInfo = {
+    month: selectedDate.toLocaleDateString('id-ID', { month: 'long' }),
+    year: selectedDate.getFullYear()
   };
 
-  const handleSearch = (e) => {
-    setSearchTerm(e.target.value.toLowerCase());
-    setCurrentPage(1); // Reset ke halaman 1 saat cari
-  };
+  const filteredEmployees = employees.filter(employee =>
+    employee.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
-  const navigateWeek = (direction) => {
-    const newWeekStart = new Date(currentWeekStart);
-    newWeekStart.setDate(currentWeekStart.getDate() + direction * 7);
-    setCurrentWeekStart(newWeekStart);
-  };
-
-  const goToPage = (page) => setCurrentPage(page);
-  const nextPage = () => currentPage < totalPages && setCurrentPage(currentPage + 1);
-  const previousPage = () => currentPage > 1 && setCurrentPage(currentPage - 1);
-
-  // FILTER dan pagination
-  const filteredEmployees = employees.filter((emp) => emp.name.toLowerCase().includes(searchTerm));
   const totalPages = Math.ceil(filteredEmployees.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const currentEmployees = filteredEmployees.slice(startIndex, endIndex);
 
+  const getDaysOfWeek = () => {
+    const startOfWeek = new Date(selectedDate);
+    const day = startOfWeek.getDay();
+    const diff = startOfWeek.getDate() - day + (day === 0 ? -6 : 1);
+    startOfWeek.setDate(diff);
+    
+    const days = [];
+    for (let i = 0; i < 7; i++) {
+      const date = new Date(startOfWeek);
+      date.setDate(startOfWeek.getDate() + i);
+      days.push(date);
+    }
+    return days;
+  };
+
+  const navigateWeek = (direction) => {
+    const newDate = new Date(selectedDate);
+    newDate.setDate(selectedDate.getDate() + (direction * 7));
+    setSelectedDate(newDate);
+  };
+
   const renderCalendar = () => {
-    return [...Array(7)].map((_, i) => {
-      const date = new Date(currentWeekStart);
-      date.setDate(currentWeekStart.getDate() + i);
-      const dateInfo = formatDate(date);
-      const circleColor = dateInfo.isToday ? "bg-orange-500" : "bg-blue-600";
+    const days = getDaysOfWeek();
+    const dayNames = ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'];
+    
+    return days.map((date, index) => {
+      const isToday = date.toDateString() === new Date().toDateString();
+      const isSelected = date.toDateString() === selectedDate.toDateString();
+      
       return (
-        <div key={i} className="text-center cursor-pointer hover:scale-105 transition-transform">
-          <div className={`w-14 h-14 ${circleColor} text-white rounded-full flex items-center justify-center font-bold mb-2 shadow-lg`}>
-            {dateInfo.date}
-          </div>
-          <span className="text-xs text-gray-600 font-medium">{dateInfo.day}</span>
+        <div
+          key={index}
+          onClick={() => setSelectedDate(date)}
+          className={`
+            flex flex-col items-center justify-center p-3 rounded-lg cursor-pointer transition-all duration-200 min-w-[60px]
+            ${isSelected ? 'bg-blue-600 text-white shadow-lg' : 'hover:bg-gray-100'}
+            ${isToday && !isSelected ? 'bg-blue-50 text-blue-600' : ''}
+          `}
+        >
+          <span className="text-xs font-medium mb-1">{dayNames[index]}</span>
+          <span className="text-lg font-semibold">{date.getDate()}</span>
         </div>
       );
     });
   };
 
-  const renderTable = () =>
-    currentEmployees.map((employee, index) => (
-      <tr key={employee.id + index} className="hover:bg-gray-50 transition-colors">
-        <td className="px-6 py-5">
-          <div className="font-semibold text-gray-900">{employee.name}</div>
-          <div className="text-sm text-gray-500 flex items-center mt-1">
-            <FaIdBadge className="mr-1" />
-            {employee.id}
+  const renderPagination = () => {
+    const pages = [];
+    const maxVisible = 5;
+    let startPage = Math.max(1, currentPage - Math.floor(maxVisible / 2));
+    let endPage = Math.min(totalPages, startPage + maxVisible - 1);
+
+    if (endPage - startPage + 1 < maxVisible) {
+      startPage = Math.max(1, endPage - maxVisible + 1);
+    }
+
+    for (let i = startPage; i <= endPage; i++) {
+      pages.push(
+        <button
+          key={i}
+          onClick={() => setCurrentPage(i)}
+          className={`
+            px-3 py-2 text-sm rounded-lg border transition-colors duration-200
+            ${currentPage === i
+              ? 'bg-blue-600 text-white border-blue-600'
+              : 'text-gray-500 border-gray-300 hover:bg-gray-50'
+            }
+          `}
+        >
+          {i}
+        </button>
+      );
+    }
+    return pages;
+  };
+
+  const renderTable = () => {
+    if (currentEmployees.length === 0) {
+      return (
+        <tr>
+          <td colSpan="3" className="px-6 py-8 text-center text-gray-500">
+            <div className="flex flex-col items-center">
+              <FaUser className="text-4xl mb-2 text-gray-300" />
+              <p>Tidak ada data karyawan yang ditemukan</p>
+            </div>
+          </td>
+        </tr>
+      );
+    }
+
+    return currentEmployees.map((employee, index) => (
+      <tr key={employee.id} className="hover:bg-gray-50 transition-colors duration-200">
+        <td className="px-6 py-4">
+          <div className="flex items-center">
+            <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center text-white font-semibold text-sm mr-3">
+              {employee.avatar}
+            </div>
+            <div>
+              <div className="font-medium text-gray-900">{employee.name}</div>
+              <div className="text-sm text-gray-500">ID: {employee.id.toString().padStart(3, '0')}</div>
+            </div>
           </div>
         </td>
-        <td className="px-6 py-5 text-center">
-          <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold ${employee.statusClass} border`}>
-            {getStatusIcon(employee.status)}
-            {employee.status}
-          </span>
+        <td className="px-6 py-4 text-center">
+          <AttendanceStatus status={employee.attendance} />
         </td>
-        <td className="px-6 py-5 text-center">
-          <button
-            onClick={() => navigate("/laporan.html")}
-            className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-xs font-semibold transition-colors shadow-md flex items-center mx-auto"
-          >
-            <FaEye className="mr-1" />
-            LIHAT LAPORAN
-          </button>
+        <td className="px-6 py-4 text-center">
+          <div className="flex items-center justify-center">
+            <span className={`
+              px-3 py-1 rounded-full text-sm font-medium
+              ${employee.report === 'Completed' ? 'bg-green-100 text-green-800' : 
+                employee.report === 'Pending' ? 'bg-yellow-100 text-yellow-800' : 
+                'bg-red-100 text-red-800'}
+            `}>
+              {employee.report}
+            </span>
+            {employee.report === 'Completed' && (
+              <button className="ml-2 text-blue-600 hover:text-blue-800">
+                <FaDownload />
+              </button>
+            )}
+          </div>
         </td>
       </tr>
     ));
-
-  const renderPagination = () =>
-    [...Array(totalPages)].map((_, i) => (
-      <button
-        key={i}
-        onClick={() => goToPage(i + 1)}
-        className={`px-3 py-2 rounded-lg text-sm font-medium ${
-          i + 1 === currentPage
-            ? "bg-blue-500 text-white"
-            : "bg-white border border-gray-300 text-gray-700 hover:bg-gray-50"
-        }`}
-      >
-        {i + 1}
-      </button>
-    ));
-
-  const monthInfo = formatDate(currentWeekStart);
+  };
 
   return (
     <div className="bg-gray-50 font-sans min-h-screen">
@@ -170,24 +252,34 @@ const Dashboard = () => {
           </div>
 
           {/* Calendar & Search */}
-          <div className="p-6">
-            <div className="flex items-center justify-center mb-8">
-              <button onClick={() => navigateWeek(-1)} className="p-3 hover:bg-gray-100 rounded-full">
-                <FaChevronLeft className="text-gray-500 text-lg" />
+          <div className="p-4 lg:p-6">
+            {/* Calendar Navigation */}
+            <div className="flex items-center justify-center mb-6 lg:mb-8">
+              <button 
+                onClick={() => navigateWeek(-1)} 
+                className="p-2 lg:p-3 hover:bg-gray-100 rounded-full"
+              >
+                <FaChevronLeft className="text-gray-500 text-sm lg:text-lg" />
               </button>
-              <div className="flex space-x-4 mx-8">{renderCalendar()}</div>
-              <button onClick={() => navigateWeek(1)} className="p-3 hover:bg-gray-100 rounded-full">
-                <FaChevronRight className="text-gray-500 text-lg" />
+              <div className="flex space-x-1 lg:space-x-4 mx-4 lg:mx-8 overflow-x-auto">
+                {renderCalendar()}
+              </div>
+              <button 
+                onClick={() => navigateWeek(1)} 
+                className="p-2 lg:p-3 hover:bg-gray-100 rounded-full"
+              >
+                <FaChevronRight className="text-gray-500 text-sm lg:text-lg" />
               </button>
             </div>
 
-            <div className="flex space-x-4 mb-6">
+            {/* Search and QR Button */}
+            <div className="flex flex-col lg:flex-row space-y-4 lg:space-y-0 lg:space-x-4 mb-6">
               <div className="flex-1 relative">
                 <input
                   type="text"
                   placeholder="Mencari..."
                   value={searchTerm}
-                  onChange={handleSearch}
+                  onChange={(e) => setSearchTerm(e.target.value)}
                   className="w-full pl-4 pr-12 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 shadow-sm"
                 />
                 <button className="absolute right-3 top-1/2 transform -translate-y-1/2">
@@ -196,47 +288,118 @@ const Dashboard = () => {
               </div>
               <button
                 onClick={() => setIsQRModalOpen(true)}
-                className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold shadow-md flex items-center"
+                className="bg-blue-600 hover:bg-blue-700 text-white px-4 lg:px-6 py-3 rounded-lg font-semibold shadow-md flex items-center justify-center"
               >
                 <FaQrcode className="mr-2" />
-                GENERATE CODE QR
+                <span className="hidden sm:inline">GENERATE CODE QR</span>
+                <span className="sm:hidden">QR CODE</span>
               </button>
             </div>
 
             {/* Table */}
             <div className="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden">
-              <table className="w-full">
-                <thead>
-                  <tr className="bg-gradient-to-r from-cyan-200 to-blue-200">
-                    <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">
-                      <FaUser className="mr-2 inline" />
-                      Nama
-                    </th>
-                    <th className="px-6 py-4 text-center text-sm font-semibold text-gray-700">
-                      <FaClock className="mr-2 inline" />
-                      Absensi
-                    </th>
-                    <th className="px-6 py-4 text-center text-sm font-semibold text-gray-700">
-                      <FaFileAlt className="mr-2 inline" />
-                      Hasil laporan
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-100">{renderTable()}</tbody>
-              </table>
+              {/* Desktop Table */}
+              <div className="hidden lg:block overflow-x-auto">
+                <table className="w-full">
+                  <thead>
+                    <tr className="bg-gradient-to-r from-cyan-200 to-blue-200">
+                      <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">
+                        <FaUser className="mr-2 inline" />
+                        Nama
+                      </th>
+                      <th className="px-6 py-4 text-center text-sm font-semibold text-gray-700">
+                        <FaClock className="mr-2 inline" />
+                        Absensi
+                      </th>
+                      <th className="px-6 py-4 text-center text-sm font-semibold text-gray-700">
+                        <FaFileAlt className="mr-2 inline" />
+                        Hasil laporan
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-100">
+                    {renderTable()}
+                  </tbody>
+                </table>
+              </div>
+
+              {/* Mobile Cards */}
+              <div className="lg:hidden">
+                <div className="bg-gradient-to-r from-cyan-200 to-blue-200 px-4 py-3">
+                  <h3 className="font-semibold text-gray-700">Data Karyawan</h3>
+                </div>
+                <div className="divide-y divide-gray-100">
+                  {currentEmployees.length === 0 ? (
+                    <div className="px-4 py-8 text-center text-gray-500">
+                      <FaUser className="text-4xl mb-2 text-gray-300 mx-auto" />
+                      <p>Tidak ada data karyawan yang ditemukan</p>
+                    </div>
+                  ) : (
+                    currentEmployees.map((employee) => (
+                      <div key={employee.id} className="p-4 hover:bg-gray-50">
+                        <div className="flex items-start space-x-3">
+                          <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center text-white font-semibold">
+                            {employee.avatar}
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center justify-between mb-2">
+                              <h4 className="font-medium text-gray-900 truncate">{employee.name}</h4>
+                              <span className="text-sm text-gray-500">ID: {employee.id.toString().padStart(3, '0')}</span>
+                            </div>
+                            <div className="flex flex-col space-y-2">
+                              <div className="flex items-center justify-between">
+                                <span className="text-sm text-gray-500">Absensi:</span>
+                                <AttendanceStatus status={employee.attendance} />
+                              </div>
+                              <div className="flex items-center justify-between">
+                                <span className="text-sm text-gray-500">Laporan:</span>
+                                <div className="flex items-center">
+                                  <span className={`
+                                    px-2 py-1 rounded-full text-xs font-medium
+                                    ${employee.report === 'Completed' ? 'bg-green-100 text-green-800' : 
+                                      employee.report === 'Pending' ? 'bg-yellow-100 text-yellow-800' : 
+                                      'bg-red-100 text-red-800'}
+                                  `}>
+                                    {employee.report}
+                                  </span>
+                                  {employee.report === 'Completed' && (
+                                    <button className="ml-2 text-blue-600 hover:text-blue-800">
+                                      <FaDownload />
+                                    </button>
+                                  )}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    ))
+                  )}
+                </div>
+              </div>
             </div>
 
             {/* Pagination */}
-            <div className="mt-6 flex items-center justify-between">
-              <div className="text-sm text-gray-600">
+            <div className="mt-6 flex flex-col lg:flex-row items-center justify-between space-y-4 lg:space-y-0">
+              <div className="text-sm text-gray-600 text-center lg:text-left">
                 Menampilkan {filteredEmployees.length === 0 ? 0 : startIndex + 1}-{Math.min(endIndex, filteredEmployees.length)} dari {filteredEmployees.length} data
               </div>
               <div className="flex items-center space-x-2">
-                <button onClick={previousPage} disabled={currentPage === 1} className="px-3 py-2 border rounded-lg text-gray-500 hover:bg-gray-50 disabled:opacity-50">
+                <button 
+                  onClick={() => setCurrentPage(Math.max(1, currentPage - 1))} 
+                  disabled={currentPage === 1} 
+                  className="px-3 py-2 border rounded-lg text-gray-500 hover:bg-gray-50 disabled:opacity-50"
+                >
                   <FaChevronLeft />
                 </button>
-                <div className="flex space-x-1">{renderPagination()}</div>
-                <button onClick={nextPage} disabled={currentPage === totalPages} className="px-3 py-2 border rounded-lg text-gray-500 hover:bg-gray-50 disabled:opacity-50">
+                <div className="flex space-x-1 overflow-x-auto">
+                  {renderPagination()}
+                </div>
+                <button 
+                  onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))} 
+                  disabled={currentPage === totalPages} 
+                  className="px-3 py-2 border rounded-lg text-gray-500 hover:bg-gray-50 disabled:opacity-50"
+                >
                   <FaChevronRight />
                 </button>
               </div>
@@ -245,27 +408,9 @@ const Dashboard = () => {
         </div>
       </div>
 
-      {/* QR Modal */}
-      {isQRModalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-60 backdrop-blur-sm flex justify-center items-center z-50">
-          <div className="bg-white p-10 rounded-2xl shadow-2xl relative max-w-sm w-11/12 mx-5 text-center">
-            <button onClick={() => setIsQRModalOpen(false)} className="absolute top-4 right-4 bg-red-500 text-white w-8 h-8 rounded-full flex items-center justify-center">
-              <FaTimes />
-            </button>
-            <div className="my-5 p-5 bg-gray-50 rounded-xl">
-              <div className="w-48 h-48 bg-white border-2 border-gray-200 rounded-lg flex items-center justify-center mx-auto">
-                <div
-                  className="w-40 h-40 bg-contain bg-center bg-no-repeat"
-                  style={{ backgroundImage: `url('https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://example.com')` }}
-                ></div>
-              </div>
-            </div>
-            <div className="mt-6 text-gray-700 text-sm font-medium">Tanggal : {getCurrentDate()}</div>
-          </div>
-        </div>
-      )}
+      <QRModal isOpen={isQRModalOpen} onClose={() => setIsQRModalOpen(false)} />
     </div>
   );
 };
 
-export default Dashboard;
+export default ResponsiveAttendanceTable;

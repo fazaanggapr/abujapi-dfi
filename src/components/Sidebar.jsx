@@ -8,16 +8,7 @@ import {
 } from 'react-icons/fa';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 
-/**
- * Props
- * ─────
- * isOpen   : boolean  ‑ apakah sidebar terbuka di mobile
- * onToggle : () => void  ‑ fungsi toggle (dipakai overlay & tombol X)
- *
- * Cara pakai (di App.jsx):
- * const [open,setOpen] = useState(false);
- * <Sidebar isOpen={open} onToggle={() => setOpen(!open)} />
- */
+
 export default function Sidebar({ isOpen = false, onToggle = () => {} }) {
   const navigate  = useNavigate();
   const location  = useLocation();
@@ -71,39 +62,40 @@ export default function Sidebar({ isOpen = false, onToggle = () => {} }) {
         </div>
 
         {/* Navigasi */}
-        <nav className="flex-1 px-4 mt-4">
-          <ul className="space-y-3">
-            <li>
-              <Link
-                to="/dashboard"
-                className={`
-                  block rounded-lg px-4 py-3 text-sm font-semibold shadow-md
-                  flex items-center justify-center
-                  ${location.pathname === '/dashboard'
-                    ? 'bg-white text-slate-800'
-                    : 'text-blue-100 hover:bg-white/10'}
-                `}
-              >
-                <FaChartLine className="mr-2" /> DASHBOARD
-              </Link>
-            </li>
+<nav className="flex-1 px-4 mt-4">
+  <ul className="space-y-3">
+    <li>
+      <Link
+        to="/dashboard"
+        className={`
+          block rounded-lg px-4 py-3 text-sm font-semibold shadow-md
+          flex items-center justify-center
+          ${location.pathname === '/dashboard'
+            ? 'bg-white text-slate-800'
+            : 'text-blue-100 hover:bg-white/10'}
+        `}
+      >
+        <FaChartLine className="mr-2" /> DASHBOARD
+      </Link>
+    </li>
 
-            <li>
-              <Link
-                to="/data-karyawan"
-                className={`
-                  block rounded-lg px-4 py-3 text-sm font-semibold shadow-md
-                  flex items-center justify-center
-                  ${location.pathname === '/datakaryawan'
-                    ? 'bg-white text-slate-800'
-                    : 'text-blue-100 hover:bg-white/10'}
-                `}
-              >
-                <FaUsers className="mr-2" /> DATA KARYAWAN
-              </Link>
-            </li>
-          </ul>
-        </nav>
+    <li>
+      <Link
+        to="/data-karyawan"
+        className={`
+          block rounded-lg px-4 py-3 text-sm font-semibold shadow-md
+          flex items-center justify-center
+          ${location.pathname === '/data-karyawan'
+            ? 'bg-white text-slate-800'
+            : 'text-blue-100 hover:bg-white/10'}
+        `}
+      >
+        <FaUsers className="mr-2" /> DATA KARYAWAN
+      </Link>
+    </li>
+  </ul>
+</nav>
+
 
         {/* Logout */}
         <div className="p-4 mt-auto">

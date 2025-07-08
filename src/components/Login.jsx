@@ -1,106 +1,100 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Link } from 'react-router-dom';
-
+import { useNavigate, Link } from 'react-router-dom';
+import { FaEnvelope, FaLock } from 'react-icons/fa';
 
 const LoginComponent = () => {
   const navigate = useNavigate();
-
-  const [formData, setFormData] = useState({
-    email: '',
-    password: ''
-  });
+  const [formData, setFormData] = useState({ email: '', password: '' });
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    const { email, password } = formData;
 
-    if (!formData.email || !formData.password) {
+    if (!email || !password) {
       alert('Please fill in all fields');
       return;
     }
 
-    // Simulasi login (contoh hardcoded)
-    if (
-      formData.email === 'chiper@admin.com' &&
-      formData.password === 'chiper123'
-    ) {
-      alert('Login successful! Redirecting to dashboard...');
+    const storedEmail = localStorage.getItem("user_email") || 'chiper@admin.com';
+    const storedPassword = localStorage.getItem("user_password") || 'chiper123';
+
+    if (email === storedEmail && password === storedPassword) {
+      alert("Login successful!");
       navigate('/dashboard');
     } else {
-      alert('Invalid email or password');
+      alert("Invalid email or password.");
     }
   };
 
+  const inputFields = [
+    { name: 'email', type: 'email', placeholder: 'Email', icon: <FaEnvelope /> },
+    { name: 'password', type: 'password', placeholder: 'Password', icon: <FaLock /> },
+  ];
+
   return (
-<div className="h-screen font-sans bg-[#0d3551] m-0 p-0">
-  <div className="relative w-full h-full flex items-center justify-between overflow-hidden">
-    {/* Background diagonal orange */}
-    <div className="absolute top-0 left-[40%] w-full h-full bg-[#ff5722] transform -skew-x-12 origin-top-left z-0"></div>
+    <div className="h-screen font-sans bg-[#0d3551] m-0 p-0">
+      <div className="relative w-full h-full flex items-center justify-center overflow-hidden">
+        {/* Background diagonal orange */}
+        <div className="absolute top-0 left-[55%] w-full h-full bg-[#ff5722] transform -skew-x-12 origin-top-left z-0"></div>
 
-    {/* Kiri - Gambar Ilustrasi */}
-    <div className="flex-1 flex items-center justify-center z-10 h-full hidden md:flex">
-      <div className="w-[80%] max-w-[600px]">
-        <img
-          src="public/assets/Door-Person.png"
-          alt="Ilustrasi Orang Masuk Pintu"
-          className="w-full h-auto object-contain m-3 rounded-lg shadow-lg"
-        />
-      </div>
-    </div>
+        {/* Kiri - Gambar Ilustrasi */}
+        <div className="w-1/2 flex items-center justify-end z-10 h-full pr-20">
+          <div className="w-[80%] max-w-[450px]">
+            <img
+              src="/assets/Door-Person.png"
+              alt="Ilustrasi Orang Masuk Pintu"
+              className="w-full h-auto object-contain rounded-lg shadow-lg"
+            />
+          </div>
+        </div>
 
-    {/* Kanan - Form Login */}
-    <div className="flex-1 flex items-center justify-center z-10 h-full ">
-     
-      <div className="bg-white p-10 rounded-lg shadow-lg w-[70%] h-[500px] m-3">
-        <h2 className="text-center text-[22px] font-bold text-[#0d3551] mb-8">
-          ABUJAPI LOGIN
-        </h2>
+        {/* Kanan - Form Login */}
+        <div className="w-1/2 flex items-center justify-start z-10 h-full pl-10">
+          <div className="bg-white p-10 rounded-lg shadow-lg w-[90%] max-w-[400px] m-3">
+            <h2 className="text-center text-[22px] font-bold text-[#0d3551] mb-8">ADMIN LOGIN</h2>
 
-        <form>
-          <input
-            type="email"
-            name="email"
-            placeholder="Email"
-            defaultValue="chiper@gmail.com"
-            className="w-full mb-4 p-3 border border-gray-300 rounded-md"
-            required
-          />
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            defaultValue="chiper123"
-            className="w-full mb-6 p-3 border border-gray-300 rounded-md"
-            required
-          />
-    <Link
-      to="/dashboard"
-      className="block w-full bg-[#0d3551] text-white text-center py-3 rounded-md hover:bg-[#ff5722]/90 transition-colors duration-200 shadow-md hover:shadow-lg font-semibold hover:text-white"
-    >
-      Login
-    </Link>
-        </form>
+            <form onSubmit={handleSubmit}>
+              {inputFields.map((field, index) => (
+                <div className="relative mb-6" key={index}>
+                  <input
+                    type={field.type}
+                    name={field.name}
+                    value={formData[field.name]}
+                    onChange={handleInputChange}
+                    placeholder={field.placeholder}
+                    required
+                    className="w-full py-3 px-4 pr-12 border border-gray-300 rounded-md"
+                  />
+                  <span className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-600 text-[18px]">
+                    {field.icon}
+                  </span>
+                </div>
+              ))}
 
-<div className="text-center mt-4">
-  Don't have an account?{" "}
-  <Link to="/register" className="text-blue-600 hover:underline">
-    click here!
-  </Link>
-</div>
+              <button
+                type="submit"
+                className="w-full py-[15px] bg-[#0d3551] text-white border-none rounded-md text-base font-bold cursor-pointer hover:bg-[#133f63] transition-colors"
+              >
+                Login
+              </button>
+            </form>
 
+            <div className="text-center mt-4">
+              Don't have an account?{' '}
+              <Link to="/register" className="text-blue-600 hover:underline">
+                click here!
+              </Link>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-);
+  );
 };
 
 export default LoginComponent;

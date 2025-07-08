@@ -1,16 +1,24 @@
-import Dashboard from "src/components/Dashboard";
+// App.jsx
 import React from "react";
-import Sidebar from "./components/Sidebar";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Register from "./components/Register";
+import Login from "./components/Login";
+import Dashboard from "./components/Dashboard";
 import DataKaryawan from "./components/DataKaryawan";
-import { Route } from "react-router-dom";
-
+import LihatProfil from "./components/LihatProfil";
 
 function App() {
-  return <Routes>
-    <Route path="/dashboard" element={<Dashboard />} />
-    <Route path="/data-karyawan" element={<DataKaryawan />} />
-  </Routes>
-
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/data-karyawan" element={<DataKaryawan />} />
+        <Route path="/lihat-profil" element={<LihatProfil />} />
+      </Routes>
+    </BrowserRouter>
+  );
 }
 
 export default App;

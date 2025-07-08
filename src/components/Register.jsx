@@ -1,68 +1,66 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Link } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
+import { FaUser, FaEnvelope, FaLock, FaCheckCircle } from 'react-icons/fa';
 
 const Register = () => {
   const navigate = useNavigate();
-
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    password: '',
-    confirmPassword: ''
+    name: '', email: '', password: '', confirmPassword: ''
   });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
     const { name, email, password, confirmPassword } = formData;
-
     if (password !== confirmPassword) {
-      alert("Passwords do not match.");
-      return;
+      alert("Passwords do not match."); return;
     }
-
     localStorage.setItem("user_name", name);
     localStorage.setItem("user_email", email);
     localStorage.setItem("user_password", password);
-
     alert("Registration successful! Redirecting to login...");
     navigate("/login");
   };
 
-  return (
-    <div className="h-full bg-[#0d3551] font-sans m-0 p-0">
-      <div className="relative w-full h-screen flex items-center justify-between overflow-hidden">
-        {/* Background diagonal */}
-        <div className="absolute top-0 left-[40%] w-full h-full bg-[#ff5722] transform -skew-x-12 origin-top-left z-0 hidden md:block"></div>
+  const inputIcons = {
+    name: <FaUser />,
+    email: <FaEnvelope />,
+    password: <FaLock />,
+    confirmPassword: <FaCheckCircle />
+  };
 
-        {/* Gambar kiri */}
-        <div className="flex-1 flex justify-center items-center z-10 md:p-0 p-5">
-          <img
-            src="public/assets/Door-Person.jpg"
-            alt="Person Illustration"
-            className="w-[70%] max-w-[400px] h-auto md:w-[70%] w-1/2"
-          />
+  return (
+    <div className="h-screen font-sans bg-[#0d3551] m-0 p-0">
+      <div className="relative w-full h-full flex items-center justify-center overflow-hidden">
+        
+        {/* Background diagonal seperti login */}
+        <div className="absolute top-0 left-[55%] w-full h-full bg-[#ff5722] transform -skew-x-12 origin-top-left z-0 hidden md:block"></div>
+
+        {/* Gambar kiri seperti login */}
+        <div className="w-1/2 flex items-center justify-end z-10 h-full pr-20">
+          <div className="w-[80%] max-w-[450px]">
+            <img
+              src="assets/Door-Person.png"
+              alt="Person Illustration"
+              className="w-full h-auto object-contain rounded-lg shadow-lg"
+            />
+          </div>
         </div>
 
-        {/* Form Register */}
-        <div className="flex-1 flex justify-center items-center z-10 md:p-0 p-5">
-          <div className="bg-white p-10 rounded-lg shadow-lg w-[350px]">
+        {/* Form kanan */}
+        <div className="w-1/2 flex items-center justify-start z-10 h-full pl-10">
+          <div className="bg-white p-10 rounded-lg shadow-lg w-[90%] max-w-[400px] m-3">
             <h2 className="text-center text-[22px] font-bold text-[#0d3551] mb-8">REGISTER</h2>
             <form onSubmit={handleSubmit}>
               {[
-                { name: 'name', type: 'text', placeholder: 'Enter your name', icon: '👤' },
-                { name: 'email', type: 'email', placeholder: 'Enter your email', icon: '📧' },
-                { name: 'password', type: 'password', placeholder: 'Enter your password', icon: '🔒' },
-                { name: 'confirmPassword', type: 'password', placeholder: 'Confirm password', icon: '✅' }
+                { name: 'name', type: 'text', placeholder: 'Enter your name' },
+                { name: 'email', type: 'email', placeholder: 'Enter your email' },
+                { name: 'password', type: 'password', placeholder: 'Enter your password' },
+                { name: 'confirmPassword', type: 'password', placeholder: 'Confirm password' }
               ].map((input, idx) => (
                 <div className="relative mb-5" key={idx}>
                   <input
@@ -75,11 +73,10 @@ const Register = () => {
                     className="w-full py-[15px] px-[15px] border border-gray-300 rounded-md text-[15px] pr-12"
                   />
                   <span className="absolute right-4 top-1/2 transform -translate-y-1/2 text-[18px] text-gray-600">
-                    {input.icon}
+                    {inputIcons[input.name]}
                   </span>
                 </div>
               ))}
-
               <button
                 type="submit"
                 className="w-full py-[15px] bg-[#0d3551] text-white border-none rounded-md text-base font-bold cursor-pointer hover:bg-[#133f63] transition-colors"
@@ -89,9 +86,7 @@ const Register = () => {
             </form>
             <div className="text-center mt-4">
               Already have an account?{' '}
-              <a href="/login" className="text-blue-600 hover:underline">
-                click here!
-              </a>
+              <Link to="/login" className="text-blue-600 hover:underline">click here!</Link>
             </div>
           </div>
         </div>

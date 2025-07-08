@@ -68,10 +68,10 @@ function DataKaryawan() {
               </div>
             </div>
             <Link
-              to="/tambah-tugas"
+              to="/tambah-profil"
               className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors shadow-md flex items-center"
             >
-              <FaPlus className="mr-2" /> TAMBAH DATA
+              <FaPlus className="mr-2" /> TAMBAH PROFIL
             </Link>
           </div>
 

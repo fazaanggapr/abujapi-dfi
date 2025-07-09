@@ -116,7 +116,7 @@ function DataKaryawan() {
                     <FaUser className="mr-2 inline" /> Nama
                   </th>
                   <th className="px-6 py-4 text-center text-sm font-semibold text-gray-700 w-1/4">
-                    <FaMapMarkerAlt className="mr-2 inline" /> Lokasi
+                    <FaMapMarkerAlt className="mr-2 inline" /> Peran
                   </th>
                   <th className="px-6 py-4 text-center text-sm font-semibold text-gray-700 w-1/4">
                     <FaCogs className="mr-2 inline" /> Profil Lengkap

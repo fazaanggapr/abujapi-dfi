@@ -81,20 +81,56 @@ const ResponsiveAttendanceTable = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState(new Date());
   const itemsPerPage = 3;
+  const [employees, setEmployees] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  // Sample data
-  const employees = [
-    { id: 1, name: 'Ahmad Wijaya', attendance: 'present', report: 'Completed', avatar: 'AW' },
-    { id: 2, name: 'Siti Nurhaliza', attendance: 'late', report: 'Pending', avatar: 'SN' },
-    { id: 3, name: 'Budi Santoso', attendance: 'absent', report: 'Not Submitted', avatar: 'BS' },
-    { id: 4, name: 'Budi Santoso', attendance: 'absent', report: 'Not Submitted', avatar: 'BS' },
-    { id: 5, name: 'Budi Santoso', attendance: 'absent', report: 'Not Submitted', avatar: 'BS' },
-    { id: 6, name: 'Budi Santoso', attendance: 'absent', report: 'Not Submitted', avatar: 'BS' },
-    { id: 7, name: 'Budi Santoso', attendance: 'absent', report: 'Not Submitted', avatar: 'BS' },
-    { id: 8, name: 'Budi Santoso', attendance: 'absent', report: 'Not Submitted', avatar: 'BS' },
-    { id: 9, name: 'Budi Santoso', attendance: 'absent', report: 'Not Submitted', avatar: 'BS' },
+const getInitials = (name) => {
+  if (!name) return '';
+  const parts = name.trim().split(" ");
+  return parts.length >= 2
+    ? parts[0][0].toUpperCase() + parts[1][0].toUpperCase()
+    : parts[0][0].toUpperCase();
+};
 
-  ];
+useEffect(() => {
+  const fetchAttendance = async () => {
+    const token = localStorage.getItem("access_token");
+
+    try {
+      const response = await fetch("http://localhost:8000/api/admin/attendance", {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: "application/json",
+        },
+      });
+
+      const result = await response.json();
+
+      if (response.ok && result.data) {
+        const transformed = result.data.map((item) => ({
+          id: item.id,
+          name: item.user.name,
+          email: item.user.email,
+          attendance: item.kehadiran.toLowerCase(), // sesuaikan ke 'present', 'absent', 'late'
+          report: "Belum Dicek", // placeholder jika belum ada di API
+          avatar: getInitials(item.user.name),
+          attended_at: item.attended_at,
+        }));
+        setEmployees(transformed);
+      } else {
+        console.error("Gagal ambil data:", result);
+      }
+    } catch (err) {
+      console.error("Error:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  fetchAttendance();
+}, []);
+
 
   const monthInfo = {
     month: selectedDate.toLocaleDateString('id-ID', { month: 'long' }),
@@ -200,37 +236,28 @@ const ResponsiveAttendanceTable = () => {
       );
     }
 
-const ResponsiveAttendanceTable = () => {
-  return currentEmployees.map((employee, index) => (
-    <tr key={employee.id} className="hover:bg-gray-50 transition-colors duration-200">
-      <td className="px-6 py-4">
-        <div className="flex items-center">
-          <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center text-white font-semibold text-sm mr-3">
-            {employee.avatar}
-          </div>
-          <div>
-            <div className="font-medium text-gray-900">{employee.name}</div>
-            <div className="text-sm text-gray-500">ID: {employee.id.toString().padStart(3, '0')}</div>
-          </div>
+return currentEmployees.map((emp) => (
+  <tr key={emp.id} className="hover:bg-gray-50 transition-colors">
+    <td className="px-6 py-5">
+      <div className="flex items-center">
+        <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center text-white font-semibold text-sm mr-3">
+          {emp.avatar}
         </div>
-      </td>
-      <td className="px-6 py-4 text-center">
-        <AttendanceStatus status={employee.attendance} />
-      </td>
-      <td className="px-6 py-4 text-center">
-        <div className="flex justify-center">
-          <Link
-            to="/lihat-laporan"
-            className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-lg text-sm font-semibold transition-colors shadow-md flex items-center"
-          >
-            <FaEye className="mr-1" /> LIHAT LAPORAN
-          </Link>
+        <div>
+          <div className="font-semibold text-gray-900">{emp.name}</div>
+          <div className="text-sm text-gray-500">{emp.email}</div>
         </div>
-      </td>
-    </tr>
-  ));
-};
-return ResponsiveAttendanceTable();
+      </div>
+    </td>
+    <td className="px-6 py-5 text-center">
+      <span className="text-gray-700 font-medium">{emp.attendance}</span>
+    </td>
+    <td className="px-6 py-5 text-center">
+      <span className="text-gray-500 text-sm">{emp.attended_at}</span>
+    </td>
+  </tr>
+));
+
 };
 
 

@@ -27,6 +27,7 @@ const EmployeeDetail = () => {
         if (response.ok && result.data && result.data.profile) {
           const profile = result.data.profile;
           setEmployee({
+            user_id: profile.user_id,
             name: result.data.name,
             email: result.data.email,
             nik: profile.nik,
@@ -203,7 +204,7 @@ const EmployeeDetail = () => {
                       ID
                     </label>
                     <div className="px-3 py-2 bg-gray-50 border border-gray-200 rounded-md text-gray-800">
-                      {employee?.id}
+                      {employee?.user_id}
                     </div>
                   </div>
 

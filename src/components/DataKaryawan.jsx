@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import {
   FaUser,
@@ -12,22 +12,46 @@ import {
   FaChevronRight
 } from 'react-icons/fa';
 import Sidebar from './Sidebar';
-import LihatProfil from './LihatProfil';
 
 function DataKaryawan() {
   const [searchTerm, setSearchTerm] = useState('');
+  const [employees, setEmployees] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const employees = [
-    { id: '019', name: 'Inukai Atsuhiro', location: 'Bekasi'},
-    { id: '020', name: 'Tanaka Hiroshi', location: 'Jakarta' },
-    { id: '021', name: 'Sato Kenji', location: 'Bandung' },
-  ];
+  useEffect(() => {
+    const fetchDashboardData = async () => {
+      const token = localStorage.getItem("access_token");
+
+      try {
+        const response = await fetch("http://localhost:8000/api/admin/dashboard", {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            Accept: "application/json",
+          },
+        });
+
+        const result = await response.json();
+
+        if (response.ok && result.data) {
+          setEmployees(result.data);
+        } else {
+          console.error("Failed to fetch dashboard:", result);
+        }
+      } catch (err) {
+        console.error("Error:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchDashboardData();
+  }, []);
 
   const filteredEmployees = employees.filter(employee =>
     employee.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  // Fungsi untuk membuat avatar dengan inisial nama
   const getInitials = (name) => {
     const nameParts = name.split(' ');
     if (nameParts.length >= 2) {
@@ -36,6 +60,14 @@ function DataKaryawan() {
     return nameParts[0][0];
   };
 
+  if (loading) return <p className="p-4">Loading...</p>;// Handle loading state
+
+
+
+
+  if (!employees || employees.length === 0) {
+    return <p className="p-4">Tidak ada data karyawan ditemukan.</p>;
+  }
   return (
     <div className="bg-gray-50 font-sans min-h-screen flex">
       <Sidebar />
@@ -92,47 +124,50 @@ function DataKaryawan() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100">
-                {filteredEmployees.length > 0 ? (
-                  filteredEmployees.map((emp) => (
-                    <tr key={emp.id} className="hover:bg-gray-50 transition-colors">
-                      <td className="px-6 py-5">
-                        <div className="flex items-center">
-                          {/* Avatar */}
-                          <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center text-white font-semibold text-sm mr-3">
-                            {getInitials(emp.name)}
-                          </div>
-                          {/* Nama dan ID */}
-                          <div>
-                            <div className="font-semibold text-gray-900">{emp.name}</div>
-                            <div className="text-sm text-gray-500 flex items-center mt-1">
-                              <FaIdBadge className="mr-1" /> ID: {emp.id}
-                            </div>
+              {filteredEmployees.length > 0 ? (
+                filteredEmployees.map((emp, index) => (
+                  <tr key={index} className="hover:bg-gray-50 transition-colors">
+                    <td className="px-6 py-5">
+                      <div className="flex items-center">
+                        {/* Avatar / Inisial Nama */}
+                        <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center text-white font-semibold text-sm mr-3">
+                          {getInitials(emp.name)}
+                        </div>
+                        {/* Nama dan NIK */}
+                        <div>
+                          <div className="font-semibold text-gray-900">{emp.name}</div>
+                          <div className="text-sm text-gray-500 flex items-center mt-1">
+                            <FaIdBadge className="mr-1" /> NIK: {emp.nik}
                           </div>
                         </div>
-                      </td>
-                      <td className="px-6 py-5 text-center">
-                        <span className="text-gray-700 font-medium">{emp.location}</span>
-                      </td>
-                      <td className="px-6 py-5 text-center">
-                        <div className="flex justify-center">
-                          <Link
-                            to="/lihat-profil"
-                            className="bg-blue-500 hover:bg-blue-600 text-white hover:text-white px-3 py-2 rounded-lg text-sm font-semibold transition-colors shadow-md flex items-center"
-                          >
-                            <FaEye className="mr-1" /> LIHAT PROFIL
-                          </Link>
-                        </div>
-                      </td>
-                    </tr>
-                  ))
-                ) : (
-                  <tr>
-                    <td colSpan="3" className="text-center py-6 text-gray-500">
-                      Tidak ada karyawan ditemukan.
+                      </div>
+                    </td>
+
+                    <td className="px-6 py-5 text-center">
+                      <span className="text-gray-700 font-medium">{emp.role}</span>
+                    </td>
+
+                    <td className="px-6 py-5 text-center">
+                      <div className="flex justify-center">
+                        <Link
+                          to="/lihat-profil"
+                          className="bg-blue-500 hover:bg-blue-600 text-white hover:text-white px-3 py-2 rounded-lg text-sm font-semibold transition-colors shadow-md flex items-center"
+                        >
+                          <FaEye className="mr-1" /> LIHAT PROFIL
+                        </Link>
+                      </div>
                     </td>
                   </tr>
-                )}
-              </tbody>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="3" className="text-center py-6 text-gray-500">
+                    Tidak ada karyawan ditemukan.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+
             </table>
           </div>
 

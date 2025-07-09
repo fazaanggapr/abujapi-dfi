@@ -1,49 +1,84 @@
-import React, { useState } from "react";
+
 import { Link } from "react-router-dom";
 import { Camera, User, ArrowLeft, Fingerprint, Phone, Mail, MapPin } from "lucide-react";
+import React, { useEffect, useState } from "react";
 
 const EmployeeDetail = () => {
-  const [employee] = useState({
-    id: "123456789101",
-    name: "Inukai Atsuhiro",
-    nik: "10380801075",
-    phone: "0899-8877-6621",
-    status: "Menikah",
-    address:
-      "Perumahan Isekai, Jl. Mandiri RT 02/RW 05, No. 666, Kab. No.646, Cibinong, Sukahati",
-    gender: "Laki-laki",
-    age: "30 tahun",
-    height: "200 cm",
-    weight: "71 kg",
-    education: "S1",
-    bankAccount: "BCA ••••••••••••••••",
-    employeeStatus: "Aktif",
-    position: "Karyawan",
-    workDuration: "5 Tahun",
-    location: "Jakarta",
-    portfolio: "https://portofolio-inukai-atsuhiro.vercel.app",
-    grade: "A",
-  });
+  const [employee, setEmployee] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [profilePhoto, setProfilePhoto] = useState(null); // ⬅️ dipindah ke atas
 
-  const [profilePhoto, setProfilePhoto] = useState(null);
-    const uploadPhoto = () => {
-      const input = document.createElement("input");
-      input.type = "file";
-      input.accept = "image/*";
-      input.onchange = (e) => {
-        const file = e.target.files[0];
-        if (file) {
-          const reader = new FileReader();
-          reader.onload = (e) => {
-            setProfilePhoto(e.target.result);
-            showMessage("Foto profil berhasil diunggah!");
-          };
-          reader.readAsDataURL(file);
+  // Fetch data user dari API
+  useEffect(() => {
+    const fetchEmployee = async () => {
+      const token = localStorage.getItem("access_token");
+
+      try {
+        const response = await fetch("http://localhost:8000/api/profile", {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            Accept: "application/json",
+          },
+        });
+
+        const result = await response.json();
+
+        if (response.ok && result.data && result.data.profile) {
+          const profile = result.data.profile;
+          setEmployee({
+            name: result.data.name,
+            email: result.data.email,
+            nik: profile.nik,
+            phone: profile.phone_number,
+            status: profile.status,
+            address: profile.address,
+            gender: profile.gender,
+            age: profile.age + " tahun",
+            height: profile.height + " cm",
+            weight: profile.weight + " kg",
+            education: profile.education,
+            bankAccount: profile.bank_account,
+            employeeStatus: profile.employee_status,
+            position: profile.position,
+            workDuration: profile.work_duration,
+            location: profile.placement_location,
+            portfolio: profile.portfolio_link,
+            grade: profile.grade,
+          });
+        } else {
+          console.error("Failed to fetch employee data:", result);
         }
-      };
-      input.click();
+      } catch (error) {
+        console.error("Error:", error);
+      } finally {
+        setLoading(false);
+      }
     };
 
+    fetchEmployee();
+  }, []);
+
+  // Fungsi upload foto profil
+  const uploadPhoto = () => {
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = "image/*";
+    input.onchange = (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          setProfilePhoto(e.target.result);
+          alert("Foto profil berhasil diunggah!");
+        };
+        reader.readAsDataURL(file);
+      }
+    };
+    input.click();
+  };
+
+  // Dummy data riwayat kerja, skill, sertifikat
   const workHistory = [
     {
       company: "PT. Terbang kesatas",
@@ -84,7 +119,6 @@ const EmployeeDetail = () => {
     { name: "First Aid", year: "2020" },
     { name: "Cyber Security", year: "2023" },
   ];
-
   const handleBackClick = () => {
     // Handle navigation back to employee list
     console.log("Navigate back to employee list");
@@ -169,7 +203,7 @@ const EmployeeDetail = () => {
                       ID
                     </label>
                     <div className="px-3 py-2 bg-gray-50 border border-gray-200 rounded-md text-gray-800">
-                      {employee.id}
+                      {employee?.id}
                     </div>
                   </div>
 
@@ -178,7 +212,7 @@ const EmployeeDetail = () => {
                       Nama Lengkap
                     </label>
                     <div className="px-3 py-2 bg-gray-50 border border-gray-200 rounded-md text-gray-800">
-                      {employee.name}
+                      {employee?.name}
                     </div>
                   </div>
 
@@ -188,7 +222,7 @@ const EmployeeDetail = () => {
                         NIK
                       </label>
                       <div className="px-3 py-2 bg-gray-50 border border-gray-200 rounded-md text-gray-800">
-                        {employee.nik}
+                        {employee?.nik}
                       </div>
                     </div>
                     <div>
@@ -196,7 +230,7 @@ const EmployeeDetail = () => {
                         No HP
                       </label>
                       <div className="px-3 py-2 bg-gray-50 border border-gray-200 rounded-md text-gray-800">
-                        {employee.phone}
+                        {employee?.phone}
                       </div>
                     </div>
                   </div>
@@ -206,7 +240,7 @@ const EmployeeDetail = () => {
                       Status
                     </label>
                     <div className="px-3 py-2 bg-gray-50 border border-gray-200 rounded-md text-gray-800">
-                      {employee.status}
+                      {employee?.status}
                     </div>
                   </div>
                 </div>
@@ -220,37 +254,37 @@ const EmployeeDetail = () => {
                   <div className="flex">
                     <span className="w-24 text-sm font-medium">Alamat</span>
                     <span className="mx-2">:</span>
-                    <div className="flex-1 text-sm">{employee.address}</div>
+                    <div className="flex-1 text-sm">{employee?.address}</div>
                   </div>
                   <div className="flex">
                     <span className="w-24 text-sm font-medium">Kelamin</span>
                     <span className="mx-2">:</span>
-                    <span className="text-sm">{employee.gender}</span>
+                    <span className="text-sm">{employee?.gender}</span>
                   </div>
                   <div className="flex">
                     <span className="w-24 text-sm font-medium">Umur</span>
                     <span className="mx-2">:</span>
-                    <span className="text-sm">{employee.age}</span>
+                    <span className="text-sm">{employee?.age}</span>
                   </div>
                   <div className="flex">
                     <span className="w-24 text-sm font-medium">Tinggi</span>
                     <span className="mx-2">:</span>
-                    <span className="text-sm">{employee.height}</span>
+                    <span className="text-sm">{employee?.height}</span>
                   </div>
                   <div className="flex">
                     <span className="w-24 text-sm font-medium">Berat</span>
                     <span className="mx-2">:</span>
-                    <span className="text-sm">{employee.weight}</span>
+                    <span className="text-sm">{employee?.weight}</span>
                   </div>
                   <div className="flex">
                     <span className="w-24 text-sm font-medium">Pendidikan</span>
                     <span className="mx-2">:</span>
-                    <span className="text-sm">{employee.education}</span>
+                    <span className="text-sm">{employee?.education}</span>
                   </div>
                   <div className="flex">
                     <span className="w-24 text-sm font-medium">Akun Bank</span>
                     <span className="mx-2">:</span>
-                    <span className="text-sm">{employee.bankAccount}</span>
+                    <span className="text-sm">{employee?.bankAccount}</span>
                   </div>
                 </div>
 
@@ -349,7 +383,7 @@ const EmployeeDetail = () => {
                 </label>
                 <div className="px-3 py-2 bg-green-50 border border-green-200 rounded-md">
                   <span className="text-green-800 font-medium">
-                    {employee.employeeStatus}
+                    {employee?.employeeStatus}
                   </span>
                 </div>
               </div>
@@ -359,7 +393,7 @@ const EmployeeDetail = () => {
                   Jabatan
                 </label>
                 <div className="px-3 py-2 bg-gray-50 border border-gray-200 rounded-md text-gray-800">
-                  {employee.position}
+                  {employee?.position}
                 </div>
               </div>
 
@@ -368,7 +402,7 @@ const EmployeeDetail = () => {
                   Lama Bekerja
                 </label>
                 <div className="px-3 py-2 bg-gray-50 border border-gray-200 rounded-md text-gray-800">
-                  {employee.workDuration}
+                  {employee?.workDuration}
                 </div>
               </div>
 
@@ -377,7 +411,7 @@ const EmployeeDetail = () => {
                   Lokasi Penempatan
                 </label>
                 <div className="px-3 py-2 bg-gray-50 border border-gray-200 rounded-md text-gray-800">
-                  {employee.location}
+                  {employee?.location}
                 </div>
               </div>
             </div>
@@ -390,12 +424,12 @@ const EmployeeDetail = () => {
               <div className="bg-white rounded-b-lg shadow-md p-6 border border-gray-200 border-t-0">
                 <div className="px-3 py-2 bg-blue-50 border border-blue-200 rounded-md">
                   <a
-                    href={employee.portfolio}
+                    href={employee?.portfolio}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-blue-600 hover:text-blue-800 underline"
                   >
-                    {employee.portfolio.replace("https://", "")}
+                    {employee?.portfolio.replace("https://", "")}
                   </a>
                 </div>
               </div>

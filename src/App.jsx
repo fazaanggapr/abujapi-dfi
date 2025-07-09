@@ -8,21 +8,59 @@ import DataKaryawan from "./components/DataKaryawan";
 import LihatProfil from "./components/LihatProfil";
 import TambahProfil from "./components/TambahProfil";
 import EditProfil from "./components/EditProfil";
-
+import PrivateRoute from "./components/PrivateRoute";
 function App() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/data-karyawan" element={<DataKaryawan />} />
-        <Route path="/lihat-profil" element={<LihatProfil />} />
-        <Route path="/tambah-profil" element={<TambahProfil />} />
-        <Route path="/edit-profil" element={<EditProfil />} />
+
+        {/* Routes yang butuh login */}
+        <Route
+          path="/dashboard"
+          element={
+            <PrivateRoute>
+              <Dashboard />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/data-karyawan"
+          element={
+            <PrivateRoute>
+              <DataKaryawan />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/lihat-profil"
+          element={
+            <PrivateRoute>
+              <LihatProfil />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/tambah-profil"
+          element={
+            <PrivateRoute>
+              <TambahProfil />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/edit-profil"
+          element={
+            <PrivateRoute>
+              <EditProfil />
+            </PrivateRoute>
+          }
+        />
       </Routes>
     </BrowserRouter>
   );
 }
 
 export default App;
+

@@ -11,25 +11,41 @@ const LoginComponent = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const { email, password } = formData;
+ const handleSubmit = async (e) => {
+  e.preventDefault();
+  const { email, password } = formData;
 
-    if (!email || !password) {
-      alert('Please fill in all fields');
-      return;
-    }
+  if (!email || !password) {
+    alert('Please fill in all fields');
+    return;
+  }
 
-    const storedEmail = localStorage.getItem("user_email") || 'chiper@admin.com';
-    const storedPassword = localStorage.getItem("user_password") || 'chiper123';
+  try {
+    const response = await fetch('http://localhost:8000/api/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+      body: JSON.stringify({ email, password }),
+    });
 
-    if (email === storedEmail && password === storedPassword) {
-      alert("Login successful!");
+    const data = await response.json();
+
+    if (response.ok) {
+      // Simpan token dan tipe token
+      localStorage.setItem('access_token', data.access_token);
+      localStorage.setItem('token_type', data.token_type); // biasanya 'bearer'
+      alert('Login successful!');
       navigate('/dashboard');
     } else {
-      alert("Invalid email or password.");
+      alert(data.message || 'Login failed');
     }
-  };
+  } catch (error) {
+    console.error('Login error:', error);
+    alert('An error occurred. Please try again.');
+  }
+};
 
   const inputFields = [
     { name: 'email', type: 'email', placeholder: 'Email', icon: <FaEnvelope /> },

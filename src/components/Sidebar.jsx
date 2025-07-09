@@ -12,6 +12,11 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 export default function Sidebar({ isOpen = false, onToggle = () => {} }) {
   const navigate  = useNavigate();
   const location  = useLocation();
+  const handleLogout = () => {
+  localStorage.removeItem('access_token');
+  localStorage.removeItem('token_type');
+  navigate('/login');
+};
 
   return (
     <>
@@ -102,7 +107,7 @@ export default function Sidebar({ isOpen = false, onToggle = () => {} }) {
           <button
             onClick={() => {
               if (window.confirm('Apakah Anda yakin ingin keluar?')) {
-                navigate('/login');
+                handleLogout();
               }
             }}
             className="w-full bg-red-600 hover:bg-red-700 text-white rounded-lg px-4 py-3 text-sm font-semibold flex items-center justify-center shadow-md"

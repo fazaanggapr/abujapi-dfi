@@ -1,7 +1,14 @@
-
-import { Link } from "react-router-dom";
-import { Camera, User, ArrowLeft, Fingerprint, Phone, Mail, MapPin } from "lucide-react";
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import {
+  Camera,
+  User,
+  ArrowLeft,
+  Fingerprint,
+  Phone,
+  Mail,
+  MapPin,
+} from "lucide-react";
 
 const EmployeeDetail = () => {
   const [employee, setEmployee] = useState(null);
@@ -159,7 +166,7 @@ const EmployeeDetail = () => {
                 <ArrowLeft className="w-6 h-6" />
               </Link>
 
-              <h1 className="text-xl font-bold">DATA PRIBADI</h1>
+              <h1 className="text-xl font-bold">LIHAT PROFIL</h1>
             </div>
           </div>
         </div>
@@ -438,20 +445,21 @@ const EmployeeDetail = () => {
 
             {/* Action Buttons */}
             <div className="flex justify-center mb-6 mt-8">
-              <button
-                onClick={handleAddTask}
-                className="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg transition duration-200 shadow-md transform hover:-translate-y-1"
+              <Link
+                to="/tambah-tugas"
+                className="bg-green-600 hover:bg-green-700 text-white hover:text-white no-underline font-bold py-3 px-6 rounded-lg transition duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-1 hover:scale-[1.02]"
               >
                 TAMBAH TUGAS
-              </button>
+              </Link>
             </div>
             <div className="mt-6 flex space-x-4">
               <Link
-                to="/edit-profil" // ganti dengan rute tujuanmu
-                className="flex-1 bg-orange-600 hover:bg-orange-700 text-white font-bold py-3 px-6 rounded-lg transition duration-200 shadow-md transform hover:-translate-y-1 text-center"
+                to="/edit-profil"
+                className="flex-1 bg-orange-600 hover:bg-orange-700 text-white hover:text-white no-underline font-bold py-3 px-6 rounded-lg transition duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-1 hover:scale-[1.02] text-center"
               >
                 EDIT PROFIL
               </Link>
+
               <button
                 onClick={handleDeleteData}
                 className="flex-1 bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-lg transition duration-200 shadow-md transform hover:-translate-y-1"

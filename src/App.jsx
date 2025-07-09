@@ -7,7 +7,9 @@ import Dashboard from "./components/Dashboard";
 import DataKaryawan from "./components/DataKaryawan";
 import LihatProfil from "./components/LihatProfil";
 import TambahProfil from "./components/TambahProfil";
+import TambahTugas from "./components/TambahTugas";
 import EditProfil from "./components/EditProfil";
+import LihatLaporan from "./components/LihatLaporan";
 import PrivateRoute from "./components/PrivateRoute";
 function App() {
   return (
@@ -49,11 +51,27 @@ function App() {
             </PrivateRoute>
           }
         />
+          <Route
+            path="/tambah-tugas"
+            element={
+              <PrivateRoute>
+                <TambahTugas />
+              </PrivateRoute>
+            }
+            />
         <Route
           path="/edit-profil"
           element={
             <PrivateRoute>
               <EditProfil />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/lihat-laporan"
+          element={
+            <PrivateRoute>
+              <LihatLaporan />
             </PrivateRoute>
           }
         />

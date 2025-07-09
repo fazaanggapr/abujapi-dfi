@@ -2,6 +2,7 @@
 import {
   FaSignOutAlt,
   FaUser,
+  FaEye,
   FaChartLine,
   FaUsers,
   FaTimes,          // icon tutup utk mobile
@@ -66,21 +67,21 @@ export default function Sidebar({ isOpen = false, onToggle = () => {} }) {
           </div>
         </div>
 
-        {/* Navigasi */}
+{/* Navigasi */}
 <nav className="flex-1 px-4 mt-4">
   <ul className="space-y-3">
     <li>
       <Link
         to="/dashboard"
         className={`
-          block rounded-lg px-4 py-3 text-sm font-semibold shadow-md
-          flex items-center justify-center
+          flex items-center rounded-lg px-4 py-3 text-sm font-semibold shadow-md
           ${location.pathname === '/dashboard'
             ? 'bg-white text-slate-800'
             : 'text-blue-100 hover:bg-white/10'}
         `}
       >
-        <FaChartLine className="mr-2" /> DASHBOARD
+        <FaChartLine className="mr-3 w-5 h-5" />
+        DASHBOARD
       </Link>
     </li>
 
@@ -88,18 +89,19 @@ export default function Sidebar({ isOpen = false, onToggle = () => {} }) {
       <Link
         to="/data-karyawan"
         className={`
-          block rounded-lg px-4 py-3 text-sm font-semibold shadow-md
-          flex items-center justify-center
+          flex items-center rounded-lg px-4 py-3 text-sm font-semibold shadow-md
           ${location.pathname === '/data-karyawan'
             ? 'bg-white text-slate-800'
             : 'text-blue-100 hover:bg-white/10'}
         `}
       >
-        <FaUsers className="mr-2" /> DATA KARYAWAN
+        <FaUsers className="mr-3 w-5 h-5" />
+        DATA KARYAWAN
       </Link>
     </li>
   </ul>
 </nav>
+
 
 
         {/* Logout */}

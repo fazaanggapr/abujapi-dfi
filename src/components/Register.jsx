@@ -13,18 +13,50 @@ const Register = () => {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const { name, email, password, confirmPassword } = formData;
-    if (password !== confirmPassword) {
-      alert("Passwords do not match."); return;
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  const { name, email, password, confirmPassword } = formData;
+
+  if (password !== confirmPassword) {
+    alert("Passwords do not match.");
+    return;
+  }
+
+  try {
+    const response = await fetch("http://localhost:8000/api/register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        // Tambahkan header Authorization kalau pakai token (opsional)
+      },
+      body: JSON.stringify({
+        name,
+        email,
+        password,
+        password_confirmation: confirmPassword
+      }),
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      // Berhasil register
+      alert("Registration successful! Redirecting to login...");
+      // Simpan data jika diperlukan
+      localStorage.setItem("user_name", name);
+      localStorage.setItem("user_email", email);
+      localStorage.setItem("user_token", data.token); // jika ada token
+      navigate("/login");
+    } else {
+      // Tampilkan pesan error dari server
+      alert(data.message || "Registration failed.");
     }
-    localStorage.setItem("user_name", name);
-    localStorage.setItem("user_email", email);
-    localStorage.setItem("user_password", password);
-    alert("Registration successful! Redirecting to login...");
-    navigate("/login");
-  };
+  } catch (error) {
+    alert("An error occurred. Please try again.");
+    console.error(error);
+  }
+};
+
 
   const inputIcons = {
     name: <FaUser />,

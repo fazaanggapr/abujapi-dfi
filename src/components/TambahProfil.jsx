@@ -200,7 +200,7 @@ const EmployeeForm = () => {
               >
                 <ArrowLeft className="w-6 h-6" />
               </Link>
-              <h1 className="text-xl font-bold">TAMBAH DATA</h1>
+              <h1 className="text-xl font-bold">TAMBAH PROFIL</h1>
             </div>
           </div>
         </div>

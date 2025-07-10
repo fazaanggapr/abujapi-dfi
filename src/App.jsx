@@ -11,9 +11,14 @@ import TambahTugas from "./components/TambahTugas";
 import EditProfil from "./components/EditProfil";
 import LihatLaporan from "./components/LihatLaporan";
 import PrivateRoute from "./components/PrivateRoute";
+import { Toaster } from 'react-hot-toast';
+import ScanQR from "./components/ScanQR";
+
 function App() {
   return (
+    
     <BrowserRouter>
+    <Toaster position="top-center" reverseOrder={false} />
       <Routes>
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
@@ -27,6 +32,11 @@ function App() {
             </PrivateRoute>
           }
         />
+        <Route path="/scan-qr" element={
+          <PrivateRoute>
+            <ScanQR />
+          </PrivateRoute>
+        } />
         <Route
           path="/data-karyawan"
           element={
@@ -76,6 +86,7 @@ function App() {
           }
         />
       </Routes>
+      
     </BrowserRouter>
   );
 }

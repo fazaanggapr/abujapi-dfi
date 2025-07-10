@@ -62,12 +62,23 @@ function DataKaryawan() {
     }
     return nameParts[0][0];
   };
+ function LoadingAnimation() {
+  return (
+    <div className="h-screen flex flex-col items-center justify-center text-center">
+      {/* Spinner Animation */}
+      <div className="relative">
+        <div className="w-24 h-24 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin"></div>
+      </div>
+      
+      {/* Loading Text */}
+      <p className="mt-4 text-gray-600 font-medium">Loading...</p>
+    </div>
+  );
+}
 
-  if (loading) return <p className="p-4">Loading...</p>; // Handle loading state
+  if (loading) return <LoadingAnimation/>;
 
-  if (!employees || employees.length === 0) {
-    return <p className="p-4">Tidak ada data karyawan ditemukan.</p>;
-  }
+ 
   return (
     <div className="bg-gray-50 font-sans min-h-screen flex">
       <Sidebar />

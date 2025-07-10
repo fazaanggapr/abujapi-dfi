@@ -34,7 +34,7 @@ export default function Sidebar({ isOpen = false, onToggle = () => {} }) {
         className={`
           fixed lg:static inset-y-0 left-0 z-50
           w-64 flex flex-col flex-shrink-0
-          bg-gradient-to-b from-blue-900 to-slate-800 text-white
+          bg-gradient-to-b from-blue-800 to-slate-700 text-white
           transform transition-transform duration-300 ease-in-out
           ${isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
         `}

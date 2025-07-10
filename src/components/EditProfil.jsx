@@ -1,75 +1,105 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Camera, ArrowLeft, User, Fingerprint } from "lucide-react";
+import {
+  Camera,
+  User,
+  ArrowLeft,
+  Fingerprint,
+  Phone,
+  Mail,
+  MapPin,
+  Calendar,
+  Building,
+  Activity,
+  Award,
+  Briefcase,
+  CheckCircle,
+  Edit,
+  Trash2,
+  Plus,
+  ExternalLink,
+  GraduationCap,
+  CreditCard,
+  Users,
+  Clock,
+  X,
+  Save,
+  Star,
+} from "lucide-react";
 
 const baseUrl = import.meta.env.VITE_API_URL;
-const EmployeeDataForm = () => {
- const [formData, setFormData] = useState({
-  name: '',
-  phone_number: '',
-  address: '',
-  gender: '',
-  age: '',
-  bank_account: '',
-  education: '',
-  employee_status: '',
-  portfolio_link: '',
-  placement_location: '',
-  position: '',
-  status: '',
-  work_duration: '',
-  work_location: '',
-  weight: '',
-  height: '',
-  nik: ''
-});
 
+const EditEmployeeDataForm = () => {
+  const [formData, setFormData] = useState({
+    name: '',
+    phone_number: '',
+    address: '',
+    gender: '',
+    age: '',
+    bank_account: '',
+    education: '',
+    employee_status: '',
+    portfolio_link: '',
+    placement_location: '',
+    position: '',
+    status: '',
+    work_duration: '',
+    work_location: '',
+    weight: '',
+    height: '',
+    nik: '',
+    grade: ''
+  });
 
-useEffect(() => {
-  const fetchProfile = async () => {
-    const token = localStorage.getItem("access_token");
+  const [workHistory, setWorkHistory] = useState([]);
+  const [skills, setSkills] = useState([]);
+  const [certifications, setCertifications] = useState([]);
 
-    try {
-      const res = await fetch(`${baseUrl}/profile`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          Accept: "application/json",
-        },
-      });
+  useEffect(() => {
+    const fetchProfile = async () => {
+      const token = localStorage.getItem("access_token");
 
-      const result = await res.json();
-      if (res.ok && result.data?.profile) {
-        const profile = result.data.profile;
-        setFormData({
-          name: formData.name,
-          phone_number: formData.phone_number,
-          address: formData.address,
-          gender: formData.gender,
-          age: formData.age,
-          bank_account: formData.bank_account,
-          education: formData.education,
-          employee_status: formData.employee_status,
-          portfolio_link: formData.portfolio_link,
-          placement_location: formData.placement_location,
-          position: formData.position,
-          status: formData.status,
-          work_duration: formData.work_duration,
-          work_location: formData.workLocation, // pastikan nama sesuai di backend
-          weight: formData.weight,
-          height: formData.height,
-          nik: formData.nik,
+      try {
+        const res = await fetch(`${baseUrl}/profile`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            Accept: "application/json",
+          },
         });
+
+        const result = await res.json();
+        if (res.ok && result.data?.profile) {
+          const profile = result.data.profile;
+          setFormData({
+            name: formData.name,
+            phone_number: formData.phone_number,
+            address: formData.address,
+            gender: formData.gender,
+            age: formData.age,
+            bank_account: formData.bank_account,
+            education: formData.education,
+            employee_status: formData.employee_status,
+            portfolio_link: formData.portfolio_link,
+            placement_location: formData.placement_location,
+            position: formData.position,
+            status: formData.status,
+            work_duration: formData.work_duration,
+            work_location: formData.work_location,
+            weight: formData.weight,
+            height: formData.height,
+            nik: formData.nik,
+          });
+        }
+      } catch (err) {
+        console.error("Failed to fetch profile:", err);
       }
-    } catch (err) {
-      console.error("Failed to fetch profile:", err);
-    }
-  };
+    };
 
-  fetchProfile();
-}, []);
-
+    fetchProfile();
+  }, []);
 
   const [profilePhoto, setProfilePhoto] = useState(null);
+
   const uploadPhoto = () => {
     const input = document.createElement("input");
     input.type = "file";
@@ -96,33 +126,31 @@ useEffect(() => {
     }));
   };
 
- const handleSave = async () => {
-  const token = localStorage.getItem("access_token");
+  const handleSave = async () => {
+    const token = localStorage.getItem("access_token");
 
-  try {
-    console.log("Form yang dikirim:", formData);
-    const res = await fetch(`${baseUrl}/profile`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-        Accept: "application/json",
-      },
-      body: JSON.stringify(formData),
-    });
+    try {
+      const res = await fetch(`${baseUrl}/profile`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+          Accept: "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
 
-    const result = await res.json();
-    if (res.ok) {
-      alert("Profil berhasil diperbarui!");
-    } else {
-      alert("Gagal menyimpan: " + result.message);
+      const result = await res.json();
+      if (res.ok) {
+        alert("Profil berhasil diperbarui!");
+      } else {
+        alert("Gagal menyimpan: " + result.message);
+      }
+    } catch (err) {
+      console.error("Error saat menyimpan profil:", err);
+      alert("Terjadi kesalahan.");
     }
-  } catch (err) {
-    console.error("Error saat menyimpan profil:", err);
-    alert("Terjadi kesalahan.");
-  }
-};
-
+  };
 
   const handleCancel = () => {
     if (window.confirm("Yakin ingin membatalkan perubahan?")) {
@@ -131,488 +159,453 @@ useEffect(() => {
   };
 
   return (
-    <div className="bg-gray-100 min-h-screen">
-      <div className="container mx-auto p-4 max-w-6xl">
+    <div className="bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 min-h-screen">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+        
         {/* Header */}
-       <div className="mb-6">
-          <div className="bg-gradient-to-r from-blue-900 to-blue-800 text-white px-6 py-4 rounded-t-lg flex items-center justify-between">
-            <div className="flex items-center">
+        <header className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-white/20 mb-8">
+          <div className="flex items-center justify-between p-6">
+            <div className="flex items-center space-x-4">
               <Link
-                to="/lihat-profil" // ganti dengan path tujuan kamu
-                className="mr-4 text-white bg-blue-700 p-2 rounded-full transition transform hover:-translate-y-1"
+                to="/lihat-profil"
+                className="flex items-center px-3 py-2 rounded-lg text-sm font-semibold bg-blue-500 hover:bg-blue-600 text-white hover:text-white transition-colors shadow-md"
               >
-                <ArrowLeft className="w-6 h-6" />
+                <ArrowLeft className="w-5 h-5 mr-2" />
+                Kembali
               </Link>
+            </div>
+            <div className="flex items-center space-x-4">
+              <div className="text-right">
+                <p className="text-sm text-slate-600">Profil Karyawan</p>
+                <p className="font-semibold text-slate-800">Edit Profile</p>
+              </div>
+              <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center shadow-lg">
+                <User className="w-6 h-6 text-white" />
+              </div>
+            </div>
+          </div>
+        </header>
 
-              <h1 className="text-xl font-bold">EDIT PROFIL</h1>
+        {/* Page Title */}
+        <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-white/20 p-6 mb-8">
+          <div className="flex items-center space-x-4">
+            <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center">
+              <User className="w-6 h-6 text-white" />
+            </div>
+            <div>
+              <h1 className="text-2xl font-bold text-slate-800">Edit Profil Karyawan</h1>
+              <p className="text-slate-600 flex items-center space-x-2">
+                <CheckCircle className="w-4 h-4" />
+                <span>Perbarui informasi profil Anda</span>
+              </p>
             </div>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Left Column - Personal Data */}
-          <div className="lg:col-span-2">
-             {/* Profile Card */}
-            <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
-              <div className="flex flex-col md:flex-row gap-6">
-                {/* Profile Photo */}
-                <div className="flex-shrink-0">
-                  <div className="w-32 h-40 bg-gray-600 rounded-lg overflow-hidden relative flex items-center justify-center">
-                    {profilePhoto ? (
-                      <img
-                        src={profilePhoto}
-                        className="w-full h-full object-cover"
-                        alt="Profile Photo"
-                      />
-                    ) : (
-                      <User className="w-12 h-12 text-gray-300" />
-                    )}
-                    <button
-                      onClick={uploadPhoto}
-                      className="absolute bottom-2 right-2 bg-blue-500 hover:bg-blue-600 text-white rounded-full p-2 shadow"
-                    >
-                      <Camera className="w-4 h-4" />
-                    </button>
-                  </div>
-                  <div className="text-center mt-2">
-                    <span className="bg-gray-100 text-gray-600 px-3 py-1 rounded-full text-sm font-medium">
-                      Grade : -
-                    </span>
-                  </div>
+        <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
+          
+          {/* Left Column - Profile & Personal Info */}
+          <div className="xl:col-span-2 space-y-8">
+            
+            {/* Profile Photo & Basic Info */}
+            <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-white/20 overflow-hidden">
+              <div className="bg-gradient-to-r from-blue-600 to-indigo-600 p-6">
+                <div className="flex items-center space-x-3">
+                  <User className="w-6 h-6 text-white" />
+                  <h2 className="text-xl font-semibold text-white">Informasi Dasar</h2>
                 </div>
-
-                {/* Personal Info Form */}
-                <div className="flex-1">
-                  <div className="mb-4">
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      ID
-                    </label>
-                    <input
-                      type="text"
-                      name="id"
-                      value={formData.id}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50"
-                      readOnly
-                    />
-                  </div>
-
-                  <div className="mb-4">
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Nama Lengkap
-                    </label>
-                    <input
-                      type="text"
-                      name="name"
-                      value={formData.name}
-                      onChange={handleInputChange}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    />
-                  </div>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
-                        NIK
-                      </label>
-                      <input
-                        type="text"
-                        name="nik"
-                        value={formData.nik}
-                        onChange={handleInputChange}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                      />
+              </div>
+              
+              <div className="p-6">
+                <div className="flex flex-col md:flex-row gap-6">
+                  {/* Profile Photo */}
+                  <div className="flex-shrink-0">
+                    <div className="w-32 h-40 bg-gradient-to-br from-slate-200 to-slate-300 rounded-2xl overflow-hidden relative flex items-center justify-center shadow-lg">
+                      {profilePhoto ? (
+                        <img
+                          src={profilePhoto}
+                          className="w-full h-full object-cover"
+                          alt="Profile Photo"
+                        />
+                      ) : (
+                        <User className="w-12 h-12 text-slate-500" />
+                      )}
+                      <button
+                        onClick={uploadPhoto}
+                        className="absolute bottom-2 right-2 bg-gradient-to-br from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white rounded-full p-2 shadow-lg transition-all duration-200"
+                      >
+                        <Camera className="w-4 h-4" />
+                      </button>
                     </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
-                        No HP
-                      </label>
-                      <input
-                        type="text"
-                        name="phone_number"
-                        value={formData.phone_number}
-                        onChange={handleInputChange}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                      />
+                    <div className="text-center mt-3">
+                      <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-gradient-to-r from-amber-100 to-orange-100 text-amber-800 border border-amber-200">
+                        <Star className="w-4 h-4 mr-1" />
+                        Grade: {formData.grade  || "-"}
+                      </span>
                     </div>
                   </div>
 
-                  <div className="mt-4">
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Status
-                    </label>
-                    <input
-                      type="text"
-                      name="status"
-                      value={formData.status}
-                      onChange={handleInputChange}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    />
+                  {/* Personal Info */}
+                  <div className="flex-1 space-y-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-4 border border-blue-200">
+                        <label className="block text-sm font-medium text-slate-600 mb-1">
+                          Nama Lengkap
+                        </label>
+                        <p className="text-slate-800 font-semibold">
+                          {formData.name}
+                        </p>
+                      </div>
+                      <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-4 border border-blue-200">
+                        <label className="block text-sm font-medium text-slate-600 mb-1">
+                          NIK
+                        </label>
+                        <p className="text-slate-800 font-semibold">
+                          {formData.nik}
+                        </p>
+                      </div>
+                      <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-4 border border-blue-200">
+                        <label className="block text-sm font-medium text-slate-600 mb-1 items-center">
+                          <Phone className="w-4 h-4 mr-1" />
+                          No HP
+                        </label>
+                        <p className="text-slate-800 font-semibold">
+                          {formData.phone_number}
+                        </p>
+                      </div>
+                      <div className="bg-gradient-to-r from-emerald-50 to-green-50 rounded-xl p-4 border border-emerald-200">
+                        <label className="block text-sm font-medium text-slate-600 mb-1">
+                          Status
+                        </label>
+                        <p className="text-emerald-800 font-semibold">
+                          {formData.status}
+                        </p>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* Detailed Information Card */}
-            <div className="bg-gradient-to-r from-blue-900 to-blue-800 rounded-lg p-6 text-white mb-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="space-y-3">
-                  <div className="flex">
-                    <span className="w-24 text-sm">Alamat</span>
-                    <span className="mx-2">:</span>
-                    <div className="flex-1">
-                      <textarea
-                        name="address"
-                        value={formData.address}
-                        onChange={handleInputChange}
-                        className="w-full bg-white/20 border border-white/30 rounded px-2 py-1 text-white placeholder-white/70 text-sm"
-                        rows="3"
-                      />
+            {/* Detailed Information */}
+            <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-white/20 overflow-hidden">
+              <div className="bg-gradient-to-r from-blue-600 to-indigo-600 p-6">
+                <div className="flex items-center space-x-3">
+                  <Activity className="w-6 h-6 text-white" />
+                  <h2 className="text-xl font-semibold text-white">
+                    Detail Informasi
+                  </h2>
+                </div>
+              </div>
+
+              <div className="p-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-4">
+                    <div className="flex items-start space-x-3">
+                      <MapPin className="w-5 h-5 text-blue-600 mt-1" />
+                      <div>
+                        <p className="text-sm font-medium text-slate-600">
+                          Alamat
+                        </p>
+                        <p className="text-slate-800">{formData.address}</p>
+                      </div>
+                    </div>
+                    <div className="flex items-center space-x-3">
+                      <Users className="w-5 h-5 text-blue-600" />
+                      <div>
+                        <p className="text-sm font-medium text-slate-600">
+                          Jenis Kelamin
+                        </p>
+                        <p className="text-slate-800">{formData.gender}</p>
+                      </div>
+                    </div>
+                    <div className="flex items-center space-x-3">
+                      <Calendar className="w-5 h-5 text-blue-600" />
+                      <div>
+                        <p className="text-sm font-medium text-slate-600">
+                          Umur
+                        </p>
+                        <p className="text-slate-800">{formData.age}</p>
+                      </div>
+                    </div>
+                    <div className="flex items-center space-x-3">
+                      <Activity className="w-5 h-5 text-blue-600" />
+                      <div>
+                        <p className="text-sm font-medium text-slate-600">
+                          Tinggi / Berat
+                        </p>
+                        <p className="text-slate-800">
+                          {formData.height} / {formData.weight}
+                        </p>
+                      </div>
                     </div>
                   </div>
-                  <div className="flex items-center">
-                    <label className="w-24 text-sm">Jenis Kelamin</label>
-                    <span className="mx-2">:</span>
-                    <select
-                    name="gender"
-                      id="gender"
-                      value={formData.gender}
-                      onChange={handleInputChange}
-                      className="bg-white/20 border border-white/30 rounded px-2 py-1 text-sm text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent w-2/3"
-                    >
-                      <option value="" className="text-gray-500">
-                        Pilih Jenis Kelamin
-                      </option>
-                      <option
-                        value="Laki-laki"
-                        className="bg-white text-gray-800"
-                      >
-                        Laki-laki
-                      </option>
-                      <option
-                        value="Perempuan"
-                        className="bg-white text-gray-800"
-                      >
-                        Perempuan
-                      </option>
-                    </select>
-                  </div>
-                  <div className="flex">
-                    <span className="w-24 text-sm">Umur</span>
-                    <span className="mx-2">:</span>
-                    <input
-                      type="number"
-                      name="age"
-                      value={formData.age}
-                      onChange={handleInputChange}
-                      className="w-20 bg-white/20 border border-white/30 rounded px-2 py-1 text-white text-sm"
-                    />
-                  </div>
-                  <div className="flex">
-                    <span className="w-24 text-sm">Tinggi</span>
-                    <span className="mx-2">:</span>
-                    <input
-                      type="text"
-                      name="height"
-                      value={formData.height}
-                      onChange={handleInputChange}
-                      className="w-24 bg-white/20 border border-white/30 rounded px-2 py-1 text-white text-sm"
-                    />
-                  </div>
-                  <div className="flex">
-                    <span className="w-24 text-sm">Berat</span>
-                    <span className="mx-2">:</span>
-                    <input
-                      type="text"
-                      name="weight"
-                      value={formData.weight}
-                      onChange={handleInputChange}
-                      className="w-24 bg-white/20 border border-white/30 rounded px-2 py-1 text-white text-sm"
-                    />
-                  </div>
-                 <div className="flex items-center">
-                    <label className="w-24 text-sm">
-                      Pendidikan 
-                    </label>
-                    <span className="mx-2">:</span>
-                    <select
-                      id="education"
-                      value={formData.education}
-                      onChange={handleInputChange}
-                      className="bg-white/20 border border-white/30 rounded px-2 py-1 text-sm text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent w-2/3"
-                    >
-                      <option value="" className="text-gray-500">
-                        Pilih Pendidikan
-                      </option>
-                      <option value="SD" className="bg-white text-gray-800">
-                        SD
-                      </option>
-                      <option value="SMP" className="bg-white text-gray-800">
-                        SMP
-                      </option>
-                      <option value="SMA" className="bg-white text-gray-800">
-                        SMA
-                      </option>
-                      <option value="D3" className="bg-white text-gray-800">
-                        D3
-                      </option>
-                      <option value="S1" className="bg-white text-gray-800">
-                        S1
-                      </option>
-                      <option value="S2" className="bg-white text-gray-800">
-                        S2
-                      </option>
-                      <option value="S3" className="bg-white text-gray-800">
-                        S3
-                      </option>
-                    </select>
-                  </div>
-                  <div className="flex">
-                    <span className="w-24 text-sm">Akun Bank</span>
-                    <span className="mx-2">:</span>
-                    <input
-                      type="text"
-                      name="bankAccount"
-                      value={formData.bank_account}
-                      onChange={handleInputChange}
-                      className="flex-1 bg-white/20 border border-white/30 rounded px-2 py-1 text-white text-sm"
-                    />
-                  </div>
-                </div>
 
-                {/* Fingerprint Icon */}
-                <div className="flex justify-center items-center">
-                  <div className="w-28 h-36 bg-cyan-100 rounded-2xl flex items-center justify-center overflow-hidden">
-                    <img
-                      src="/assets/fingerprint-icon.png" // ganti sesuai path kamu
-                      alt="Fingerprint"
-                      className="w-20 h-20 object-contain opacity-80"
-                    />
+                  <div className="space-y-4">
+                    <div className="flex items-center space-x-3">
+                      <GraduationCap className="w-5 h-5 text-blue-600" />
+                      <div>
+                        <p className="text-sm font-medium text-slate-600">
+                          Pendidikan
+                        </p>
+                        <p className="text-slate-800">{formData.education}</p>
+                      </div>
+                    </div>
+                    <div className="flex items-center space-x-3">
+                      <CreditCard className="w-5 h-5 text-blue-600" />
+                      <div>
+                        <p className="text-sm font-medium text-slate-600">
+                          Akun Bank
+                        </p>
+                        <p className="text-slate-800">
+                          {formData.bank_account}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex items-center space-x-3">
+                      <Mail className="w-5 h-5 text-blue-600" />
+                      <div>
+                        <p className="text-sm font-medium text-slate-600">
+                          Email
+                        </p>
+                        <p className="text-slate-800">{formData.email}</p>
+                      </div>
+                    </div>
+
+                    {/* Fingerprint Visualization */}
+                    <div className="flex justify-center mt-6">
+                      <div className="w-20 h-24 bg-gradient-to-br from-cyan-100 to-blue-100 rounded-2xl flex items-center justify-center shadow-lg">
+                        <Fingerprint className="w-10 h-10 text-cyan-600" />
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
 
             {/* Work History and Skills */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Work History */}
-              <div className="bg-gradient-to-r from-blue-900 to-blue-800 rounded-lg p-4">
-                <h3 className="text-white font-semibold mb-4 text-center">
-                  Riwayat kerja
-                </h3>
-                <div className="space-y-3">
-                  {/* Riwayat kerja item */}
+              <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-white/20 overflow-hidden">
+                <div className="bg-gradient-to-r from-blue-600 to-indigo-600 p-4">
                   <div className="flex items-center space-x-3">
-                    <div className="w-4 h-4 bg-orange-500 rounded-full flex-shrink-0"></div>
-                    <div className="text-white text-sm">
-                      <div className="font-medium">PT. Terbang kesatas</div>
-                      <div className="text-white/80">Junior Security</div>
-                      <div className="text-white/60 text-xs">2018 - 2019</div>
-                    </div>
-                  </div>
-                  <div className="flex items-center space-x-3">
-                    <div className="w-4 h-4 bg-orange-500 rounded-full flex-shrink-0"></div>
-                    <div className="text-white text-sm">
-                      <div className="font-medium">PT. Terbang kesatas</div>
-                      <div className="text-white/80">Senior Security</div>
-                      <div className="text-white/60 text-xs">2019 - 2022</div>
-                    </div>
-                  </div>
-                  <div className="flex items-center space-x-3">
-                    <div className="w-4 h-4 bg-orange-500 rounded-full flex-shrink-0"></div>
-                    <div className="text-white text-sm">
-                      <div className="font-medium">PT. Terbang kesatas</div>
-                      <div className="text-white/80">Junior Security</div>
-                      <div className="text-white/60 text-xs">2018 - 2019</div>
-                    </div>
+                    <Briefcase className="w-5 h-5 text-white" />
+                    <h3 className="text-lg font-semibold text-white">
+                      Riwayat Kerja
+                    </h3>
                   </div>
                 </div>
-                <button className="w-full mt-4 text-white text-2xl bg-blue-800">
-                  +
-                </button>
+                <div className="p-4 space-y-3">
+                  {workHistory.map((work, index) => (
+                    <div
+                      key={index}
+                      className="flex items-start space-x-3 p-3 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl border border-blue-200"
+                    >
+                      <div className="w-3 h-3 bg-gradient-to-br from-orange-400 to-red-500 rounded-full mt-1 flex-shrink-0"></div>
+                      <div>
+                        <p className="text-slate-800 font-medium text-sm">
+                          {work.company}
+                        </p>
+                        <p className="text-slate-600 text-sm">
+                          {work.position}
+                        </p>
+                        <p className="text-slate-500 text-xs">{work.period}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
 
               {/* Skills */}
-              <div className="bg-gradient-to-r from-blue-900 to-blue-800 rounded-lg p-4">
-                <h3 className="text-white font-semibold mb-4 text-center">
-                  Keahlian
-                </h3>
-                <div className="space-y-3">
+              <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-white/20 overflow-hidden">
+                <div className="bg-gradient-to-r from-blue-600 to-indigo-600 p-4">
                   <div className="flex items-center space-x-3">
-                    <div className="w-4 h-4 bg-orange-500 rounded-full flex-shrink-0"></div>
-                    <div className="text-white text-sm">
-                      <div className="font-medium">Keahlian fisik</div>
-                      <div className="text-white/80 text-xs">
-                        Berdiskusi tentang masalah perkembangan zaman terkait
-                        cyber, keamanan, hacker dll.
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex items-center space-x-3">
-                    <div className="w-4 h-4 bg-orange-500 rounded-full flex-shrink-0"></div>
-                    <div className="text-white text-sm">
-                      <div className="font-medium">Keahlian fisik</div>
-                      <div className="text-white/80 text-xs">
-                        Menganalisis resiko keamanan pada area kantor dan gedung
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex items-center space-x-3">
-                    <div className="w-4 h-4 bg-orange-500 rounded-full flex-shrink-0"></div>
-                    <div className="text-white text-sm">
-                      <div className="font-medium">Keahlian fisik</div>
-                      <div className="text-white/80 text-xs">
-                        Mengoperasikan alat komunikasi, bela diri, surveillance.
-                      </div>
-                    </div>
+                    <Award className="w-5 h-5 text-white" />
+                    <h3 className="text-lg font-semibold text-white">
+                      Keahlian
+                    </h3>
                   </div>
                 </div>
-                <button className="w-full mt-4 text-white text-2xl bg-blue-800">
-                  +
-                </button>
+                <div className="p-4 space-y-3">
+                  {skills.map((skill, index) => (
+                    <div
+                      key={index}
+                      className="flex items-start space-x-3 p-3 bg-gradient-to-r from-emerald-50 to-green-50 rounded-xl border border-emerald-200"
+                    >
+                      <div className="w-3 h-3 bg-gradient-to-br from-emerald-400 to-green-500 rounded-full mt-1 flex-shrink-0"></div>
+                      <div>
+                        <p className="text-slate-800 font-medium text-sm">
+                          {skill.title}
+                        </p>
+                        <p className="text-slate-600 text-xs">
+                          {skill.description}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
 
             {/* Certifications */}
-            <div className="bg-gradient-to-r from-blue-900 to-blue-800 rounded-lg p-4 mb-6">
-              <h3 className="text-white font-semibold mb-4 text-center">
-                Sertifikasi
-              </h3>
-              <div className="flex justify-between items-center">
-                <div className="text-white text-center">
-                  <div className="w-4 h-4 bg-orange-500 rounded-full mx-auto mb-1"></div>
-                  <div className="text-xs">
-                    Garda Madya
-                    <br />
-                    2015
-                  </div>
-                </div>
-                <div className="flex-1 h-0.5 bg-orange-500 mx-2"></div>
-                <div className="text-white text-center">
-                  <div className="w-4 h-4 bg-orange-500 rounded-full mx-auto mb-1"></div>
-                  <div className="text-xs">
-                    Garda Madya
-                    <br />
-                    2015
-                  </div>
-                </div>
-                <div className="flex-1 h-0.5 bg-orange-500 mx-2"></div>
-                <div className="text-white text-center">
-                  <div className="w-4 h-4 bg-orange-500 rounded-full mx-auto mb-1"></div>
-                  <div className="text-xs">
-                    Garda Madya
-                    <br />
-                    2015
-                  </div>
-                </div>
-                <div className="flex-1 h-0.5 bg-orange-500 mx-2"></div>
-                <div className="text-white text-center">
-                  <div className="w-4 h-4 bg-orange-500 rounded-full mx-auto mb-1"></div>
-                  <div className="text-xs">
-                    Garda Madya
-                    <br />
-                    2015
-                  </div>
+            <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-white/20 overflow-hidden">
+              <div className="bg-gradient-to-r from-blue-600 to-indigo-600 p-6">
+                <div className="flex items-center space-x-3">
+                  <Award className="w-6 h-6 text-white" />
+                  <h2 className="text-xl font-semibold text-white">
+                    Sertifikasi
+                  </h2>
                 </div>
               </div>
-              <button className="w-full mt-4 text-white text-2xl bg-blue-800">
-                +
-              </button>
+              <div className="p-6">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                  {certifications.map((cert, index) => (
+                    <div
+                      key={index}
+                      className="text-center p-4 bg-gradient-to-br from-amber-50 to-orange-50 rounded-xl border border-amber-200"
+                    >
+                      <div className="w-8 h-8 bg-gradient-to-br from-amber-400 to-orange-500 rounded-full mx-auto mb-2 flex items-center justify-center">
+                        <Award className="w-4 h-4 text-white" />
+                      </div>
+                      <p className="text-sm font-medium text-slate-800">
+                        {cert.name}
+                      </p>
+                      <p className="text-xs text-slate-600">{cert.year}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
 
           {/* Right Column - Work Data */}
-          <div className="lg:col-span-1">
-            <div className="bg-gradient-to-r from-blue-900 to-blue-800 text-white px-6 py-4 rounded-t-lg">
-              <h2 className="text-xl font-bold">DATA PEKERJAAN</h2>
-            </div>
-
-            <div className="bg-white rounded-b-lg shadow-lg p-6 space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Status karyawan :
-                </label>
-                <select
-                  name="employee_status"
-                  value={formData.employee_status}
-                  onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                >
-                  <option value="Aktif">Aktif</option>
-                  <option value="Non-Aktif">Non-Aktif</option>
-                  <option value="Cuti">Cuti</option>
-                </select>
+          <div className="space-y-8">
+            {/* Work Data */}
+            <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-white/20 overflow-hidden">
+              <div className="bg-gradient-to-r from-blue-600 to-indigo-600 p-6">
+                <div className="flex items-center space-x-3">
+                  <Briefcase className="w-6 h-6 text-white" />
+                  <h2 className="text-xl font-semibold text-white">
+                    Data Pekerjaan
+                  </h2>
+                </div>
               </div>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Jabatan :
-                </label>
-                <input
-                  type="text"
-                  name="position"
-                  value={formData.position}
-                  onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                />
-              </div>
+              <div className="p-6 space-y-4">
+                <div className="bg-gradient-to-r from-emerald-50 to-green-50 rounded-xl p-4 border border-emerald-200">
+                  <label className="block text-sm font-medium text-slate-600 mb-1">
+                    Status Karyawan
+                  </label>
+                  <p className="text-emerald-800 font-semibold flex items-center">
+                    <CheckCircle className="w-4 h-4 mr-2" />
+                    {formData.employee_status}
+                  </p>
+                </div>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Lama bekerja :
-                </label>
-                <input
-                  type="text"
-                  name="workDuration"
-                  value={formData.workDuration}
-                  onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                />
-              </div>
+                <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-4 border border-blue-200">
+                  <label className="block text-sm font-medium text-slate-600 mb-1">
+                    Jabatan
+                  </label>
+                  <p className="text-slate-800 font-semibold">
+                    {formData.position}
+                  </p>
+                </div>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Lokasi penempatan :
-                </label>
-                <input
-                  type="text"
-                  name="workLocation"
-                  value={formData.workLocation}
-                  onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                />
+                <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-4 border border-blue-200">
+                  <label className="block text-sm font-medium text-slate-600 mb-1 items-center">
+                    <Clock className="w-4 h-4 mr-1" />
+                    Lama Bekerja
+                  </label>
+                  <p className="text-slate-800 font-semibold">
+                    {formData.work_duration}
+                  </p>
+                </div>
+
+                <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-4 border border-blue-200">
+                  <label className="block text-sm font-medium text-slate-600 mb-1 items-center">
+                    <MapPin className="w-4 h-4 mr-1" />
+                    Lokasi Penempatan
+                  </label>
+                  <p className="text-slate-800 font-semibold">
+                    {formData.location}
+                  </p>
+                </div>
               </div>
             </div>
 
             {/* Portfolio Link */}
-            <div className="mt-6">
-              <div className="bg-gradient-to-r from-blue-900 to-blue-800 text-white px-6 py-4 rounded-t-lg">
-                <h3 className="text-lg font-bold">Link portofolio</h3>
+            <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-white/20 overflow-hidden">
+              <div className="bg-gradient-to-r from-blue-600 to-indigo-600 p-6">
+                <div className="flex items-center space-x-3">
+                  <ExternalLink className="w-6 h-6 text-white" />
+                  <h3 className="text-lg font-semibold text-white">
+                    Link Portofolio
+                  </h3>
+                </div>
               </div>
-              <div className="bg-white rounded-b-lg shadow-lg p-6">
-                <input
-                  type="url"
-                  name="portfolioLink"
-                  value={formData.portfolioLink}
-                  onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                />
+              <div className="p-6">
+                <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-4 border border-blue-200">
+                  <a
+                    href={formData.portfolio}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-600 hover:text-blue-800 font-medium flex items-center space-x-2 transition-colors"
+                  >
+                    <ExternalLink className="w-4 h-4" />
+                    <span>
+                      {formData.portfolio
+                        ? formData.portfolio.replace("https://", "")
+                        : "-"}
+                    </span>
+                  </a>
+                </div>
               </div>
             </div>
 
             {/* Action Buttons */}
-            <div className="mt-6 flex flex-col space-y-4">
+            <div className="space-y-4">
               <button
                 onClick={handleSave}
-                className="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-lg transition duration-200"
+                className="w-full bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-700 hover:to-green-700 text-white font-semibold py-4 px-6 rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl flex items-center justify-center space-x-2"
               >
-                SIMPAN EDIT
+                <Save className="w-5 h-5" />
+                <span>Simpan Perubahan</span>
               </button>
+              
               <button
                 onClick={handleCancel}
-                className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-lg transition duration-200"
+                className="w-full bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white font-semibold py-4 px-6 rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl flex items-center justify-center space-x-2"
               >
-                BATAL EDIT
+                <X className="w-5 h-5" />
+                <span>Batal Edit</span>
               </button>
+            </div>
+
+            {/* Status Card */}
+            <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-5 border border-blue-200">
+              <div className="flex items-center space-x-3 mb-3">
+                <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-lg flex items-center justify-center">
+                  <CheckCircle className="w-5 h-5 text-white" />
+                </div>
+                <div>
+                  <p className="font-semibold text-slate-800">Status Profil</p>
+                  <p className="text-sm text-slate-600">Informasi Terkini</p>
+                </div>
+              </div>
+              <div className="space-y-2">
+                <div className="flex justify-between text-sm">
+                  <span className="text-slate-600">Kelengkapan</span>
+                  <span className="font-medium text-slate-800">95%</span>
+                </div>
+                <div className="flex justify-between text-sm">
+                  <span className="text-slate-600">Terakhir Update</span>
+                  <span className="font-medium text-slate-800">Hari ini</span>
+                </div>
+                <div className="flex justify-between text-sm">
+                  <span className="text-slate-600">Status</span>
+                  <span className="font-medium text-emerald-600">Aktif</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -621,4 +614,4 @@ useEffect(() => {
   );
 };
 
-export default EmployeeDataForm;
+export default EditEmployeeDataForm;

@@ -1,28 +1,73 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Camera, ArrowLeft, User, Fingerprint } from "lucide-react";
 
+const baseUrl = import.meta.env.VITE_API_URL;
 const EmployeeDataForm = () => {
-  const [formData, setFormData] = useState({
-    id: "123456789101",
-    fullName: "Inukai Atsuhiro",
-    nik: "10380801075",
-    phoneNumber: "0899-8877-6621",
-    status: "Menikah",
-    address:
-      "Perumahan Isekai, Jl. Mandiri RT 02/RW 05, No. 666, Kab. No.646, Cibinong, Sukahati",
-    gender: "Laki-laki",
-    age: 30,
-    height: "200 cm",
-    weight: "71 kg",
-    education: "S1",
-    bankAccount: "BCA ••••••••••••••••",
-    employeeStatus: "Aktif",
-    position: "Karyawan",
-    workDuration: "5 Tahun",
-    workLocation: "Jakarta",
-    portfolioLink: "portofolio-inukai-atsuhiro.vercel.app",
-  });
+ const [formData, setFormData] = useState({
+  name: '',
+  phone_number: '',
+  address: '',
+  gender: '',
+  age: '',
+  bank_account: '',
+  education: '',
+  employee_status: '',
+  portfolio_link: '',
+  placement_location: '',
+  position: '',
+  status: '',
+  work_duration: '',
+  work_location: '',
+  weight: '',
+  height: '',
+  nik: ''
+});
+
+
+useEffect(() => {
+  const fetchProfile = async () => {
+    const token = localStorage.getItem("access_token");
+
+    try {
+      const res = await fetch(`${baseUrl}/profile`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: "application/json",
+        },
+      });
+
+      const result = await res.json();
+      if (res.ok && result.data?.profile) {
+        const profile = result.data.profile;
+        setFormData({
+          name: formData.name,
+          phone_number: formData.phone_number,
+          address: formData.address,
+          gender: formData.gender,
+          age: formData.age,
+          bank_account: formData.bank_account,
+          education: formData.education,
+          employee_status: formData.employee_status,
+          portfolio_link: formData.portfolio_link,
+          placement_location: formData.placement_location,
+          position: formData.position,
+          status: formData.status,
+          work_duration: formData.work_duration,
+          work_location: formData.workLocation, // pastikan nama sesuai di backend
+          weight: formData.weight,
+          height: formData.height,
+          nik: formData.nik,
+        });
+      }
+    } catch (err) {
+      console.error("Failed to fetch profile:", err);
+    }
+  };
+
+  fetchProfile();
+}, []);
+
 
   const [profilePhoto, setProfilePhoto] = useState(null);
   const uploadPhoto = () => {
@@ -51,9 +96,33 @@ const EmployeeDataForm = () => {
     }));
   };
 
-  const handleSave = () => {
-    alert("Data akan disimpan!");
-  };
+ const handleSave = async () => {
+  const token = localStorage.getItem("access_token");
+
+  try {
+    console.log("Form yang dikirim:", formData);
+    const res = await fetch(`${baseUrl}/profile`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+        Accept: "application/json",
+      },
+      body: JSON.stringify(formData),
+    });
+
+    const result = await res.json();
+    if (res.ok) {
+      alert("Profil berhasil diperbarui!");
+    } else {
+      alert("Gagal menyimpan: " + result.message);
+    }
+  } catch (err) {
+    console.error("Error saat menyimpan profil:", err);
+    alert("Terjadi kesalahan.");
+  }
+};
+
 
   const handleCancel = () => {
     if (window.confirm("Yakin ingin membatalkan perubahan?")) {
@@ -133,8 +202,8 @@ const EmployeeDataForm = () => {
                     </label>
                     <input
                       type="text"
-                      name="fullName"
-                      value={formData.fullName}
+                      name="name"
+                      value={formData.name}
                       onChange={handleInputChange}
                       className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     />
@@ -159,8 +228,8 @@ const EmployeeDataForm = () => {
                       </label>
                       <input
                         type="text"
-                        name="phoneNumber"
-                        value={formData.phoneNumber}
+                        name="phone_number"
+                        value={formData.phone_number}
                         onChange={handleInputChange}
                         className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       />
@@ -204,6 +273,7 @@ const EmployeeDataForm = () => {
                     <label className="w-24 text-sm">Jenis Kelamin</label>
                     <span className="mx-2">:</span>
                     <select
+                    name="gender"
                       id="gender"
                       value={formData.gender}
                       onChange={handleInputChange}
@@ -302,7 +372,7 @@ const EmployeeDataForm = () => {
                     <input
                       type="text"
                       name="bankAccount"
-                      value={formData.bankAccount}
+                      value={formData.bank_account}
                       onChange={handleInputChange}
                       className="flex-1 bg-white/20 border border-white/30 rounded px-2 py-1 text-white text-sm"
                     />
@@ -462,8 +532,8 @@ const EmployeeDataForm = () => {
                   Status karyawan :
                 </label>
                 <select
-                  name="employeeStatus"
-                  value={formData.employeeStatus}
+                  name="employee_status"
+                  value={formData.employee_status}
                   onChange={handleInputChange}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 >

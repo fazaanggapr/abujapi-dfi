@@ -17,9 +17,9 @@ function DataKaryawan() {
   const [searchTerm, setSearchTerm] = useState("");
   const [employees, setEmployees] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [isSidebarOpen, setSidebarOpen] = useState(false); // ✅ Toggle state
-  const toggleSidebar = () => setSidebarOpen(!isSidebarOpen); // ✅ Toggle functi
-
+  const [isSidebarOpen, setSidebarOpen] = useState(false); 
+  const toggleSidebar = () => setSidebarOpen(!isSidebarOpen); 
+  const baseUrl = import.meta.env.VITE_API_URL; // Assuming you have this set in your .env file
 
   useEffect(() => {
     const fetchDashboardData = async () => {
@@ -27,7 +27,7 @@ function DataKaryawan() {
 
       try {
         const response = await fetch(
-          "http://localhost:8000/api/admin/dashboard",
+          `${baseUrl}/admin/dashboard`, // Adjust the endpoint as needed
           {
             method: "GET",
             headers: {

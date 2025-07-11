@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { useEffect } from "react";
+import { Html5Qrcode } from "html5-qrcode";
 import {
   ArrowLeft,
   Plus,
@@ -12,6 +14,11 @@ import {
   Activity,
   Image,
   Save,
+  Scan,
+  QrCode,
+  RotateCcw,
+  Activity as LucideActivity,
+  BarChart3,
   X,
 } from "lucide-react";
 
@@ -22,7 +29,7 @@ const AddTask = () => {
   const [positionDescription, setPositionDescription] = useState("");
   const [patrolActivities, setPatrolActivities] = useState([]);
   const [newActivity, setNewActivity] = useState("");
-
+  
   const handleBackToData = () => {
     console.log("Navigasi ke lihat data");
   };
@@ -102,7 +109,7 @@ const AddTask = () => {
             </div>
             <div>
               <h1 className="text-2xl font-bold text-slate-800">
-                Tambah Tugas
+                Tambah Laporan
               </h1>
               <p className="text-slate-600 flex items-center space-x-2">
                 <Calendar className="w-4 h-4" />
@@ -228,7 +235,7 @@ const AddTask = () => {
 
                   <button
                     onClick={handleAddImage}
-                    className="w-full bg-gradient-to-r from-orange-500 to-red-500 text-white py-3 px-4 rounded-lg font-medium hover:from-orange-600 hover:to-red-600 transition-all duration-200 shadow-lg hover:shadow-xl flex items-center justify-center space-x-2"
+                    className="w-full bg-gradient-to-r from-blue-500 to-blue-500 text-white py-3 px-4 rounded-lg font-medium hover:from-blue-600 hover:to-blue-600 transition-all duration-200 shadow-lg hover:shadow-xl flex items-center justify-center space-x-2"
                   >
                     <Camera className="w-5 h-5" />
                     <span>Tambah Gambar</span>
@@ -236,53 +243,26 @@ const AddTask = () => {
                 </div>
               </div>
             </div>
-
-            {/* Position Report Section */}
-            <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-white/20 overflow-hidden">
-              <div className="bg-gradient-to-r from-blue-600 to-indigo-600 p-6">
-                <div className="flex items-center space-x-3">
-                  <MapPin className="w-6 h-6 text-white" />
-                  <h2 className="text-xl font-semibold text-white">
-                    Laporan Posisi
-                  </h2>
-                </div>
-              </div>
-
-              <div className="p-6">
-                <div className="flex items-center space-x-3 mb-6 p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl">
-                  <Building className="w-6 h-6 text-blue-600" />
-                  <div className="flex-1">
-                    <p className="text-slate-700 font-medium">Lokasi:</p>
-                    <input
-                      type="text"
-                      value={location}
-                      onChange={(e) => setLocation(e.target.value)}
-                      placeholder="Masukkan lokasi..."
-                      className="w-full bg-transparent text-slate-700 placeholder-slate-500 focus:outline-none border-b border-slate-300 focus:border-blue-500 pb-1 mt-1"
-                    />
+            {/* Right Column - Image & Position Reports */}
+            <div className="space-y-8">
+              {/* Image Report Section */}
+              <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-white/20 overflow-hidden">
+                <div className="bg-gradient-to-r from-blue-600 to-indigo-600 p-6">
+                  <div className="flex items-center space-x-3">
+                    <QrCode className="w-6 h-6 text-white" />
+                    <h2 className="text-xl font-semibold text-white">
+                      Scan QR
+                    </h2>
                   </div>
                 </div>
-
-                <div className="bg-gradient-to-r from-slate-50 to-slate-100 rounded-xl p-4 mb-4">
-                  <div className="flex items-center space-x-3 mb-3">
-                    <button
-                      onClick={handleAddPosition}
-                      className="bg-gradient-to-r from-blue-500 to-indigo-600 text-white p-3 rounded-lg hover:from-blue-600 hover:to-indigo-700 transition-all duration-200 shadow-lg"
-                    >
-                      <Plus className="w-5 h-5" />
-                    </button>
-                    <div className="flex-1 bg-white/70 rounded-full h-2">
-                      <div className="w-1/4 bg-gradient-to-r from-blue-500 to-indigo-600 h-2 rounded-full"></div>
-                    </div>
-                  </div>
-
-                  <input
-                    type="text"
-                    value={positionDescription}
-                    onChange={(e) => setPositionDescription(e.target.value)}
-                    placeholder="Masukkan keterangan posisi..."
-                    className="w-full bg-white/70 border border-white/50 rounded-lg px-4 py-3 text-slate-700 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  />
+                <div className="p-6">
+                  <Link
+                    to="/scan-qr" // Ganti dengan path tujuan kamu
+                    className="w-full bg-gradient-to-r from-blue-500 to-blue-500 text-white py-3 px-4 rounded-lg font-medium hover:from-blue-600 hover:to-blue-600 transition-all duration-200 shadow-lg hover:shadow-xl flex items-center justify-center space-x-2"
+                  >
+                    <QrCode className="w-5 h-5 text-white" />
+                    <h2 className="font-semibold text-white">Scan Barcode QR</h2>
+                  </Link>
                 </div>
               </div>
             </div>
@@ -302,7 +282,7 @@ const AddTask = () => {
                 className="flex-1 bg-gradient-to-r from-emerald-500 to-green-600 text-white font-semibold py-4 px-6 rounded-xl hover:from-emerald-600 hover:to-green-700 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-1 flex items-center justify-center space-x-2"
               >
                 <Save className="w-5 h-5" />
-                <span>Upload Tugas</span>
+                <span>Upload Laporan</span>
               </button>
             </div>
           </div>

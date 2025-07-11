@@ -7,7 +7,7 @@ import Dashboard from "./components/Dashboard";
 import DataKaryawan from "./components/DataKaryawan";
 import LihatProfil from "./components/LihatProfil";
 import TambahProfil from "./components/TambahProfil";
-import TambahTugas from "./components/TambahTugas";
+import TambahLaporan from "./components/TambahLaporan";
 import EditProfil from "./components/EditProfil";
 import LihatLaporan from "./components/LihatLaporan";
 import PrivateRoute from "./components/PrivateRoute";
@@ -67,10 +67,10 @@ function App() {
           }
         />
         <Route
-          path="/tambah-tugas"
+          path="/tambah-laporan"
           element={
             <PrivateRoute>
-              <TambahTugas />
+              <TambahLaporan />
             </PrivateRoute>
           }
         />
@@ -87,14 +87,6 @@ function App() {
           element={
             <PrivateRoute>
               <LihatLaporan />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/scan-qr"
-          element={
-            <PrivateRoute>
-              <ScanQR />
             </PrivateRoute>
           }
         />

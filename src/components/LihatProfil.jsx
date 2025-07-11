@@ -573,27 +573,14 @@ const EmployeeDetail = () => {
 
           {/* Action Buttons */}
           <div className="space-y-4">
-            {/* Tombol Tambah Tugas */}
-            <Link
-              to="/tambah-tugas"
-              className="w-full bg-gradient-to-r from-green-600 to-emerald-600 
-    hover:from-green-700 hover:to-emerald-700 
-    text-white font-bold py-4 px-6 rounded-xl 
-    transition-all duration-200 shadow-lg hover:shadow-xl 
-    flex items-center justify-center space-x-2 transform hover:-translate-y-1 
-    focus:outline-none focus:ring-0 focus:text-white hover:text-white"
-            >
-              <Plus className="w-5 h-5" />
-              <span>TAMBAH TUGAS</span>
-            </Link>
 
             {/* Tombol Edit & Hapus */}
             <div className="grid grid-cols-2 gap-4">
               {/* Tombol Edit */}
               <Link
                 to="/edit-profil"
-                className="bg-gradient-to-r from-orange-600 to-red-600 
-      hover:from-orange-700 hover:to-red-700 
+                className="bg-gradient-to-r from-orange-600 to-orange-600 
+      hover:from-orange-700 hover:to-orange-700 
       text-white font-bold py-3 px-4 rounded-xl 
       transition-all duration-200 shadow-lg hover:shadow-xl 
       flex items-center justify-center space-x-2 transform hover:-translate-y-1 

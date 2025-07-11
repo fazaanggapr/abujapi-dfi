@@ -18,6 +18,10 @@ import {
 
 const ReportViewer = () => {
   const [currentLocation, setCurrentLocation] = useState(0);
+  const [sidebarOpen, setSidebarOpen] = useState(false); // state sidebar
+  const toggleSidebar = () => {
+    setSidebarOpen((prev) => !prev); // toggle true/false
+  };
 
   const locations = [
     { name: "Toilet Lantai 1", status: "completed", color: "bg-emerald-500" },
@@ -42,6 +46,8 @@ const ReportViewer = () => {
       (prev) => (prev - 1 + locations.length) % locations.length
     );
   };
+
+
 
   return (
     <div className="bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 min-h-screen">

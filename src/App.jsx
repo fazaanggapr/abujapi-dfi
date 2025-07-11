@@ -13,8 +13,11 @@ import LihatLaporan from "./components/LihatLaporan";
 import PrivateRoute from "./components/PrivateRoute";
 import { Toaster } from "react-hot-toast";
 import ScanQR from "./components/ScanQR";
-
+import { useState } from "react";
 function App() {
+  const [isSidebarOpen, setSidebarOpen] = useState(false);
+  const toggleSidebar = () => setSidebarOpen(!isSidebarOpen);
+
   return (
     <BrowserRouter>
       <Toaster position="top-right" reverseOrder={false} />

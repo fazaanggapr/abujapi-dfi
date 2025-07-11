@@ -11,6 +11,8 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 
 
 export default function Sidebar({ isOpen = false, onToggle = () => {} }) {
+  const userName = localStorage.getItem('user_name') || 'User';
+  const userRole = localStorage.getItem('user_role') || 'Role';
   const navigate  = useNavigate();
   const location  = useLocation();
   const handleLogout = () => {
@@ -60,9 +62,9 @@ export default function Sidebar({ isOpen = false, onToggle = () => {} }) {
             </div>
             <div>
               <h3 className="font-semibold text-white text-sm">
-                Aditama Putra Yudha
+                {userName}
               </h3>
-              <p className="text-xs text-blue-200">Kepala Satpam</p>
+              <p className="text-xs text-blue-200">{userRole}</p>
             </div>
           </div>
         </div>

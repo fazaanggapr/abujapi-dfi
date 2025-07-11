@@ -18,14 +18,15 @@ import {
 } from "react-icons/fa";
 import Sidebar from "./Sidebar";
 import { Link } from "react-router-dom";
-const baseUrl = import.meta.env.VITE_API_URL;
-
 import QRCode from "react-qr-code";
 
+
+const baseUrl = import.meta.env.VITE_API_URL;
   const QRModal = ({ isOpen, onClose }) => {
     const [token, setToken] = useState(null);
     const [expiresAt, setExpiresAt] = useState(null);
     const [loading, setLoading] = useState(true);
+
 
     useEffect(() => {
       if (!isOpen) return;
@@ -59,6 +60,7 @@ import QRCode from "react-qr-code";
 
       fetchQRToken();
     }, [isOpen]);
+    
 
     const downloadQR = () => {
       const canvas = document.getElementById("qr-code");
@@ -70,7 +72,7 @@ import QRCode from "react-qr-code";
     };
 
     if (!isOpen) return null;
-
+    
     return (
       <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
         <div className="bg-white rounded-lg max-w-md w-full p-6">
@@ -144,6 +146,7 @@ const AttendanceStatus = ({ status }) => {
     }
   };
 
+
   const config = getStatusConfig(status);
   const Icon = config.icon;
 
@@ -162,7 +165,6 @@ const ResponsiveAttendanceTable = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
   const [isQRModalOpen, setIsQRModalOpen] = useState(false);
-  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState(new Date());
   const itemsPerPage = 3;
   const [employees, setEmployees] = useState([]);
@@ -349,15 +351,36 @@ const ResponsiveAttendanceTable = () => {
       </tr>
     ));
   };
-
+  
+  const [isSidebarOpen, setSidebarOpen] = useState(false); 
+  const toggleSidebar = () => setSidebarOpen(!isSidebarOpen);
   return (
     <div className="bg-gray-50 font-sans min-h-screen">
       <div className="flex min-h-screen overflow-hidden">
-        <Sidebar />
+        <Sidebar isOpen={isSidebarOpen} onToggle={toggleSidebar} />
         <div className="flex-1 overflow-y-auto">
           {/* Header */}
           <div className="bg-white p-6 border-b border-gray-200 shadow-sm">
-            <h1 className="text-3xl font-bold text-gray-800">DASHBOARD</h1>
+            <h1 className="text-3xl font-bold text-gray-800"><button
+    onClick={toggleSidebar}
+    className="lg:hidden p-2 text-gray-800 bg-white rounded-md shadow"
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      className="h-6 w-6"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+        d="M4 6h16M4 12h16M4 18h16"
+      />
+    </svg>
+  </button>
+   DASHBOARD</h1>
             <p className="text-gray-500 text-sm mt-1 flex items-center">
               <FaCalendarAlt className="mr-2" />
               <span>

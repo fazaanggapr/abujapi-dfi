@@ -47,6 +47,7 @@ const EmployeeDetail = () => {
         if (response.ok && result.data && result.data.profile) {
           const profile = result.data.profile;
           setEmployee({
+            photo_url:profile.profile_photo_url,
             user_id: profile.user_id,
             name: result.data.name,
             email: result.data.email,
@@ -67,6 +68,7 @@ const EmployeeDetail = () => {
             portfolio: profile.portfolio_link,
             grade: profile.grade,
           });
+          console.log(employee?.photo_url);
         } else {
           console.error("Failed to fetch employee data:", result);
         }
@@ -226,15 +228,13 @@ const EmployeeDetail = () => {
               {/* Profile Photo */}
               <div className="text-center mb-6">
                 <div className="w-full h-48 bg-gradient-to-br from-slate-200 to-slate-300 rounded-2xl overflow-hidden relative flex items-center justify-center shadow-lg mx-auto">
-                  {profilePhoto ? (
+                  
                     <img
-                      src={profilePhoto}
+                      src={employee?.photo_url|| "assets/profile-photo-default.png"}
                       className="w-full h-full object-cover"
                       alt="Profile Photo"
                     />
-                  ) : (
-                    <User className="w-16 h-16 text-slate-500" />
-                  )}
+                   
                   <button
                     onClick={uploadPhoto}
                     className="absolute bottom-2 right-2 bg-gradient-to-br from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white rounded-full p-2 shadow-lg transition-all duration-200"

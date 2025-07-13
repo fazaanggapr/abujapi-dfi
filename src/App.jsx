@@ -3,6 +3,7 @@ import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Register from "./components/Register";
 import Login from "./components/Login";
+import DataAbsensi from "./components/DataAbsensi";
 import Dashboard from "./components/Dashboard";
 import DataKaryawan from "./components/DataKaryawan";
 import LihatProfil from "./components/LihatProfil";
@@ -27,21 +28,21 @@ function App() {
 
         {/* Routes yang butuh login */}
         <Route
-          path="/dashboard"
+          path="/data-absensi"
           element={
             <PrivateRoute>
-              <Dashboard />
+              <DataAbsensi />
             </PrivateRoute>
           }
         />
-        <Route
-          path="/scan-qr"
-          element={
-            <PrivateRoute>
-              <ScanQR />
-            </PrivateRoute>
-          }
-        />
+            <Route
+              path="/dashboard"
+              element={
+                <PrivateRoute>
+                  <Dashboard />
+                </PrivateRoute>
+              }
+            />
         <Route
           path="/data-karyawan"
           element={
@@ -74,6 +75,14 @@ function App() {
             </PrivateRoute>
           }
         />
+          <Route
+            path="/scan-qr"
+            element={
+              <PrivateRoute>
+                <ScanQR />
+              </PrivateRoute>
+            }
+          />
         <Route
           path="/edit-profil"
           element={

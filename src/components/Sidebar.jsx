@@ -91,7 +91,7 @@ const Sidebar = ({ isOpen, onClose }) => {
               <ul className="space-y-2">
                 <li>
                   <a 
-                    href="/dasboard" 
+                    href="/dashboard" 
                     className="flex items-center space-x-3 px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors"
                   >
                     <Home className="w-5 h-5" />
@@ -100,11 +100,20 @@ const Sidebar = ({ isOpen, onClose }) => {
                 </li>
                 <li>
                   <a 
-                    href="/lihat-laporan" 
+                    href="/data-absensi" 
                     className="flex items-center space-x-3 px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors"
                   >
-                    <FileText className="w-5 h-5" />
-                    <span className="font-medium">Reports</span>
+                    <Calendar className="w-5 h-5" />
+                    <span className="font-medium">Data Absensi</span>
+                  </a>
+                </li>
+                <li>
+                  <a 
+                    href="/data-karyawan" 
+                    className="flex items-center space-x-3 px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors"
+                  >
+                    <User className="w-5 h-5" />
+                    <span className="font-medium">Data Karyawan</span>
                   </a>
                 </li>
                 <li>
@@ -114,24 +123,6 @@ const Sidebar = ({ isOpen, onClose }) => {
                   >
                     <QrCode className="w-5 h-5" />
                     <span className="font-medium">QR Scanner</span>
-                  </a>
-                </li>
-                <li>
-                  <a 
-                    href="/data-absensi" 
-                    className="flex items-center space-x-3 px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors"
-                  >
-                    <Calendar className="w-5 h-5" />
-                    <span className="font-medium">Attendance</span>
-                  </a>
-                </li>
-                <li>
-                  <a 
-                    href="/lihat-profil" 
-                    className="flex items-center space-x-3 px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors"
-                  >
-                    <User className="w-5 h-5" />
-                    <span className="font-medium">Profile</span>
                   </a>
                 </li>
               </ul>

@@ -33,13 +33,13 @@ const SecurityDashboard = () => {
                 <Menu className="w-6 h-6" />
               </button>
               <div>
-                <h1 className="text-3xl font-bold text-gray-900">Good afternoon, Cipher!</h1>
-                <p className="text-gray-600 mt-1">Welcome to your security management dashboard</p>
+                <h1 className="text-3xl font-bold text-gray-900">Selamat malam, Cipher!</h1>
+                <p className="text-gray-600 mt-1">Selamat datang di security management dashboard</p>
               </div>
             </div>
             <div className="flex items-center space-x-2 bg-white px-4 py-2 rounded-lg shadow-sm">
               <User className="w-5 h-5 text-gray-500" />
-              <span className="text-sm font-medium text-gray-700">EMPLOYEE</span>
+              <span className="text-sm font-medium text-gray-700">User</span>
             </div>
           </div>
 
@@ -48,7 +48,7 @@ const SecurityDashboard = () => {
             {/* Total Reports */}
             <div className="bg-white rounded-lg p-6 shadow-sm">
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-sm font-medium text-gray-600">Total Reports</h3>
+                <h3 className="text-sm font-medium text-gray-600">Total Laporan</h3>
                 <FileText className="w-5 h-5 text-gray-400" />
               </div>
               <div className="text-3xl font-bold text-gray-900 mb-1">0</div>
@@ -58,7 +58,7 @@ const SecurityDashboard = () => {
             {/* Today's Attendance */}
             <div className="bg-white rounded-lg p-6 shadow-sm">
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-sm font-medium text-gray-600">Today's Attendance</h3>
+                <h3 className="text-sm font-medium text-gray-600">Total Kehadiran</h3>
                 <Calendar className="w-5 h-5 text-gray-400" />
               </div>
               <div className="text-3xl font-bold text-gray-900 mb-1">0</div>
@@ -78,7 +78,7 @@ const SecurityDashboard = () => {
             {/* Your Status */}
             <div className="bg-white rounded-lg p-6 shadow-sm">
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-sm font-medium text-gray-600">Your Status</h3>
+                <h3 className="text-sm font-medium text-gray-600">Status Anda</h3>
                 <Clock className="w-5 h-5 text-gray-400" />
               </div>
               <div className="text-3xl font-bold text-gray-900 mb-1">Aktif</div>
@@ -90,23 +90,23 @@ const SecurityDashboard = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {/* Recent Activity */}
             <div className="bg-white rounded-lg p-6 shadow-sm">
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">Recent Activity</h3>
-              <p className="text-gray-600 mb-6">Your latest security activities</p>
+              <h3 className="text-xl font-semibold text-gray-900 mb-2">Aktivitas Terbaru</h3>
+              <p className="text-gray-600 mb-6">Aktivitas keamanan terbaru anda</p>
               
               <div className="space-y-4">
                 <div className="flex items-start space-x-3">
                   <div className="w-2 h-2 bg-green-500 rounded-full mt-2"></div>
                   <div>
-                    <p className="font-medium text-gray-900">Profile updated</p>
-                    <p className="text-sm text-gray-500">2 hours ago</p>
+                    <p className="font-medium text-gray-900">Profil diperbarui</p>
+                    <p className="text-sm text-gray-500">2 jam lalu</p>
                   </div>
                 </div>
                 
                 <div className="flex items-start space-x-3">
                   <div className="w-2 h-2 bg-blue-500 rounded-full mt-2"></div>
                   <div>
-                    <p className="font-medium text-gray-900">Dashboard accessed</p>
-                    <p className="text-sm text-gray-500">Today</p>
+                    <p className="font-medium text-gray-900">Akses ke dashboard</p>
+                    <p className="text-sm text-gray-500">Hari ini</p>
                   </div>
                 </div>
               </div>
@@ -115,12 +115,12 @@ const SecurityDashboard = () => {
             {/* Quick Actions */}
             <div className="bg-white rounded-lg p-6 shadow-sm">
               <h3 className="text-xl font-semibold text-gray-900 mb-2">Quick Actions</h3>
-              <p className="text-gray-600 mb-6">Frequently used features</p>
+              <p className="text-gray-600 mb-6">Fitur yang paling sering digunakan</p>
               
               <div className="space-y-3">
                 <button className="w-full flex items-center space-x-3 p-4 bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors">
                   <FileText className="w-5 h-5 text-gray-600" />
-                  <span className="font-medium text-gray-900">Create Report</span>
+                  <span className="font-medium text-gray-900">Buat Laporan</span>
                 </button>
                 
                 <button className="w-full flex items-center space-x-3 p-4 bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors">

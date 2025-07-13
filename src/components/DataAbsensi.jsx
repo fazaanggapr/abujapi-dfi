@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+
 import {
   FaUser,
   FaClock,
@@ -16,99 +17,96 @@ import {
   FaEye,
   FaDownload,
 } from "react-icons/fa";
+
 import Sidebar from "./Sidebar";
 import { Link } from "react-router-dom";
 import QRCode from "react-qr-code";
 import baseUrl from "../utils/api";
-  const QRModal = ({ isOpen, onClose }) => {
-    const [token, setToken] = useState(null);
-    const [expiresAt, setExpiresAt] = useState(null);
-    const [loading, setLoading] = useState(true);
 
+const QRModal = ({ isOpen, onClose }) => {
+  const [token, setToken] = useState(null);
+  const [expiresAt, setExpiresAt] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-      if (!isOpen) return;
+  useEffect(() => {
+    if (!isOpen) return;
 
-      const fetchQRToken = async () => {
-        setLoading(true);
-        const accessToken = localStorage.getItem("access_token");
+    const fetchQRToken = async () => {
+      setLoading(true);
+      const accessToken = localStorage.getItem("access_token");
 
-        try {
-          const response = await fetch(`${baseUrl}/generate-attendance-token`, {
-            headers: {
-              Authorization: `Bearer ${accessToken}`,
-              Accept: "application/json",
-            },
-          });
+      try {
+        const response = await fetch(`${baseUrl}/generate-attendance-token`, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            Accept: "application/json",
+          },
+        });
 
-          const result = await response.json();
-
-          if (response.ok && result.token) {
-            setToken(result.token);
-            setExpiresAt(result.expires_at);
-          } else {
-            console.error("Gagal mengambil token QR:", result);
-          }
-        } catch (err) {
-          console.error("Error:", err);
-        } finally {
-          setLoading(false);
+        const result = await response.json();
+        if (response.ok && result.token) {
+          setToken(result.token);
+          setExpiresAt(result.expires_at);
+        } else {
+          console.error("Gagal mengambil token QR:", result);
         }
-      };
-
-      fetchQRToken();
-    }, [isOpen]);
-    
-
-    const downloadQR = () => {
-      const canvas = document.getElementById("qr-code");
-      const url = canvas.toDataURL("image/png");
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "qr-code.png";
-      a.click();
+      } catch (err) {
+        console.error("Error:", err);
+      } finally {
+        setLoading(false);
+      }
     };
 
-    if (!isOpen) return null;
-    
-    return (
-      <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-        <div className="bg-white rounded-lg max-w-md w-full p-6">
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold">QR Code Absensi</h3>
-            <button onClick={onClose} className="text-gray-500 hover:text-gray-700">
-              <FaTimes />
-            </button>
-          </div>
+    fetchQRToken();
+  }, [isOpen]);
 
-          <div className="text-center">
-            {loading ? (
-              <p className="text-gray-500">Mengambil token QR...</p>
-            ) : token ? (
-              <>
-                <div className="w-48 h-48 mx-auto mb-4">
-                  <QRCode value={token} size={192} includeMargin={true} />
-                  <canvas id="qr-code" style={{ display: 'none' }}></canvas>
+  const downloadQR = () => {
+    const canvas = document.getElementById("qr-code");
+    const url = canvas.toDataURL("image/png");
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "qr-code.png";
+    a.click();
+  };
 
-                </div>
-                <p className="text-sm text-gray-600 mb-2">
-                  Berlaku sampai: <strong>{expiresAt}</strong>
-                </p>
-                <button
-                  onClick={downloadQR}
-                  className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
-                >
-                  Download QR Code
-                </button>
-              </>
-            ) : (
-              <p className="text-red-500">Gagal memuat QR code.</p>
-            )}
-          </div>
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+      <div className="bg-white rounded-lg max-w-md w-full p-6">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-lg font-semibold">QR Code Absensi</h3>
+          <button onClick={onClose} className="text-gray-500 hover:text-gray-700">
+            <FaTimes />
+          </button>
+        </div>
+        <div className="text-center">
+          {loading ? (
+            <p className="text-gray-500">Mengambil token QR...</p>
+          ) : token ? (
+            <>
+              <div className="w-48 h-48 mx-auto mb-4">
+                <QRCode value={token} size={192} includeMargin={true} />
+                <canvas id="qr-code" style={{ display: 'none' }}></canvas>
+              </div>
+              <p className="text-sm text-gray-600 mb-2">
+                Berlaku sampai: <strong>{expiresAt}</strong>
+              </p>
+              <button
+                onClick={downloadQR}
+                className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
+              >
+                Download QR Code
+              </button>
+            </>
+          ) : (
+            <p className="text-red-500">Gagal memuat QR code.</p>
+          )}
         </div>
       </div>
-    );
-  };
+    </div>
+  );
+};
 
 const AttendanceStatus = ({ status }) => {
   const getStatusConfig = (status) => {
@@ -144,7 +142,6 @@ const AttendanceStatus = ({ status }) => {
     }
   };
 
-
   const config = getStatusConfig(status);
   const Icon = config.icon;
 
@@ -179,7 +176,6 @@ const ResponsiveAttendanceTable = () => {
   useEffect(() => {
     const fetchAttendance = async () => {
       const token = localStorage.getItem("access_token");
-
       try {
         const response = await fetch(
           `${baseUrl}/admin/attendance`,
@@ -193,18 +189,29 @@ const ResponsiveAttendanceTable = () => {
         );
 
         const result = await response.json();
-
+        console.log("API Response:", result); // Debug log
+        
         if (response.ok && result.data) {
-          const transformed = result.data.map((item) => ({
-            id: item.id,
-            name: item.user.name,
-            email: item.user.email,
-            attendance: item.kehadiran.toLowerCase(), // sesuaikan ke 'present', 'absent', 'late'
-            report: "Belum Dicek", // placeholder jika belum ada di API
-            avatar: getInitials(item.user.name),
-            attended_at: item.attended_at,
-          }));
-          setEmployees(transformed);
+          const transformed = result.data.map((item) => {
+            console.log("Processing item:", item); // Debug log
+            return {
+              id: item.id,
+              name: item.user.name,
+              email: item.user.email,
+              attendance: item.kehadiran.toLowerCase(), // sesuaikan ke 'present', 'absent', 'late'
+              report: "Belum Dicek", // placeholder jika belum ada di API
+              avatar: getInitials(item.user.name),
+              attended_at: item.attended_at,
+            };
+          });
+
+          console.log("Transformed data:", transformed); // Debug log
+
+          // Sort data by attended_at (newest first)
+          const sorted = transformed.sort(
+            (a, b) => new Date(b.attended_at) - new Date(a.attended_at)
+          );
+          setEmployees(sorted);
         } else {
           console.error("Gagal ambil data:", result);
         }
@@ -223,9 +230,33 @@ const ResponsiveAttendanceTable = () => {
     year: selectedDate.getFullYear(),
   };
 
-  const filteredEmployees = employees.filter((employee) =>
-    employee.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // Filter employees by name and selected date (with more flexible date matching)
+  const filteredEmployees = employees.filter((employee) => {
+    const nameMatch = employee.name.toLowerCase().includes(searchTerm.toLowerCase());
+    
+    // Parse dates more carefully
+    const attendanceDate = new Date(employee.attended_at);
+    const selectedDateOnly = new Date(selectedDate);
+    
+    // Reset time to 00:00:00 for accurate date comparison
+    attendanceDate.setHours(0, 0, 0, 0);
+    selectedDateOnly.setHours(0, 0, 0, 0);
+    
+    const dateMatch = attendanceDate.getTime() === selectedDateOnly.getTime();
+    
+    console.log("Filter debug:", {
+      employee: employee.name,
+      attended_at: employee.attended_at,
+      attendanceDate: attendanceDate.toDateString(),
+      selectedDate: selectedDateOnly.toDateString(),
+      dateMatch,
+      nameMatch
+    });
+    
+    return nameMatch && dateMatch;
+  });
+
+  console.log("Filtered employees:", filteredEmployees); // Debug log
 
   const totalPages = Math.ceil(filteredEmployees.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
@@ -244,6 +275,7 @@ const ResponsiveAttendanceTable = () => {
       date.setDate(startOfWeek.getDate() + i);
       days.push(date);
     }
+
     return days;
   };
 
@@ -264,7 +296,10 @@ const ResponsiveAttendanceTable = () => {
       return (
         <div
           key={index}
-          onClick={() => setSelectedDate(date)}
+          onClick={() => {
+            setSelectedDate(date);
+            setCurrentPage(1); // Reset page to 1 when selecting a date
+          }}
           className={`
             flex flex-col items-center justify-center p-3 rounded-lg cursor-pointer transition-all duration-200 min-w-[60px]
             ${
@@ -310,26 +345,21 @@ const ResponsiveAttendanceTable = () => {
         </button>
       );
     }
+
     return pages;
   };
 
   const renderTable = () => {
-
     if (currentEmployees.length === 0) {
+  return (
+    <tr>
+      <td colSpan="3" className="text-center py-6 text-gray-500">
+        Tidak ada data absensi pada tanggal ini.
+      </td>
+    </tr>
+  );
+}
 
-      
-      return (
-        <tr>
-          <td colSpan="3" className="px-6 py-8 text-center text-gray-500">
-            <div className="flex flex-col items-center">
-              <FaUser className="text-4xl mb-2 text-gray-300" />
-              <p>Tidak ada data karyawan yang ditemukan</p>
-            </div>
-          </td>
-        </tr>
-      );
-    }
-    //urutkan dari paling
     return currentEmployees.map((emp) => (
       <tr key={emp.id} className="hover:bg-gray-50 transition-colors">
         <td className="px-6 py-5">
@@ -352,9 +382,10 @@ const ResponsiveAttendanceTable = () => {
       </tr>
     ));
   };
-  
-  const [isSidebarOpen, setSidebarOpen] = useState(false); 
+
+  const [isSidebarOpen, setSidebarOpen] = useState(false);
   const toggleSidebar = () => setSidebarOpen(!isSidebarOpen);
+
   return (
     <div className="bg-gray-50 font-sans min-h-screen">
       <div className="flex min-h-screen overflow-hidden">
@@ -362,32 +393,34 @@ const ResponsiveAttendanceTable = () => {
         <div className="flex-1 overflow-y-auto">
           {/* Header */}
           <div className="bg-white p-6 border-b border-gray-200 shadow-sm">
-            <h1 className="text-3xl font-bold text-gray-800"><button
-    onClick={toggleSidebar}
-    className="lg:hidden p-2 text-gray-800 bg-white rounded-md shadow"
-  >
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      className="h-6 w-6"
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke="currentColor"
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth={2}
-        d="M4 6h16M4 12h16M4 18h16"
-      />
-    </svg>
-  </button>
-   DATA ABSENSI</h1>
+            <h1 className="text-3xl font-bold text-gray-800">
+              <button
+                onClick={toggleSidebar}
+                className="lg:hidden p-2 text-gray-800 bg-white rounded-md shadow"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4 6h16M4 12h16M4 18h16"
+                  />
+                </svg>
+              </button>
+              DATA ABSENSI
+            </h1>
             <p className="text-gray-500 text-sm mt-1 flex items-center">
               <FaCalendarAlt className="mr-2" />
               <span>
                 {monthInfo.month} {monthInfo.year}
               </span>{" "}
-              &gt;
+
             </p>
           </div>
 
@@ -495,9 +528,7 @@ const ResponsiveAttendanceTable = () => {
                                 <span className="text-sm text-gray-500">
                                   Absensi:
                                 </span>
-                                <AttendanceStatus
-                                  status={employee.attendance}
-                                />
+                                <AttendanceStatus status={employee.attendance} />
                               </div>
                             </div>
                             <div className="flex items-center justify-between mt-2">
@@ -550,7 +581,6 @@ const ResponsiveAttendanceTable = () => {
           </div>
         </div>
       </div>
-
       <QRModal isOpen={isQRModalOpen} onClose={() => setIsQRModalOpen(false)} />
     </div>
   );

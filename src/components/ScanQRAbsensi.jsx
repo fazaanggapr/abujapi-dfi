@@ -134,7 +134,7 @@ const ScanQR = () => {
               <FaQrcode className="w-6 h-6 text-white" />
             </div>
             <div className="text-center">
-              <h1 className="text-2xl font-bold text-gray-800">Scan QR Checkpoint Gedung</h1>
+              <h1 className="text-2xl font-bold text-gray-800">Scan QR Absensi</h1>
               <p className="text-gray-600 text-sm">Arahkan kamera ke QR code</p>
             </div>
           </div>

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { FaUser, FaEnvelope, FaLock, FaCheckCircle } from 'react-icons/fa';
-
+import  baseUrl  from '../utils/api';
 const Register = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -23,7 +23,7 @@ const handleSubmit = async (e) => {
   }
 
   try {
-    const response = await fetch("http://localhost:8000/api/register", {
+    const response = await fetch(`${baseUrl}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

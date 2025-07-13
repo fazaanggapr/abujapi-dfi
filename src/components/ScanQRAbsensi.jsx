@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Html5QrcodeScanner, Html5QrcodeScanType } from "html5-qrcode";
 import { FaCheckCircle, FaTimesCircle, FaQrcode, FaCamera, FaSpinner } from "react-icons/fa";
-
-const baseUrl = import.meta.env.VITE_API_URL;
+import baseUrl from "../utils/api";
+import Sidebar from "./Sidebar";
 
 const ScanQR = () => {
   const [message, setMessage] = useState("");
@@ -48,7 +48,7 @@ const ScanQR = () => {
     scannerRef.current = scanner;
     setScannerActive(true);
   };
-
+  
   const cleanupScanner = () => {
     if (scannerRef.current) {
       scannerRef.current.clear().catch(console.error);
@@ -119,9 +119,13 @@ const ScanQR = () => {
       initializeScanner();
     }, 100);
   };
-
+  const [isSidebarOpen, setSidebarOpen] = useState(false);
+  const toggleSidebar = () => setSidebarOpen(!isSidebarOpen);
   return (
+    <div className="flex">
+      <Sidebar isOpen={isSidebarOpen} onClose={toggleSidebar} />
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50">
+      
       {/* Header */}
       <div className="bg-white/80 backdrop-blur-md border-b border-gray-200/50 sticky top-0 z-10">
         <div className="max-w-4xl mx-auto px-4 py-6">
@@ -149,7 +153,7 @@ const ScanQR = () => {
                     <FaCamera className="w-5 h-5 text-white" />
                     <span className="text-white font-semibold">Kamera Scanner</span>
                   </div>
-                  <div className="flex items-center space-x-2">
+                  <div className="flex items-center space-x-2 max-w-[150px]">
                     <div className={`w-2 h-2 rounded-full ${scannerActive ? 'bg-green-400 animate-pulse' : 'bg-gray-400'}`}></div>
                     <span className="text-white/80 text-sm">
                       {scannerActive ? 'Aktif' : 'Tidak Aktif'}
@@ -286,6 +290,7 @@ const ScanQR = () => {
           </div>
         </div>
       )}
+    </div>
     </div>
   );
 };

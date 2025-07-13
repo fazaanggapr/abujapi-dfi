@@ -25,17 +25,18 @@ import {
   Star,
 } from "lucide-react";
 import Sidebar from "./Sidebar";
+import baseUrl from "../utils/api";
 const EmployeeDetail = () => {
   const [employee, setEmployee] = useState(null);
   const [loading, setLoading] = useState(true);
   const [profilePhoto, setProfilePhoto] = useState(null);
   
-  // Fetch data user dari API
   useEffect(() => {
+    
     const fetchEmployee = async () => {
       const token = localStorage.getItem("access_token");
       try {
-        const response = await fetch("http://localhost:8000/api/profile", {
+        const response = await fetch(`${baseUrl}/profile`, {
           method: "GET",
           headers: {
             Authorization: `Bearer ${token}`,

@@ -19,9 +19,7 @@ import {
 import Sidebar from "./Sidebar";
 import { Link } from "react-router-dom";
 import QRCode from "react-qr-code";
-
-
-const baseUrl = import.meta.env.VITE_API_URL;
+import baseUrl from "../utils/api";
   const QRModal = ({ isOpen, onClose }) => {
     const [token, setToken] = useState(null);
     const [expiresAt, setExpiresAt] = useState(null);
@@ -316,7 +314,10 @@ const ResponsiveAttendanceTable = () => {
   };
 
   const renderTable = () => {
+
     if (currentEmployees.length === 0) {
+
+      
       return (
         <tr>
           <td colSpan="3" className="px-6 py-8 text-center text-gray-500">
@@ -328,7 +329,7 @@ const ResponsiveAttendanceTable = () => {
         </tr>
       );
     }
-
+    //urutkan dari paling
     return currentEmployees.map((emp) => (
       <tr key={emp.id} className="hover:bg-gray-50 transition-colors">
         <td className="px-6 py-5">

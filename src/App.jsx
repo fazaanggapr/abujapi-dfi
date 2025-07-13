@@ -13,7 +13,7 @@ import EditProfil from "./components/EditProfil";
 import LihatLaporan from "./components/LihatLaporan";
 import PrivateRoute from "./components/PrivateRoute";
 import { Toaster } from "react-hot-toast";
-import ScanQR from "./components/ScanQR";
+import ScanQR from "./components/ScanQRAbsensi";
 import { useState } from "react";
 function App() {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
@@ -76,7 +76,7 @@ function App() {
           }
         />
           <Route
-            path="/scan-qr"
+            path="/absensi/scan-qr"
             element={
               <PrivateRoute>
                 <ScanQR />

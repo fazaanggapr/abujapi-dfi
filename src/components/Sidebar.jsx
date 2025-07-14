@@ -26,7 +26,6 @@ const Sidebar = ({ isOpen, onClose }) => {
     navigate('/login');
   };
 
-  // ⬇️ Tambahkan useEffect agar fetchEmployee dipanggil saat Sidebar dimuat
   useEffect(() => {
     const fetchEmployee = async () => {
       const token = localStorage.getItem("access_token");
@@ -47,7 +46,7 @@ const Sidebar = ({ isOpen, onClose }) => {
           const profileData = data.data.profile;
           setProfile({
             name: data.data.name,
-            role: profileData.employee_status || "Employee",
+            role: data.data.role || "Employee",
           });
         }
       } catch (error) {
@@ -76,8 +75,8 @@ const Sidebar = ({ isOpen, onClose }) => {
                 <p className="text-sm text-blue-600">Management</p>
               </div>
               <button onClick={onClose} className="lg:hidden p-2">
-  ✕
-</button>
+                  ✕
+                </button>
 
             </div>
           </div>
@@ -98,22 +97,36 @@ const Sidebar = ({ isOpen, onClose }) => {
                     <span className="font-medium">Dashboard</span>
                   </a>
                 </li>
+              
+                {profile?.role === "admin" && (
+                <>
+                  <li>
+                    <a 
+                      href="/data-absensi" 
+                      className="flex items-center space-x-3 px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors"
+                    >
+                      <Calendar className="w-5 h-5" />
+                      <span className="font-medium">Data Absensi</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a 
+                      href="/data-karyawan" 
+                      className="flex items-center space-x-3 px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors"
+                    >
+                      <User className="w-5 h-5" />
+                      <span className="font-medium">Data Karyawan</span>
+                    </a>
+                  </li>
+                </>
+              )}
                 <li>
                   <a 
-                    href="/data-absensi" 
-                    className="flex items-center space-x-3 px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors"
-                  >
-                    <Calendar className="w-5 h-5" />
-                    <span className="font-medium">Data Absensi</span>
-                  </a>
-                </li>
-                <li>
-                  <a 
-                    href="/data-karyawan" 
+                    href="/lihat-profil" 
                     className="flex items-center space-x-3 px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors"
                   >
                     <User className="w-5 h-5" />
-                    <span className="font-medium">Data Karyawan</span>
+                    <span className="font-medium">Profil Saya</span>
                   </a>
                 </li>
                 <li>
@@ -122,7 +135,7 @@ const Sidebar = ({ isOpen, onClose }) => {
                     className="flex items-center space-x-3 px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors"
                   >
                     <QrCode className="w-5 h-5" />
-                    <span className="font-medium">QR Scanner</span>
+                    <span className="font-medium">Abensi QR</span>
                   </a>
                 </li>
               </ul>
@@ -156,8 +169,8 @@ const Sidebar = ({ isOpen, onClose }) => {
               </span>
             </div>
             <div className="flex-1 text-left">
-              <p className="text-sm font-medium text-gray-900">{profile?.name || "Ajg"}</p>
-              <p className="text-xs text-gray-500">{profile?.role || "employee"}</p>
+              <p className="text-sm font-medium text-gray-900">{profile?.name || "Loading..."}</p>
+              <p className="text-xs text-gray-500">{profile?.role || <i>loading...</i>}</p>
             </div>
           </button>
           </div>

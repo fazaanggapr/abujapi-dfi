@@ -17,25 +17,22 @@ function DataKaryawan() {
   const [searchTerm, setSearchTerm] = useState("");
   const [employees, setEmployees] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [isSidebarOpen, setSidebarOpen] = useState(false); 
-  const toggleSidebar = () => setSidebarOpen(!isSidebarOpen); 
-  const baseUrl = import.meta.env.VITE_API_URL; // Assuming you have this set in your .env file
+  const [isSidebarOpen, setSidebarOpen] = useState(false);
+  const toggleSidebar = () => setSidebarOpen(!isSidebarOpen);
+  const baseUrl = import.meta.env.VITE_API_URL;
 
   useEffect(() => {
     const fetchDashboardData = async () => {
       const token = localStorage.getItem("access_token");
 
       try {
-        const response = await fetch(
-          `${baseUrl}/admin/dashboard`, // Adjust the endpoint as needed
-          {
-            method: "GET",
-            headers: {
-              Authorization: `Bearer ${token}`,
-              Accept: "application/json",
-            },
-          }
-        );
+        const response = await fetch(`${baseUrl}/admin/dashboard`, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            Accept: "application/json",
+          },
+        });
 
         const result = await response.json();
 
@@ -65,49 +62,49 @@ function DataKaryawan() {
     }
     return nameParts[0][0];
   };
- function LoadingAnimation() {
-  return (
-    <div className="h-screen flex flex-col items-center justify-center text-center">
-      {/* Spinner Animation */}
-      <div className="relative">
-        <div className="w-24 h-24 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin"></div>
+
+  function LoadingAnimation() {
+    return (
+      <div className="h-screen flex flex-col items-center justify-center text-center">
+        <div className="relative">
+          <div className="w-24 h-24 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin"></div>
+        </div>
+        <p className="mt-4 text-gray-600 font-medium">Loading...</p>
       </div>
-      
-      {/* Loading Text */}
-      <p className="mt-4 text-gray-600 font-medium">Loading...</p>
-    </div>
-  );
-}
+    );
+  }
 
-  if (loading) return <LoadingAnimation/>;
+  if (loading) return <LoadingAnimation />;
 
- 
   return (
     <div className="bg-gray-50 font-sans min-h-screen flex">
-      <Sidebar isOpen={isSidebarOpen} onToggle={toggleSidebar} />
-      <div className="flex-1 overflow-auto">
+      {/* Sidebar */}
+      <Sidebar isOpen={isSidebarOpen} onClose={() => setSidebarOpen(false)} />
+
+      {/* Main Content */}
+      <div className="flex-1 overflow-auto px-6 py-4">
         {/* Header */}
-        <div className="bg-white p-6 border-b border-gray-200 shadow-sm">
-          <h1 className="text-3xl font-bold text-gray-800">
-        <button
-    onClick={toggleSidebar}
-    className="lg:hidden p-2 text-gray-800 bg-white rounded-md shadow"
-  >
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      className="h-6 w-6"
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke="currentColor"
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth={2}
-        d="M4 6h16M4 12h16M4 18h16"
-      />
-    </svg>
-  </button> DATA KARYAWAN</h1>
+        <div className="flex items-center justify-between mb-6">
+          <h1 className="text-3xl font-bold text-gray-800">DATA KARYAWAN</h1>
+          <button
+            onClick={toggleSidebar}
+            className="lg:hidden p-2 text-gray-800 bg-white rounded-md shadow"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M4 6h16M4 12h16M4 18h16"
+              />
+            </svg>
+          </button>
         </div>
 
         {/* Content */}
@@ -176,11 +173,9 @@ function DataKaryawan() {
                     >
                       <td className="px-6 py-5">
                         <div className="flex items-center">
-                          {/* Avatar / Inisial Nama */}
                           <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center text-white font-semibold text-sm mr-3">
                             {getInitials(emp.name)}
                           </div>
-                          {/* Nama dan NIK */}
                           <div>
                             <div className="font-semibold text-gray-900">
                               {emp.name}

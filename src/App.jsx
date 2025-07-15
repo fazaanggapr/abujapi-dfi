@@ -11,6 +11,7 @@ import TambahProfil from "./components/TambahProfil";
 import TambahLaporan from "./components/TambahLaporan";
 import EditProfil from "./components/EditProfil";
 import LihatLaporan from "./components/LihatLaporan";
+import LihatProfilKaryawan from "./components/LihatProfilKaryawan";
 import PrivateRoute from "./components/PrivateRoute";
 import { Toaster } from "react-hot-toast";
 import ScanQR from "./components/ScanQRAbsensi";
@@ -35,19 +36,19 @@ function App() {
             </PrivateRoute>
           }
         />
-            <Route
-              path="/dashboard"
-              element={
-                <PrivateRoute>
-                  <Dashboard />
-                </PrivateRoute>
-              }
-            />
+        <Route
+          path="/dashboard"
+          element={
+            <PrivateRoute>
+                <Dashboard />
+            </PrivateRoute>
+          }
+        />
         <Route
           path="/data-karyawan"
           element={
             <PrivateRoute>
-              <DataKaryawan />
+                <DataKaryawan />
             </PrivateRoute>
           }
         />
@@ -56,6 +57,14 @@ function App() {
           element={
             <PrivateRoute>
               <LihatProfil />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/lihat-profil-karyawan"
+          element={
+            <PrivateRoute>
+              <LihatProfilKaryawan />
             </PrivateRoute>
           }
         />
@@ -75,14 +84,14 @@ function App() {
             </PrivateRoute>
           }
         />
-          <Route
-            path="/absensi/scan-qr"
-            element={
-              <PrivateRoute>
-                <ScanQR />
-              </PrivateRoute>
-            }
-          />
+        <Route
+          path="/absensi/scan-qr"
+          element={
+            <PrivateRoute>
+              <ScanQR />
+            </PrivateRoute>
+          }
+        />
         <Route
           path="/edit-profil"
           element={

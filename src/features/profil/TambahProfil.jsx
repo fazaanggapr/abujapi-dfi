@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Camera, ArrowLeft, User, Fingerprint } from "lucide-react";
 import { Link } from "react-router-dom";
-import DataKaryawan from "./DataKaryawan";
+import DataKaryawan from "../../pages/DataKaryawan";
 
 const EmployeeForm = () => {
   const [formData, setFormData] = useState({
@@ -394,9 +394,7 @@ const EmployeeForm = () => {
                     />
                   </div>
                   <div className="flex items-center">
-                    <label className="w-24 text-sm">
-                      Pendidikan 
-                    </label>
+                    <label className="w-24 text-sm">Pendidikan</label>
                     <span className="mx-2">:</span>
                     <select
                       id="education"

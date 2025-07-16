@@ -1,20 +1,20 @@
 // App.jsx
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Register from "./components/Register";
-import Login from "./components/Login";
-import DataAbsensi from "./components/DataAbsensi";
-import Dashboard from "./components/Dashboard";
-import DataKaryawan from "./components/DataKaryawan";
-import LihatProfil from "./components/LihatProfil";
-import TambahProfil from "./components/TambahProfil";
-import TambahLaporan from "./components/TambahLaporan";
-import EditProfil from "./components/EditProfil";
-import LihatLaporan from "./components/LihatLaporan";
-import LihatProfilKaryawan from "./components/LihatProfilKaryawan";
-import PrivateRoute from "./components/PrivateRoute";
+import Register from "./pages/Register";
+import Login from "./pages/Login";
+import Dashboard from "./pages/Dashboard";
+import DataAbsensi from "./pages/DataAbsensi";
+import DataKaryawan from "./pages/DataKaryawan";
+import LihatProfil from "./features/karyawan/LihatProfil";
+import TambahProfil from "./features/karyawan/TambahProfil";
+import TambahLaporan from "./features/karyawan/laporan/TambahLaporan";
+import EditProfil from "./features/karyawan/EditProfil";
+import LihatLaporan from "./features/karyawan/laporan/LihatLaporan";
+import LihatProfilKaryawan from "./features/karyawan/LihatProfilKaryawan";
+import PrivateRoute from "./routes/PrivateRoute";
 import { Toaster } from "react-hot-toast";
-import ScanQR from "./components/ScanQRAbsensi";
+import ScanQR from "./pages/ScanQRAbsensi";
 import { useState } from "react";
 function App() {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
@@ -40,7 +40,7 @@ function App() {
           path="/dashboard"
           element={
             <PrivateRoute>
-                <Dashboard />
+              <Dashboard />
             </PrivateRoute>
           }
         />
@@ -48,7 +48,7 @@ function App() {
           path="/data-karyawan"
           element={
             <PrivateRoute>
-                <DataKaryawan />
+              <DataKaryawan />
             </PrivateRoute>
           }
         />

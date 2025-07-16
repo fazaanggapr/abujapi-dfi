@@ -24,24 +24,28 @@ const EmployeeDataForm = () => {
     portfolioLink: "portofolio-inukai-atsuhiro.vercel.app",
   });
 
-  const [profilePhoto, setProfilePhoto] = useState(null);
-  const uploadPhoto = () => {
-    const input = document.createElement("input");
-    input.type = "file";
-    input.accept = "image/*";
-    input.onchange = (e) => {
-      const file = e.target.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          setProfilePhoto(e.target.result);
-          showMessage("Foto profil berhasil diunggah!");
-        };
-        reader.readAsDataURL(file);
-      }
-    };
-    input.click();
+ const [profilePhoto, setProfilePhoto] = useState(null);
+const [photoFile, setPhotoFile] = useState(null); // buat dikirim ke backend
+
+ const uploadPhoto = () => {
+  const input = document.createElement("input");
+  input.type = "file";
+  input.accept = "image/*";
+  input.onchange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setProfilePhoto(e.target.result);
+        setPhotoFile(file); // <-- ini penting buat backend
+        showMessage("Foto profil berhasil diunggah!");
+      };
+      reader.readAsDataURL(file);
+    }
   };
+  input.click();
+};
+
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -51,9 +55,68 @@ const EmployeeDataForm = () => {
     }));
   };
 
-  const handleSave = () => {
-    alert("Data akan disimpan!");
-  };
+ const handleSave = async () => {
+  const token = localStorage.getItem("token"); // ambil token dari localStorage
+
+  if (!token) {
+    alert("Token tidak ditemukan. Silakan login ulang.");
+    return;
+  }
+
+  const form = new FormData();
+
+  // Tambah profile_photo kalau ada
+  if (photoFile) {
+    form.append("profile_photo", photoFile);
+  }
+
+  // Isi semua field dari formData
+  form.append("nik", formData.nik);
+  form.append("phone_number", formData.phoneNumber);
+  form.append("status", formData.status);
+  form.append("address", formData.address);
+  form.append("gender", formData.gender);
+  form.append("age", parseInt(formData.age));
+  form.append("height", parseInt(formData.height));
+  form.append("weight", parseInt(formData.weight));
+  form.append("education", formData.education);
+  form.append("bank_account", formData.bankAccount);
+  form.append("employee_status", formData.employeeStatus);
+  form.append("position", formData.position);
+  form.append("work_duration", formData.workDuration);
+  form.append("placement_location", formData.workLocation);
+  form.append("portfolio_link", `https://${formData.portfolioLink}`);
+  form.append("work_experience", "PT. Terbang kesatas"); // sementara hardcode
+  form.append("skills", "Keahlian fisik, bela diri, analisis keamanan"); // sementara hardcode
+  form.append("grade", "-");
+
+  try {
+    const response = await fetch("https://abujapi-proto.ihsanwd10.my.id/api/profile", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: form,
+    });
+
+    const result = await response.json();
+
+    if (response.ok) {
+      alert("✅ Profil berhasil disimpan!");
+      console.log("✅ Respon backend:", result);
+    } else if (response.status === 422) {
+      alert("⚠️ Validasi gagal, cek kembali data yang kamu isi.");
+      console.log("❌ Detail error:", result.errors);
+    } else {
+      alert("❌ Gagal menyimpan profil.");
+      console.error(result);
+    }
+  } catch (err) {
+    console.error("❌ Error jaringan:", err);
+    alert("❌ Tidak bisa terhubung ke server.");
+  }
+};
+
 
   const handleCancel = () => {
     if (window.confirm("Yakin ingin membatalkan perubahan?")) {

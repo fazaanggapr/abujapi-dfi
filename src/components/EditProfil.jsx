@@ -51,7 +51,6 @@ const EditEmployeeDataForm = () => {
     grade: ''
   });
 
-<<<<<<< HEAD
  const [profilePhoto, setProfilePhoto] = useState(null);
 const [photoFile, setPhotoFile] = useState(null); // buat dikirim ke backend
 
@@ -70,7 +69,7 @@ const [photoFile, setPhotoFile] = useState(null); // buat dikirim ke backend
       };
       reader.readAsDataURL(file);
     }
-=======
+
   const [workHistory, setWorkHistory] = useState([]);
   const [skills, setSkills] = useState([]);
   const [certifications, setCertifications] = useState([]);
@@ -136,21 +135,22 @@ const [photoFile, setPhotoFile] = useState(null); // buat dikirim ke backend
       }
     };
     input.click();
->>>>>>> 9eef8a2ab19fa7abd03afb80630f814de9155762
+
   };
   input.click();
 };
 
 
   const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
+  const { name, value } = e.target;
+  setFormData((prevData) => ({
+    ...prevData,
+    [name]: value,
+  }));
+};
 
-<<<<<<< HEAD
+
+
  const handleSave = async () => {
   const token = localStorage.getItem("token"); // ambil token dari localStorage
 
@@ -213,33 +213,44 @@ const [photoFile, setPhotoFile] = useState(null); // buat dikirim ke backend
   }
 };
 
-=======
   const handleSave = async () => {
-    const token = localStorage.getItem("access_token");
+  const token = localStorage.getItem("access_token");
+  if (!token) {
+    alert("Token tidak ditemukan. Silakan login ulang.");
+    return;
+  }
 
-    try {
-      const res = await fetch(`${baseUrl}/profile`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-          Accept: "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
+  const formDataToSend = new FormData();
+  
+  // Append semua field
+  Object.entries(formData).forEach(([key, value]) => {
+    formDataToSend.append(key, value);
+  });
 
-      const result = await res.json();
-      if (res.ok) {
-        alert("Profil berhasil diperbarui!");
-      } else {
-        alert("Gagal menyimpan: " + result.message);
-      }
-    } catch (err) {
-      console.error("Error saat menyimpan profil:", err);
-      alert("Terjadi kesalahan.");
+  if (photoFile) {
+    formDataToSend.append("profile_photo", photoFile);
+  }
+
+  try {
+    const res = await fetch(`${baseUrl}/profile`, {
+      method: "PATCH",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: formDataToSend,
+    });
+
+    const result = await res.json();
+    if (res.ok) {
+      alert("Profil berhasil diperbarui!");
+    } else {
+      alert("Gagal menyimpan: " + (result.message || "Terjadi kesalahan"));
     }
-  };
->>>>>>> 9eef8a2ab19fa7abd03afb80630f814de9155762
+  } catch (err) {
+    console.error("Error:", err);
+    alert("Terjadi kesalahan jaringan");
+  }
+};
 
   const handleCancel = () => {
     if (window.confirm("Yakin ingin membatalkan perubahan?")) {

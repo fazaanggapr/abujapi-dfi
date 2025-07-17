@@ -18,7 +18,7 @@ const Header = () => {
         </div>
         <div className="flex items-center space-x-4">
           <div className="text-right">
-            <p className="text-sm text-slate-600">Profil Karyawan</p>
+            <p className="text-sm text-slate-600">Profil</p>
             <p className="font-semibold text-slate-800">Edit Profile</p>
           </div>
           <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center shadow-lg">

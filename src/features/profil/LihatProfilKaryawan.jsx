@@ -575,7 +575,7 @@ const ViewEmployeeProfile = () => {
               <div className="grid grid-cols-2 gap-4">
                 {/* Tombol Edit */}
                 <Link
-                  to="/edit-profil"
+                  to="/edit-profil-karyawan"
                   className="bg-gradient-to-r from-orange-600 to-orange-600 
       hover:from-orange-700 hover:to-orange-700 
       text-white font-bold py-3 px-4 rounded-xl 

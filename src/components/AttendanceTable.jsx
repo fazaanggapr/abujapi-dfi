@@ -1,6 +1,7 @@
 // src/components/AttendanceTable.jsx
 import React, { useEffect, useState } from 'react';
 
+import { baseUrl } from "../utils/api"; 
 const AttendanceTable = () => {
   const [employees, setEmployees] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -18,7 +19,7 @@ const AttendanceTable = () => {
       const token = localStorage.getItem('access_token');
 
       try {
-        const response = await fetch('http://localhost:8000/api/admin/attendance', {
+        const response = await fetch(`${baseUrl}/admin/attendances`, {
           headers: {
             Authorization: `Bearer ${token}`,
             Accept: 'application/json',

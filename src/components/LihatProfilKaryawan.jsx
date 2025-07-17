@@ -26,7 +26,7 @@ import {
 } from "lucide-react";
 import Sidebar from "./Sidebar";
 import baseUrl from "../utils/api";
-const EmployeeDetail = () => {
+const ViewEmployeeProfile = () => {
   const [employee, setEmployee] = useState(null);
   const [loading, setLoading] = useState(true);
   const [profilePhoto, setProfilePhoto] = useState(null);
@@ -182,7 +182,7 @@ const EmployeeDetail = () => {
           </div>
           <div className="flex items-center space-x-4">
             <div className="text-right">
-              <p className="text-sm text-slate-600">Profil</p>
+              <p className="text-sm text-slate-600">Profil Karyawan</p>
               <p className="font-semibold text-slate-800">{employee?.name}</p>
             </div>
             <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center shadow-lg">
@@ -200,7 +200,7 @@ const EmployeeDetail = () => {
           </div>
           <div>
             <h1 className="text-2xl font-bold text-slate-800">
-              Profil
+              Profil Karyawan
             </h1>
             <p className="text-slate-600 flex items-center space-x-2">
               <Building className="w-4 h-4" />
@@ -613,4 +613,4 @@ const EmployeeDetail = () => {
 );
 };
 
-export default EmployeeDetail;
+export default ViewEmployeeProfile;

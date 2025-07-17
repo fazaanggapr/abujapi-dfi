@@ -3,25 +3,44 @@ import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Register from "./components/Register";
 import Login from "./components/Login";
+import DataAbsensi from "./components/DataAbsensi";
 import Dashboard from "./components/Dashboard";
 import DataKaryawan from "./components/DataKaryawan";
 import LihatProfil from "./components/LihatProfil";
 import TambahProfil from "./components/TambahProfil";
+import TambahLaporan from "./components/TambahLaporan";
 import EditProfil from "./components/EditProfil";
+import LihatLaporan from "./components/LihatLaporan";
+import LihatProfilKaryawan from "./components/LihatProfilKaryawan";
 import PrivateRoute from "./components/PrivateRoute";
+import { Toaster } from "react-hot-toast";
+import ScanQR from "./components/ScanQRAbsensi";
+import { useState } from "react";
 function App() {
+  const [isSidebarOpen, setSidebarOpen] = useState(false);
+  const toggleSidebar = () => setSidebarOpen(!isSidebarOpen);
+
   return (
     <BrowserRouter>
+      <Toaster position="top-right" reverseOrder={false} />
       <Routes>
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
 
         {/* Routes yang butuh login */}
         <Route
+          path="/data-absensi"
+          element={
+            <PrivateRoute>
+              <DataAbsensi />
+            </PrivateRoute>
+          }
+        />
+        <Route
           path="/dashboard"
           element={
             <PrivateRoute>
-              <Dashboard />
+                <Dashboard />
             </PrivateRoute>
           }
         />
@@ -29,7 +48,7 @@ function App() {
           path="/data-karyawan"
           element={
             <PrivateRoute>
-              <DataKaryawan />
+                <DataKaryawan />
             </PrivateRoute>
           }
         />
@@ -42,10 +61,34 @@ function App() {
           }
         />
         <Route
+          path="/lihat-profil-karyawan"
+          element={
+            <PrivateRoute>
+              <LihatProfilKaryawan />
+            </PrivateRoute>
+          }
+        />
+        <Route
           path="/tambah-profil"
           element={
             <PrivateRoute>
               <TambahProfil />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/tambah-laporan"
+          element={
+            <PrivateRoute>
+              <TambahLaporan />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/absensi/scan-qr"
+          element={
+            <PrivateRoute>
+              <ScanQR />
             </PrivateRoute>
           }
         />
@@ -57,10 +100,17 @@ function App() {
             </PrivateRoute>
           }
         />
+        <Route
+          path="/lihat-laporan"
+          element={
+            <PrivateRoute>
+              <LihatLaporan />
+            </PrivateRoute>
+          }
+        />
       </Routes>
     </BrowserRouter>
   );
 }
 
 export default App;
-

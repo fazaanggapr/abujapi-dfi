@@ -201,43 +201,31 @@ const uploadPhoto = () => {
       }));
     };
 
-    const handleSave = async () => {
-    const token = localStorage.getItem("access_token");
+ const handleSave = async () => {
+  const token = localStorage.getItem("access_token");
 
-    // membersihkan angka dari teks seperti '70 kg'
-    const cleanNumber = (str) => parseInt(String(str).replace(/[^\d]/g, '')) || 0;
+  try {
+    const res = await fetch(`https://abujapi-proto.ihsanwd10.my.id/api/profile`, {
+      method: "POST", // Ganti jadi POST
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+        Accept: "application/json",
+      },
+      body: JSON.stringify(formData),
+    });
 
-    const cleanedData = {
-      ...formData,
-      age: cleanNumber(formData.age),
-      weight: cleanNumber(formData.weight),
-      height: cleanNumber(formData.height),
-    };
-
-    try {
-      const res = await fetch(`${baseUrl}/profile`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-          Accept: "application/json",
-        },
-        body: JSON.stringify(cleanedData),
-      });
-
-      const result = await res.json();
-      if (res.ok) {
-        console.log("Data dikirim:", cleanedData);
-        alert("Profil berhasil diperbarui!");
-      } else {
-        console.log("Gagal menyimpan:", result);
-        alert("Gagal menyimpan: " + (result.message || "Lihat console untuk detail."));
-      }
-    } catch (err) {
-      console.error("Error saat menyimpan profil:", err);
-      alert("Terjadi kesalahan.");
+    const result = await res.json();
+    if (res.ok) {
+      alert("Profil berhasil diperbarui!");
+    } else {
+      alert("Gagal menyimpan: " + result.message);
     }
-  };
+  } catch (err) {
+    console.error("Error saat menyimpan profil:", err);
+    alert("Terjadi kesalahan.");
+  }
+};
 
 
     const handleCancel = () => {

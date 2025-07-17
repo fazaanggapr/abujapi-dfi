@@ -150,7 +150,7 @@ const uploadPhoto = () => {
     if (file) {
       const formData = new FormData();
       formData.append("profile_photo", file);
-      const token = localStorage.getItem("token");
+      const token = localStorage.getItem("access_token");
 
       try {
         const response = await fetch(`${baseUrl}/profile`, {
@@ -200,32 +200,29 @@ const uploadPhoto = () => {
         [name]: value,
       }));
     };
+const handleSave = async () => {
+  const formData = new FormData();
+  formData.append("profile_photo", selectedPhoto); // ⬅️ penting
 
- const handleSave = async () => {
   const token = localStorage.getItem("access_token");
 
   try {
-    const res = await fetch(`https://abujapi-proto.ihsanwd10.my.id/api/profile`, {
-      method: "POST", // Ganti jadi POST
+    const response = await fetch(`${baseUrl}/profile`, {
+      method: "POST",
       headers: {
-        "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
-        Accept: "application/json",
+        // Jangan set Content-Type, biar browser yang atur boundary-nya
       },
-      body: JSON.stringify(formData),
+      body: formData,
     });
 
-    const result = await res.json();
-    if (res.ok) {
-      alert("Profil berhasil diperbarui!");
-    } else {
-      alert("Gagal menyimpan: " + result.message);
-    }
-  } catch (err) {
-    console.error("Error saat menyimpan profil:", err);
-    alert("Terjadi kesalahan.");
+    const data = await response.json();
+    console.log("Sukses update:", data);
+  } catch (error) {
+    console.error("Gagal update:", error);
   }
 };
+
 
 
     const handleCancel = () => {

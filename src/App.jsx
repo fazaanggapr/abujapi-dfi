@@ -10,6 +10,7 @@ import LihatProfil from "./features/profil/LihatProfil";
 import TambahProfil from "./features/profil/TambahProfil";
 import TambahLaporan from "./features/profil/laporan/TambahLaporan";
 import EditProfil from "./features/profil/EditProfil";
+import EditProfilKaryawan from "./features/profil/EditProfilKaryawan";
 import LihatLaporan from "./features/profil/laporan/LihatLaporan";
 import LihatProfilKaryawan from "./features/profil/LihatProfilKaryawan";
 import PrivateRoute from "./routes/PrivateRoute";
@@ -97,6 +98,14 @@ function App() {
           element={
             <PrivateRoute>
               <EditProfil />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/edit-profil-karyawan"
+          element={
+            <PrivateRoute>
+              <EditProfilKaryawan />
             </PrivateRoute>
           }
         />

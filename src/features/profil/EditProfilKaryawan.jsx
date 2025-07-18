@@ -97,13 +97,6 @@ const EditEmployeeDataForm = () => {
     fetchProfile();
   }, []);
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
 
   const handlePhotoUpload = () => {
   // Misalnya pakai file input manual (trigger click input)
@@ -142,49 +135,104 @@ const EditEmployeeDataForm = () => {
     input.click();
   };
 
-  const handleSave = async () => {
-    const token = localStorage.getItem("access_token");
-    if (!token) {
-      alert("Token tidak ditemukan. Silakan login ulang.");
-      return;
-    }
+    const handleInputChange = (e) => {
+  const { name, value } = e.target;
+  setFormData((prevData) => ({
+    ...prevData,
+    [name]: value,
+  }));
+};
 
-    const formDataToSend = new FormData();
-    Object.entries(formData).forEach(([key, value]) => {
+
+const handleSave = async () => {
+  const token = localStorage.getItem("access_token");
+
+  if (!token) {
+    alert("Token tidak ditemukan. Silakan login ulang.");
+    return;
+  }
+
+  const formDataToSend = new FormData();
+  Object.entries(formData).forEach(([key, value]) => {
+    if (value !== undefined && value !== null) {
       formDataToSend.append(key, value);
+    }
+  });
+
+  if (profilePhoto instanceof File) {
+    formDataToSend.append("profile_photo", profilePhoto);
+  }
+
+  try {
+    const res = await fetch(`${baseUrl}/profile`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: "application/json",
+      },
+      body: formDataToSend,
     });
 
-    if (photoFile) {
-      formDataToSend.append("profile_photo", photoFile);
-    }
+    const result = await res.json();
+ console.log("Hasil PATCH:", JSON.stringify(result, null, 2));
 
-    try {
-      const res = await fetch(`${baseUrl}/profile`, {
-        method: "PATCH",
+
+    if (res.ok) {
+      alert("Profil berhasil diperbarui!");
+
+      // Fetch ulang data profil
+      const profileRes = await fetch(`${baseUrl}/profile`, {
         headers: {
           Authorization: `Bearer ${token}`,
+          Accept: "application/json",
         },
-        body: formDataToSend,
       });
 
-      const result = await res.json();
-      if (res.ok) {
-        alert("Profil berhasil diperbarui!");
-        navigate("/lihat-profil");
-      } else {
-        alert("Gagal menyimpan: " + (result.message || "Terjadi kesalahan"));
-      }
-    } catch (err) {
-      console.error("Error:", err);
-      alert("Terjadi kesalahan jaringan");
-    }
-  };
+      const profileData = await profileRes.json();
 
-  const handleCancel = () => {
-    if (window.confirm("Yakin ingin membatalkan perubahan?")) {
-      navigate("/lihat-profil");
+      if (profileRes.ok && profileData.data?.profile) {
+        const profile = profileData.data.profile;
+
+        setFormData({
+          name: profile.name || "",
+          phone_number: profile.phone_number || "",
+          address: profile.address || "",
+          gender: profile.gender || "",
+          age: profile.age || "",
+          bank_account: profile.bank_account || "",
+          education: profile.education || "",
+          employee_status: profile.employee_status || "",
+          portfolio_link: profile.portfolio_link || "",
+          placement_location: profile.placement_location || "",
+          position: profile.position || "",
+          status: profile.status || "",
+          work_duration: profile.work_duration || "",
+          work_location: profile.work_location || "",
+          weight: profile.weight || "",
+          height: profile.height || "",
+          nik: profile.nik || "",
+          grade: profile.grade || "",
+          email: profile.email || "",
+        });
+        console.log(profile)
+        if (profile.profile_photo) {
+          setProfilePhoto(profile.profile_photo);
+        }
+      }
+    } else {
+      alert("Gagal menyimpan perubahan.");
     }
-  };
+  } catch (error) {
+    console.error("Error saat menyimpan data:", error);
+    alert("Terjadi kesalahan saat menyimpan data.");
+  }
+};
+
+const handleCancel = () => {
+  if (window.confirm("Yakin ingin membatalkan perubahan?")) {
+    window.location.reload(); // Reload halaman untuk reset form
+  }
+};
 
   return (
     <div className="bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 min-h-screen">

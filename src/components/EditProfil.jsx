@@ -50,7 +50,7 @@ const EditEmployeeDataForm = () => {
     nik: '',
     grade: ''
   });
-
+}
  const [profilePhoto, setProfilePhoto] = useState(null);
 const [photoFile, setPhotoFile] = useState(null); // buat dikirim ke backend
 
@@ -139,7 +139,7 @@ const [photoFile, setPhotoFile] = useState(null); // buat dikirim ke backend
   };
   input.click();
 };
-
+ }
 
   const handleInputChange = (e) => {
   const { name, value } = e.target;
@@ -186,32 +186,6 @@ const [photoFile, setPhotoFile] = useState(null); // buat dikirim ke backend
   form.append("skills", "Keahlian fisik, bela diri, analisis keamanan"); // sementara hardcode
   form.append("grade", "-");
 
-  try {
-    const response = await fetch("https://abujapi-proto.ihsanwd10.my.id/api/profile", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-      body: form,
-    });
-
-    const result = await response.json();
-
-    if (response.ok) {
-      alert("✅ Profil berhasil disimpan!");
-      console.log("✅ Respon backend:", result);
-    } else if (response.status === 422) {
-      alert("⚠️ Validasi gagal, cek kembali data yang kamu isi.");
-      console.log("❌ Detail error:", result.errors);
-    } else {
-      alert("❌ Gagal menyimpan profil.");
-      console.error(result);
-    }
-  } catch (err) {
-    console.error("❌ Error jaringan:", err);
-    alert("❌ Tidak bisa terhubung ke server.");
-  }
-};
 
   const handleSave = async () => {
   const token = localStorage.getItem("access_token");

@@ -47,11 +47,6 @@ const PortfolioLink = ({ formData, onChange }) => {
             </div>
           )}
         </div>
-        
-        <div className="mt-4 text-sm text-slate-500">
-          <p>💡 Tips: Masukkan URL lengkap termasuk https://</p>
-          <p>Contoh: https://github.com/username atau https://portfolio.com</p>
-        </div>
       </div>
     </div>
   );

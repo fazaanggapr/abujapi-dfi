@@ -67,22 +67,6 @@ const WorkData = ({ formData, onChange }) => {
           />
         </div>
 
-        {/* Lokasi Kerja */}
-        <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-4 border border-blue-200">
-          <label className="block text-sm font-medium text-slate-600 mb-2">
-            <MapPin className="w-4 h-4 inline mr-1" />
-            Lokasi Kerja
-          </label>
-          <input
-            type="text"
-            name="work_location"
-            value={formData.work_location}
-            onChange={onChange}
-            className="w-full px-3 py-2 rounded-md border border-slate-300 text-slate-800 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-            placeholder="Masukkan lokasi kerja..."
-          />
-        </div>
-
         {/* Lokasi Penempatan */}
         <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-4 border border-blue-200">
           <label className="block text-sm font-medium text-slate-600 mb-2">

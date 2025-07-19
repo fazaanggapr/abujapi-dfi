@@ -75,7 +75,7 @@ const ViewEmployeeProfile = () => {
         if (response.ok && result.data && result.data.profile) {
           const profile = result.data.profile;
           setEmployee({
-            photo_url: profile.profile_photo_url,
+            profile_photo_url: profile.profile_photo_url,
             user_id: profile.user_id,
             name: result.data.name,
             email: result.data.email,
@@ -96,6 +96,8 @@ const ViewEmployeeProfile = () => {
             portfolio: profile.portfolio_link,
             grade: profile.grade,
           });
+          console.log("DEBUG PROFILE", profile); // untuk cek isi yang diterima
+
         } else {
           console.error("Failed to fetch employee data:", result);
         }
@@ -168,6 +170,7 @@ const ViewEmployeeProfile = () => {
           {/* Left Column - Profile Photo & Basic Info */}
           <div className="lg:col-span-1">
             <ProfilePhoto 
+            employee={employee}
               uploadPhoto={uploadPhoto}
             />
           </div>

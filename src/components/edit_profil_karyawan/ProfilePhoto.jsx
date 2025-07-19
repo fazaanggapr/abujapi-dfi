@@ -18,7 +18,7 @@ const ProfilePhoto = ({ employee, uploadPhoto }) => {
           <div className="w-full h-48 bg-gradient-to-br from-slate-200 to-slate-300 rounded-2xl overflow-hidden relative flex items-center justify-center shadow-lg mx-auto">
             <img
               src={
-                employee?.photo_url ||
+                employee?.profile_photo_url ||
                 "assets/profile-photo-default.png"
               }
               className="w-full h-full object-cover"

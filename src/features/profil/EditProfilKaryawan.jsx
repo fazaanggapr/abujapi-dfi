@@ -61,6 +61,7 @@ const EditEmployeeDataForm = () => {
   ];
 
   const [formData, setFormData] = useState({
+    profile_photo_url:"",
     name: "",
     phone_number: "",
     address: "",
@@ -80,6 +81,7 @@ const EditEmployeeDataForm = () => {
     nik: "",
     grade: "",
     email: "",
+
   });
 
   const [profilePhoto, setProfilePhoto] = useState(null);
@@ -105,6 +107,7 @@ const [certifications, setCertifications] = useState(certificationsDummy);
           const profile = result.data.profile;
           setFormData({
             name: profile.name || "",
+            profile_photo_url:profile.profile_photo_url,
             phone_number: profile.phone_number || "",
             address: profile.address || "",
             gender: profile.gender || "",
@@ -232,6 +235,7 @@ const [certifications, setCertifications] = useState(certificationsDummy);
 
           setFormData({
             name: profile.name || "",
+            profile_photo_url: profile.profile_photo_url,
             phone_number: profile.phone_number || "",
             address: profile.address || "",
             gender: profile.gender || "",

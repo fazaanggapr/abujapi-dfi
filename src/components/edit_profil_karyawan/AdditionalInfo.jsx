@@ -11,9 +11,9 @@ const AdditionalInfo = ({ formData, onChange }) => {
         </div>
       </div>
       <div className="p-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 gap-4 md:grid-cols-2 gap-4">
           {/* Alamat */}
-          <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-4 border border-blue-200">
+          <div className="col-span-2 w-full bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-4 border border-blue-200">
             <label className="block text-sm font-medium text-slate-600 mb-1 flex items-center">
               <MapPin className="w-4 h-4 mr-1" />
               Alamat

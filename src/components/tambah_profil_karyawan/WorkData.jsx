@@ -1,6 +1,6 @@
 // components/WorkData.jsx - EDITABLE VERSION
 import React from 'react';
-import { Briefcase, CheckCircle, Clock, MapPin } from 'lucide-react';
+import { Briefcase, CheckCircle, Clock, MapPin } from "lucide-react";
 
 const WorkData = ({ formData, onChange }) => {
   return (

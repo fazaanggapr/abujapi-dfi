@@ -19,7 +19,7 @@ const baseUrl = import.meta.env.VITE_API_URL;
 const EditEmployeeDataForm = () => {
   const navigate = useNavigate();
 
-    // Dummy data
+  // Dummy data
   const workHistoryDummy = [
     {
       company: "PT. Terbang kesatas",
@@ -41,7 +41,8 @@ const EditEmployeeDataForm = () => {
   const skillsDummy = [
     {
       title: "Keahlian Teknis",
-      description: "Berdiskusi tentang masalah perkembangan zaman terkait cyber, keamanan, hacker dll.",
+      description:
+        "Berdiskusi tentang masalah perkembangan zaman terkait cyber, keamanan, hacker dll.",
     },
     {
       title: "Analisis Keamanan",
@@ -61,7 +62,7 @@ const EditEmployeeDataForm = () => {
   ];
 
   const [formData, setFormData] = useState({
-    profile_photo_url:"",
+    profile_photo_url: "",
     name: "",
     phone_number: "",
     address: "",
@@ -81,14 +82,15 @@ const EditEmployeeDataForm = () => {
     nik: "",
     grade: "",
     email: "",
-
+    religion: "",
+    place_date_of_birth: "",
   });
 
   const [profilePhoto, setProfilePhoto] = useState(null);
   const [photoFile, setPhotoFile] = useState(null);
-const [workHistory, setWorkHistory] = useState(workHistoryDummy);
-const [skills, setSkills] = useState(skillsDummy);
-const [certifications, setCertifications] = useState(certificationsDummy);
+  const [workHistory, setWorkHistory] = useState(workHistoryDummy);
+  const [skills, setSkills] = useState(skillsDummy);
+  const [certifications, setCertifications] = useState(certificationsDummy);
 
   // Fetch profile data saat komponen dimount
   useEffect(() => {
@@ -107,7 +109,7 @@ const [certifications, setCertifications] = useState(certificationsDummy);
           const profile = result.data.profile;
           setFormData({
             name: profile.name || "",
-            profile_photo_url:profile.profile_photo_url,
+            profile_photo_url: profile.profile_photo_url,
             phone_number: profile.phone_number || "",
             address: profile.address || "",
             gender: profile.gender || "",
@@ -126,6 +128,8 @@ const [certifications, setCertifications] = useState(certificationsDummy);
             nik: profile.nik || "",
             grade: profile.grade || "",
             email: profile.email || "",
+            religion: profile.religion || "",
+            place_date_of_birth: profile.place_date_of_birth || "",
           });
 
           if (profile.profile_photo) {
@@ -157,24 +161,6 @@ const [certifications, setCertifications] = useState(certificationsDummy);
     };
 
     fileInput.click();
-  };
-
-  const handleUploadPhoto = () => {
-    const input = document.createElement("input");
-    input.type = "file";
-    input.accept = "image/*";
-    input.onchange = (e) => {
-      const file = e.target.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          setProfilePhoto(e.target.result);
-          setPhotoFile(file);
-        };
-        reader.readAsDataURL(file);
-      }
-    };
-    input.click();
   };
 
   const handleInputChange = (e) => {
@@ -254,6 +240,8 @@ const [certifications, setCertifications] = useState(certificationsDummy);
             nik: profile.nik || "",
             grade: profile.grade || "",
             email: profile.email || "",
+            religion: profile.religion || "",
+            place_date_of_birth: profile.place_date_of_birth || "",
           });
           console.log(profile);
           if (profile.profile_photo) {
@@ -287,7 +275,7 @@ const [certifications, setCertifications] = useState(certificationsDummy);
           <div className="lg:col-span-1">
             <ProfilePhoto
               profilePhoto={profilePhoto}
-              onUploadPhoto={handleUploadPhoto}
+              onUploadPhoto={handlePhotoUpload}
             />
           </div>
 

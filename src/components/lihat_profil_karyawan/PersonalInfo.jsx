@@ -1,5 +1,15 @@
 import React from "react";
-import { User, Calendar, GraduationCap, Users, Activity, CreditCard } from "lucide-react";
+import {
+  User,
+  Calendar,
+  GraduationCap,
+  Users,
+  Activity,
+  CreditCard,
+  CalendarDays,
+  Landmark,
+  BadgeCheck,
+} from "lucide-react";
 
 const PersonalInfo = ({ employee }) => {
   return (
@@ -16,6 +26,7 @@ const PersonalInfo = ({ employee }) => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-4 border border-blue-200">
             <label className="block text-sm font-medium text-slate-600 mb-1 flex items-center">
+              <CreditCard className="w-4 h-4 mr-1" />
               NIK
             </label>
             <p className="text-slate-800 font-semibold text-sm">
@@ -23,21 +34,41 @@ const PersonalInfo = ({ employee }) => {
             </p>
           </div>
           <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-4 border border-blue-200">
-            <label className="block text-sm font-medium text-slate-600 mb-1">
+            <label className="block text-sm font-medium text-slate-600 mb-1 flex items-center">
+              <User className="w-4 h-4 mr-1" />
               Nama Lengkap
             </label>
+            <p className="text-slate-800 font-semibold">{employee?.name}</p>
+          </div>
+          <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-4 border border-blue-200">
+            <label className="block text-sm font-medium text-slate-600 mb-1 flex items-center">
+              <CalendarDays className="w-4 h-4 mr-1" />
+              Tempat, Tanggal Lahir
+            </label>
             <p className="text-slate-800 font-semibold">
-              {employee?.name}
+              {employee?.placeDateofBirth}
             </p>
+          </div>
+          <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-4 border border-blue-200">
+            <label className="block text-sm font-medium text-slate-600 mb-1 flex items-center">
+              <Users className="w-4 h-4 mr-1" />
+              Jenis Kelamin
+            </label>
+            <p className="text-slate-800 font-semibold">{employee?.gender}</p>
           </div>
           <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-4 border border-blue-200">
             <label className="block text-sm font-medium text-slate-600 mb-1 flex items-center">
               <Calendar className="w-4 h-4 mr-1" />
               Umur
             </label>
-            <p className="text-slate-800 font-semibold">
-              {employee?.age}
-            </p>
+            <p className="text-slate-800 font-semibold">{employee?.age}</p>
+          </div>
+          <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-4 border border-blue-200">
+            <label className="block text-sm font-medium text-slate-600 mb-1 flex items-center">
+              <Landmark className="w-4 h-4 mr-1" />
+              Agama
+            </label>
+            <p className="text-slate-800 font-semibold">{employee?.religion}</p>
           </div>
           <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-4 border border-blue-200">
             <label className="block text-sm font-medium text-slate-600 mb-1 flex items-center">
@@ -50,19 +81,11 @@ const PersonalInfo = ({ employee }) => {
           </div>
           <div className="bg-gradient-to-r from-emerald-50 to-green-50 rounded-xl p-3 border border-emerald-200">
             <label className="block text-sm font-medium text-slate-600 mb-1 flex items-center">
+              <BadgeCheck className="w-4 h-4 mr-1" />
               Status
             </label>
             <p className="text-emerald-800 font-semibold text-sm">
               {employee?.status}
-            </p>
-          </div>
-          <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-4 border border-blue-200">
-            <label className="block text-sm font-medium text-slate-600 mb-1 flex items-center">
-              <Users className="w-4 h-4 mr-1" />
-              Jenis Kelamin
-            </label>
-            <p className="text-slate-800 font-semibold">
-              {employee?.gender}
             </p>
           </div>
           <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-4 border border-blue-200">

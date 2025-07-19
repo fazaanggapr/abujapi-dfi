@@ -95,6 +95,8 @@ const ViewEmployeeProfile = () => {
             location: profile.placement_location,
             portfolio: profile.portfolio_link,
             grade: profile.grade,
+            religion: profile.religion,
+            place_date_of_birth: profile.place_date_of_birth,
           });
           console.log("DEBUG PROFILE", profile); // untuk cek isi yang diterima
 

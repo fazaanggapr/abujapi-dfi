@@ -3,7 +3,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, User } from 'lucide-react';
 
-const Header = () => {
+const ProfileHeader = () => {
   return (
     <header className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-white/20 mb-8">
       <div className="flex items-center justify-between p-6">
@@ -30,4 +30,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default ProfileHeader;

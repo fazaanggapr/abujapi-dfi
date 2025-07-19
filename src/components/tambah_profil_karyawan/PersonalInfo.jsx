@@ -27,7 +27,7 @@ const PersonalInfo = ({ formData, onChange }) => {
           {/* NIK */}
           <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-4 border border-blue-200">
             <label className="block text-sm font-medium text-slate-600 mb-1 flex items-center">
-              <CreditCard className="w-4 h-4 mr-1" />
+            <CreditCard className="w-4 h-4 mr-1" />
               NIK
             </label>
             <input
@@ -85,7 +85,7 @@ const PersonalInfo = ({ formData, onChange }) => {
               <option value="Perempuan">Perempuan</option>
             </select>
           </div>
-          
+
           {/* Umur */}
           <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-4 border border-blue-200">
             <label className="block text-sm font-medium text-slate-600 mb-1 flex items-center">
@@ -149,7 +149,6 @@ const PersonalInfo = ({ formData, onChange }) => {
               className="w-full border rounded px-3 py-2"
             />
           </div>
-
 
           {/* Tinggi / Berat */}
           <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-4 border border-blue-200">

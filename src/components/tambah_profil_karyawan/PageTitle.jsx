@@ -10,10 +10,10 @@ const PageTitle = () => {
           <User className="w-6 h-6 text-white" />
         </div>
         <div>
-          <h1 className="text-2xl font-bold text-slate-800">Edit Profil Karyawan</h1>
+          <h1 className="text-2xl font-bold text-slate-800">Tambah Profil Karyawan</h1>
           <p className="text-slate-600 flex items-center space-x-2">
             <CheckCircle className="w-4 h-4" />
-            <span>Perbarui informasi profil Anda</span>
+            <span>Tambah Profil Karyawan</span>
           </p>
         </div>
       </div>

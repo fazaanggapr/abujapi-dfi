@@ -7,9 +7,7 @@ const WorkData = ({ employee }) => {
       <div className="bg-gradient-to-r from-blue-600 to-indigo-600 p-6">
         <div className="flex items-center space-x-3">
           <Briefcase className="w-6 h-6 text-white" />
-          <h2 className="text-xl font-semibold text-white">
-            Data Pekerjaan
-          </h2>
+          <h2 className="text-xl font-semibold text-white">Data Pekerjaan</h2>
         </div>
       </div>
       <div className="p-6 space-y-4">
@@ -23,12 +21,11 @@ const WorkData = ({ employee }) => {
           </p>
         </div>
         <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-4 border border-blue-200">
-          <label className="block text-sm font-medium text-slate-600 mb-1">
+          <label className="block text-sm font-medium text-slate-600 mb-1 flex items-center">
+            <Briefcase className="w-4 h-4 mr-1" />
             Jabatan
           </label>
-          <p className="text-slate-800 font-semibold">
-            {employee?.position}
-          </p>
+          <p className="text-slate-800 font-semibold">{employee?.position}</p>
         </div>
         <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-4 border border-blue-200">
           <label className="block text-sm font-medium text-slate-600 mb-1 flex items-center">
@@ -44,9 +41,7 @@ const WorkData = ({ employee }) => {
             <MapPin className="w-4 h-4 mr-1" />
             Lokasi Penempatan
           </label>
-          <p className="text-slate-800 font-semibold">
-            {employee?.location}
-          </p>
+          <p className="text-slate-800 font-semibold">{employee?.location}</p>
         </div>
       </div>
     </div>

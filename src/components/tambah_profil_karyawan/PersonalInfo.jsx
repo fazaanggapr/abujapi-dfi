@@ -48,7 +48,7 @@ const PersonalInfo = ({ formData, onChange }) => {
             <input
               type="text"
               name="name"
-              value={formData.name || ""}
+              value={formData.name}
               onChange={onChange}
               className="w-full border rounded px-3 py-2"
             />

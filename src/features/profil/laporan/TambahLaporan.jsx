@@ -1,5 +1,5 @@
-import React, { useState, useRef } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useState, useRef, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   ArrowLeft,
   Plus,
@@ -12,6 +12,7 @@ import {
   QrCode,
   X,
 } from "lucide-react";
+import { Html5QrcodeScanner } from "html5-qrcode";
 
 const AddTask = () => {
   const navigate = useNavigate();
@@ -26,7 +27,47 @@ const AddTask = () => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
+  const [qrResult, setQrResult] = useState(null);
+  const [showScanner, setShowScanner] = useState(false);
   const fileInputRef = useRef(null);
+  const qrScannerRef = useRef(null);
+
+  // Initialize QR Scanner
+  useEffect(() => {
+    if (showScanner) {
+      const scanner = new Html5QrcodeScanner(
+        "qr-reader",
+        {
+          fps: 10,
+          qrbox: { width: 250, height: 250 },
+          rememberLastUsedCamera: true
+        },
+        false
+      );
+
+      qrScannerRef.current = scanner;
+
+      const onScanSuccess = (decodedText) => {
+        setQrResult(decodedText);
+        setFormData(prev => ({
+          ...prev,
+          location_code: decodedText
+        }));
+        setShowScanner(false);
+        scanner.clear();
+      };
+
+      const onScanFailure = (error) => {
+        console.warn(`QR scan error: ${error}`);
+      };
+
+      scanner.render(onScanSuccess, onScanFailure);
+
+      return () => {
+        scanner.clear();
+      };
+    }
+  }, [showScanner]);
 
   const handleAddPatrol = () => {
     if (newActivity.trim()) {
@@ -75,7 +116,7 @@ const AddTask = () => {
     e.preventDefault();
     
     if (!formData.description || !formData.area || !selectedImage) {
-      setError("Harap isi deskripsi, area, dan unggah gambar");
+      setError("Harap isi semua field yang wajib diisi");
       return;
     }
 
@@ -84,11 +125,11 @@ const AddTask = () => {
     try {
       const data = new FormData();
       
-      // Append required fields
-      data.append("description", formData.description);
-      data.append("area", formData.area);
-      data.append("location_code", formData.location_code);
-      
+      // Append form fields
+      Object.entries(formData).forEach(([key, value]) => {
+        if (value) data.append(key, value);
+      });
+
       // Append image
       const blob = await fetch(selectedImage).then(res => res.blob());
       data.append("image", blob, "patrol-image.jpg");
@@ -109,7 +150,6 @@ const AddTask = () => {
         throw new Error(errorData.message || "Gagal mengirim laporan");
       }
 
-      const responseData = await response.json();
       alert("Laporan berhasil dibuat!");
       navigate("/tasks");
     } catch (err) {
@@ -120,8 +160,37 @@ const AddTask = () => {
     }
   };
 
+  const startScanner = () => {
+    setShowScanner(true);
+  };
+
+  const stopScanner = () => {
+    setShowScanner(false);
+    if (qrScannerRef.current) {
+      qrScannerRef.current.clear();
+    }
+  };
+
   return (
     <div className="bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 min-h-screen">
+      {/* QR Scanner Modal */}
+      {showScanner && (
+        <div className="fixed inset-0 bg-black bg-opacity-75 flex flex-col items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg p-6 max-w-md w-full">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-xl font-semibold">Scan QR Code</h2>
+              <button 
+                onClick={stopScanner}
+                className="text-gray-500 hover:text-gray-700"
+              >
+                <X className="w-6 h-6" />
+              </button>
+            </div>
+            <div id="qr-reader" className="w-full mb-4"></div>
+          </div>
+        </div>
+      )}
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
         {/* Header */}
         <header className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-white/20 mb-8">
@@ -158,7 +227,14 @@ const AddTask = () => {
               <h1 className="text-2xl font-bold text-slate-800">Tambah Laporan</h1>
               <p className="text-slate-600 flex items-center space-x-2">
                 <Calendar className="w-4 h-4" />
-                <span>{new Date().toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}</span>
+                <span>
+                  {new Date().toLocaleDateString('id-ID', { 
+                    weekday: 'long', 
+                    day: 'numeric', 
+                    month: 'long', 
+                    year: 'numeric' 
+                  })}
+                </span>
               </p>
             </div>
           </div>
@@ -174,6 +250,7 @@ const AddTask = () => {
           <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
             {/* Left Column - Patrol Activities */}
             <div className="xl:col-span-2 space-y-8">
+              {/* Patrol Activities */}
               <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-white/20 overflow-hidden">
                 <div className="bg-gradient-to-r from-blue-600 to-indigo-600 p-6">
                   <div className="flex items-center space-x-3">
@@ -351,13 +428,14 @@ const AddTask = () => {
                   </div>
                 </div>
                 <div className="p-6">
-                  <Link
-                    to="/scan-qr"
+                  <button
+                    type="button"
+                    onClick={startScanner}
                     className="w-full bg-gradient-to-r from-blue-500 to-blue-500 text-white py-3 px-4 rounded-lg font-medium hover:from-blue-600 hover:to-blue-600 transition-all duration-200 shadow-lg hover:shadow-xl flex items-center justify-center space-x-2"
                   >
-                    <QrCode className="w-5 h-5 text-white" />
+                    <QrCode className="w-5 h-5" />
                     <span>Scan Barcode QR</span>
-                  </Link>
+                  </button>
                 </div>
               </div>
 

@@ -6,10 +6,9 @@ import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import DataAbsensi from "./pages/DataAbsensi";
 import DataKaryawan from "./pages/DataKaryawan";
-import LihatProfilSaya from "./features/profil/LihatProfilSaya";
+import LihatAkunProfil from "./features/profil/LihatAkunProfil";
 import TambahProfilKaryawan from "./features/profil/TambahProfilKaryawan";
 import TambahLaporan from "./features/profil/laporan/TambahLaporan";
-import EditProfilSaya from "./features/profil/EditProfilSaya";
 import EditProfilKaryawan from "./features/profil/EditProfilKaryawan";
 import LihatLaporan from "./features/profil/laporan/LihatLaporan";
 import LihatProfilKaryawan from "./features/profil/LihatProfilKaryawan";
@@ -54,10 +53,10 @@ function App() {
           }
         />
         <Route
-          path="/lihat-profil-saya"
+          path="/lihat-akun-profil"
           element={
             <PrivateRoute>
-              <LihatProfilSaya />
+              <LihatAkunProfil />
             </PrivateRoute>
           }
         />
@@ -90,14 +89,6 @@ function App() {
           element={
             <PrivateRoute>
               <ScanQR />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/edit-profil-saya"
-          element={
-            <PrivateRoute>
-              <EditProfilSaya />
             </PrivateRoute>
           }
         />

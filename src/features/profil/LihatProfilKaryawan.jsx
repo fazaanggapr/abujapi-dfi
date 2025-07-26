@@ -113,31 +113,13 @@ const ViewEmployeeProfile = () => {
     fetchEmployee();
   }, []);
 
-  const uploadPhoto = () => {
-    const input = document.createElement("input");
-    input.type = "file";
-    input.accept = "image/*";
-    input.onchange = (e) => {
-      const file = e.target.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          setProfilePhoto(e.target.result);
-          alert("Foto profil berhasil diunggah!");
-        };
-        reader.readAsDataURL(file);
-      }
-    };
-    input.click();
-  };
-
   const handleDeleteData = () => {
     if (window.confirm("Apakah Anda yakin ingin menghapus data ini?")) {
       console.log("Delete employee data");
     }
   };
 
-/* if (loading) {
+/*  if (loading) {
     return <LoadingSpinner />;
   } */
 
@@ -173,7 +155,6 @@ const ViewEmployeeProfile = () => {
           <div className="lg:col-span-1">
             <ProfilePhoto 
             employee={employee}
-              uploadPhoto={uploadPhoto}
             />
           </div>
 

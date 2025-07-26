@@ -1,9 +1,8 @@
 import React from 'react';
-import AuthLayout from "../components/auth/AuthLayout";
-import IllustrationSection from "../components/auth/Illustration";
-import LoginForm from "../components/auth/LoginForm";
+import AuthLayout from "../components/Auth/shared/AuthLayout";
+import IllustrationSection from "../components/auth/shared/Illustration";
+import LoginForm from "../components/login_form/LoginForm";
 import { useLogin } from "../hooks/useLogin";
-
 
 const LoginComponent = () => {
   const { formData, loading, handleInputChange, handleSubmit } = useLogin();
@@ -28,3 +27,4 @@ const LoginComponent = () => {
 };
 
 export default LoginComponent;
+

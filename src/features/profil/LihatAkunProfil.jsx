@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 
-import Header from "../../components/lihat_profil_saya/Header";
-import PageTitle from "../../components/lihat_profil_saya/PageTitle";
-import ProfilePhoto from "../../components/lihat_profil_saya/ProfilePhoto";
-import PersonalInfo from "../../components/lihat_profil_saya/PersonalInfo";
-import ActionButtons from "../../components/lihat_profil_saya/ActionButtons";
+import Header from "../../components/lihat_akun_profil/Header";
+import PageTitle from "../../components/lihat_akun_profil/PageTitle";
+import ProfilePhoto from "../../components/lihat_akun_profil/ProfilePhoto";
+import PersonalInfo from "../../components/lihat_akun_profil/PersonalInfo";
+import ActionButtons from "../../components/lihat_akun_profil/ActionButtons";
 
 const baseUrl = import.meta.env.VITE_API_URL; // atau ganti dengan hardcoded URL jika perlu
 

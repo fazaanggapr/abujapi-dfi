@@ -18,7 +18,7 @@ export const useProfile = () => {
   };
 
   const handleViewProfile = () => {
-    navigate('/lihat-profil-saya');
+    navigate('/lihat-akun-profil');
     setProfileDropdownOpen(false);
   };
 

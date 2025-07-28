@@ -91,6 +91,8 @@ const EditEmployeeDataForm = () => {
   const [workHistory, setWorkHistory] = useState(workHistoryDummy);
   const [skills, setSkills] = useState(skillsDummy);
   const [certifications, setCertifications] = useState(certificationsDummy);
+  const [isUploading, setIsUploading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
 
   // Fetch profile data saat komponen dimount
   useEffect(() => {
@@ -132,8 +134,8 @@ const EditEmployeeDataForm = () => {
             place_date_of_birth: profile.place_date_of_birth || "",
           });
 
-          if (profile.profile_photo) {
-            setProfilePhoto(profile.profile_photo);
+          if (profile.profile_photo_url) {
+            setProfilePhoto(profile.profile_photo_url);
           }
         }
       } catch (err) {
@@ -144,22 +146,90 @@ const EditEmployeeDataForm = () => {
     fetchProfile();
   }, []);
 
-  const handlePhotoUpload = () => {
-    // Misalnya pakai file input manual (trigger click input)
-    const fileInput = document.createElement("input");
-    fileInput.type = "file";
-    fileInput.accept = "image/*";
-
-    fileInput.onchange = (e) => {
+  const handlePhotoUpload = async () => {
+    const fileInput = document.createElement('input');
+    fileInput.type = 'file';
+    fileInput.accept = 'image/*';
+    
+    fileInput.onchange = async (e) => {
       const file = e.target.files[0];
-      if (file) {
+      
+      if (!file) return;
+      
+      // Validasi ukuran file (maks 2MB)
+      if (file.size > 25 * 1024 * 1024) {
+        alert('Ukuran file terlalu besar. Maksimal 15MB.');
+        return;
+      }
+      
+      // Validasi tipe file
+      if (!file.type.match('image/jpeg') && !file.type.match('image/png')) {
+        alert('Format file tidak didukung. Harus JPG/PNG.');
+        return;
+      }
+      
+      setIsUploading(true);
+      setUploadProgress(0);
+      
+      try {
+        // Tampilkan preview
         const photoURL = URL.createObjectURL(file);
-        setProfilePhoto(photoURL); // untuk ditampilkan di img
-        setPhotoFile(file); // untuk nanti dikirim ke backend kalau perlu
-        console.log("File foto dipilih:", file);
+        setProfilePhoto(photoURL);
+        
+        // Upload ke server
+        const token = localStorage.getItem('access_token');
+        const formData = new FormData();
+        formData.append('profile_photo', file);
+        
+        const xhr = new XMLHttpRequest();
+        
+        xhr.upload.onprogress = (event) => {
+          if (event.lengthComputable) {
+            const progress = Math.round((event.loaded / event.total) * 100);
+            setUploadProgress(progress);
+          }
+        };
+        
+        const uploadPromise = new Promise((resolve, reject) => {
+          xhr.onload = () => {
+            if (xhr.status >= 200 && xhr.status < 300) {
+              resolve(JSON.parse(xhr.response));
+            } else {
+              reject(new Error('Upload failed'));
+            }
+          };
+          
+          xhr.onerror = () => reject(new Error('Upload failed'));
+          xhr.open('POST', `${baseUrl}/upload-profile-photo`, true);
+          xhr.setRequestHeader('Authorization', `Bearer ${token}`);
+          xhr.send(formData);
+        });
+        
+        const result = await uploadPromise;
+        
+        if (result.data?.profile_photo_url) {
+          setFormData(prev => ({
+            ...prev,
+            profile_photo_url: result.data.profile_photo_url
+          }));
+          alert('Foto profil berhasil diupdate!');
+        }
+        
+      } catch (error) {
+        console.error('Upload error:', error);
+        alert('Gagal mengunggah foto: ' + error.message);
+        // Kembalikan ke foto sebelumnya jika ada
+        if (formData.profile_photo_url) {
+          setProfilePhoto(formData.profile_photo_url);
+        } else {
+          setProfilePhoto(null);
+        }
+      } finally {
+        setIsUploading(false);
+        setUploadProgress(0);
       }
     };
-
+    
     fileInput.click();
   };
 
@@ -186,8 +256,8 @@ const EditEmployeeDataForm = () => {
       }
     });
 
-    if (profilePhoto instanceof File) {
-      formDataToSend.append("profile_photo", profilePhoto);
+    if (photoFile) {
+      formDataToSend.append("profile_photo", photoFile);
     }
 
     try {
@@ -243,9 +313,9 @@ const EditEmployeeDataForm = () => {
             religion: profile.religion || "",
             place_date_of_birth: profile.place_date_of_birth || "",
           });
-          console.log(profile);
-          if (profile.profile_photo) {
-            setProfilePhoto(profile.profile_photo);
+          
+          if (profile.profile_photo_url) {
+            setProfilePhoto(profile.profile_photo_url);
           }
         }
       } else {
@@ -263,6 +333,63 @@ const EditEmployeeDataForm = () => {
     }
   };
 
+  const ProfilePhoto = ({ profilePhoto, onUploadPhoto, isLoading, uploadProgress }) => {
+  return (
+    <div className="bg-white rounded-lg shadow-md p-6">
+      <h2 className="text-lg font-semibold text-gray-800 mb-4">Foto Profil</h2>
+      
+      <div className="flex flex-col items-center">
+        <div className="relative mb-4">
+          {profilePhoto ? (
+            <div className="relative">
+              <img
+                src={profilePhoto}
+                alt="Profile"
+                className="w-40 h-40 rounded-full object-cover border-4 border-blue-100"
+              />
+              {isLoading && (
+                <div className="absolute inset-0 bg-black bg-opacity-30 rounded-full flex items-center justify-center">
+                  <div className="text-white text-center">
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white mx-auto mb-2"></div>
+                    <span className="text-xs block">{uploadProgress}%</span>
+                  </div>
+                </div>
+              )}
+            </div>
+          ) : (
+            <div className="w-40 h-40 rounded-full bg-gray-200 flex items-center justify-center">
+              <span className="text-gray-500">No Photo</span>
+            </div>
+          )}
+        </div>
+        
+        <button
+          onClick={onUploadPhoto}
+          disabled={isLoading}
+          className={`px-4 py-2 rounded-md text-sm font-medium text-white ${
+            isLoading ? 'bg-blue-300 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'
+          } transition-colors`}
+        >
+          {isLoading ? 'Mengunggah...' : 'Ubah Foto Profil'}
+        </button>
+        
+        <p className="mt-2 text-xs text-gray-500 text-center">
+          Format: JPG/PNG (Maks. 15MB)
+        </p>
+        
+        {isLoading && (
+          <div className="w-full bg-gray-200 rounded-full h-2.5 mt-2">
+            <div 
+              className="bg-blue-600 h-2.5 rounded-full" 
+              style={{ width: `${uploadProgress}%` }}
+            ></div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
   return (
     <div className="bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 min-h-screen">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
@@ -274,8 +401,10 @@ const EditEmployeeDataForm = () => {
           {/* Left Column - Profile Photo & Basic Info */}
           <div className="lg:col-span-1">
             <ProfilePhoto
-              profilePhoto={profilePhoto}
+              profilePhoto={profilePhoto || formData.profile_photo_url}
               onUploadPhoto={handlePhotoUpload}
+              isLoading={isUploading}
+              uploadProgress={uploadProgress}
             />
           </div>
 

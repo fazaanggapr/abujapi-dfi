@@ -16,9 +16,7 @@ function EmployeeRow({ employee }) {
     <tr className="hover:bg-gray-50 transition-colors">
       <td className="px-6 py-5">
         <div className="flex items-center">
-          <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center text-white font-semibold text-sm mr-3">
-            {getInitials(employee.name)}
-          </div>
+          
           <div>
             <div className="font-semibold text-gray-900">
               {employee.name}

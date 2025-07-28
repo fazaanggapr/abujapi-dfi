@@ -46,7 +46,7 @@ const PersonalInfo = ({ employee }) => {
               Tempat, Tanggal Lahir
             </label>
             <p className="text-slate-800 font-semibold">
-              {employee?.placeDateofBirth}
+              {employee?.tempat_lahir}, {employee?.tanggal_lahir} 
             </p>
           </div>
           <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-4 border border-blue-200">

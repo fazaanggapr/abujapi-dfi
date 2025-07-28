@@ -58,7 +58,6 @@ const AttendanceDataTable = () => {
 
         if (response.ok && result.data) {
           const transformed = result.data.map((item) => {
-            console.log("Processing item:", item);
             return {
               id: item.id,
               name: item.user.name,
@@ -67,8 +66,10 @@ const AttendanceDataTable = () => {
               report: "Belum Dicek",
               avatar: getInitials(item.user.name),
               attended_at: item.attended_at,
+              profile_photo_url: item.user.profile?.profile_photo_url || null, // <-- tambahkan ini
             };
           });
+
 
           console.log("Transformed data:", transformed);
 

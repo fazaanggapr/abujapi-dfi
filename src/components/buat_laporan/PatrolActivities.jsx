@@ -25,6 +25,7 @@ const PatrolActivities = ({ activities = [], onAddActivity, onRemoveActivity }) 
   };
 
   return (
+    
     <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-white/20 overflow-hidden">
       <div className="bg-gradient-to-r from-blue-600 to-indigo-600 p-6">
         <div className="flex items-center space-x-3">

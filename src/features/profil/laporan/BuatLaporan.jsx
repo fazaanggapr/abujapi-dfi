@@ -145,26 +145,28 @@ const AddTask = () => {
         {/* Error Alert */}
         <ErrorAlert error={error} />
 
-        <form onSubmit={handleSubmit}>
-          <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
-            {/* Left Column - Patrol Activities */}
-            <div className="xl:col-span-2 space-y-8">
-              {/* Patrol Activities */}
+        {/* Main Content Area */}
+        <form onSubmit={handleSubmit} className="mt-8">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            
+            {/* Left Column - Main Content (2/3 width) */}
+            <div className="lg:col-span-2 space-y-8">
+              {/* Patrol Activities Section */}
               <PatrolActivities
                 activities={patrolActivities}
                 onAddActivity={handleAddPatrolActivity}
                 onRemoveActivity={handleRemoveActivity}
               />
 
-              {/* Required Fields */}
+              {/* Required Fields Section */}
               <RequiredFields
                 formData={formData}
                 onChange={handleFormChange}
               />
             </div>
 
-            {/* Right Column - Image & QR Reports */}
-            <div className="space-y-8">
+            {/* Right Column - Sidebar (1/3 width) */}
+            <div className="lg:col-span-1 space-y-6">
               {/* Image Upload Section */}
               <ImageUpload
                 selectedImage={selectedImage}
@@ -177,13 +179,15 @@ const AddTask = () => {
               {/* QR Scan Section */}
               <QRScanSection onStartScan={handleStartScan} />
 
-              {/* Action Buttons */}
-              <ActionButtons
-                onCancel={handleBack}
-                onSubmit={handleSubmit}
-                isSubmitting={isSubmitting}
-                isDisabled={!isFormValid}
-              />
+              {/* Action Buttons - Sticky at bottom on mobile, normal on desktop */}
+              <div className="lg:sticky lg:top-6">
+                <ActionButtons
+                  onCancel={handleBack}
+                  onSubmit={handleSubmit}
+                  isSubmitting={isSubmitting}
+                  isDisabled={!isFormValid}
+                />
+              </div>
             </div>
           </div>
         </form>
@@ -192,4 +196,4 @@ const AddTask = () => {
   );
 };
 
-export default AddTask;
+export default AddTask

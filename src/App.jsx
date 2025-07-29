@@ -22,12 +22,12 @@ function App() {
   const toggleSidebar = () => setSidebarOpen(!isSidebarOpen);
 
   return (
+    
     <BrowserRouter>
       <Toaster position="top-right" reverseOrder={false} />
       <Routes>
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
-
         {/* Routes yang butuh login */}
         <Route
           path="/data-absensi"

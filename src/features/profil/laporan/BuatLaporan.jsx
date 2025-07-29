@@ -114,7 +114,7 @@ const AddTask = () => {
       }
 
       alert("Laporan berhasil dibuat!");
-      navigate("/tasks");
+      navigate("/laporan");
     } catch (err) {
       console.error("Error:", err);
       setError(err.message || "Terjadi kesalahan");

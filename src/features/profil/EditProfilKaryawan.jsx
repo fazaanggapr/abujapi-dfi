@@ -156,15 +156,15 @@ const EditEmployeeDataForm = () => {
       
       if (!file) return;
       
-      // Validasi ukuran file (maks 2MB)
-      if (file.size > 25 * 1024 * 1024) {
+      // Validasi ukuran file (maks 15MB)
+      if (file.size > 15 * 1024 * 1024) {
         alert('Ukuran file terlalu besar. Maksimal 15MB.');
         return;
       }
       
       // Validasi tipe file
-      if (!file.type.match('image/jpeg') && !file.type.match('image/png')) {
-        alert('Format file tidak didukung. Harus JPG/PNG.');
+      if (!file.type.startsWith('image/')) {
+        alert('Format file tidak didukung. Harus berupa gambar.');
         return;
       }
       
@@ -172,58 +172,146 @@ const EditEmployeeDataForm = () => {
       setUploadProgress(0);
       
       try {
-        // Tampilkan preview
+        // Tampilkan preview dulu
         const photoURL = URL.createObjectURL(file);
         setProfilePhoto(photoURL);
+        setPhotoFile(file);
         
-        // Upload ke server
         const token = localStorage.getItem('access_token');
-        const formData = new FormData();
-        formData.append('profile_photo', file);
         
-        const xhr = new XMLHttpRequest();
+        if (!token) {
+          throw new Error('Token tidak ditemukan. Silakan login ulang.');
+        }
         
-        xhr.upload.onprogress = (event) => {
-          if (event.lengthComputable) {
-            const progress = Math.round((event.loaded / event.total) * 100);
-            setUploadProgress(progress);
+        console.log('Uploading photo via /profile endpoint...');
+        
+        // Upload langsung via endpoint /profile yang sudah ada
+        const profileFormData = new FormData();
+        
+        // Tambahkan semua data profile yang sudah ada
+        Object.entries(formData).forEach(([key, value]) => {
+          if (value !== undefined && value !== null && key !== 'profile_photo_url') {
+            profileFormData.append(key, value);
           }
-        };
-        
-        const uploadPromise = new Promise((resolve, reject) => {
-          xhr.onload = () => {
-            if (xhr.status >= 200 && xhr.status < 300) {
-              resolve(JSON.parse(xhr.response));
-            } else {
-              reject(new Error('Upload failed'));
-            }
-          };
-          
-          xhr.onerror = () => reject(new Error('Upload failed'));
-          xhr.open('POST', `${baseUrl}/upload-profile-photo`, true);
-          xhr.setRequestHeader('Authorization', `Bearer ${token}`);
-          xhr.send(formData);
         });
         
-        const result = await uploadPromise;
+        // Tambahkan file foto
+        profileFormData.append('profile_photo', file);
         
-        if (result.data?.profile_photo_url) {
+        const response = await fetch(`${baseUrl}/profile`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Accept': 'application/json',
+          },
+          body: profileFormData,
+        });
+        
+        console.log('Profile update response status:', response.status);
+        
+        if (!response.ok) {
+          const errorText = await response.text();
+          console.error('Profile update error:', errorText);
+          
+          let errorMessage = 'Upload gagal';
+          try {
+            const errorJson = JSON.parse(errorText);
+            errorMessage = errorJson.message || errorJson.error || `Error ${response.status}: ${errorText}`;
+          } catch {
+            errorMessage = `Error ${response.status}: ${errorText}`;
+          }
+          
+          throw new Error(errorMessage);
+        }
+        
+        const result = await response.json();
+        console.log('Profile update result:', result);
+        
+        // Cek apakah response dari update langsung ada foto URL
+        if (result.data?.profile?.profile_photo_url) {
+          const newPhotoUrl = result.data.profile.profile_photo_url;
+          console.log('New photo URL from update response:', newPhotoUrl);
+          
+          // Update state langsung dengan URL baru
           setFormData(prev => ({
             ...prev,
-            profile_photo_url: result.data.profile_photo_url
+            profile_photo_url: newPhotoUrl
           }));
+          
+          // Pastikan foto ditampilkan dengan menambahkan timestamp untuk bypass cache
+          const photoUrlWithTimestamp = `${newPhotoUrl}?t=${Date.now()}`;
+          setProfilePhoto(photoUrlWithTimestamp);
+          
           alert('Foto profil berhasil diupdate!');
+        } else {
+          // Jika tidak ada di response, refresh data dari server
+          console.log('Photo URL not in response, fetching fresh data...');
+          
+          const refreshResponse = await fetch(`${baseUrl}/profile`, {
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              'Accept': 'application/json',
+            },
+          });
+          
+          if (refreshResponse.ok) {
+            const refreshData = await refreshResponse.json();
+            console.log('Refreshed profile data:', refreshData);
+            
+            if (refreshData.data?.profile) {
+              const profile = refreshData.data.profile;
+              
+              // Update semua form data dengan data terbaru
+              setFormData({
+                name: profile.name || "",
+                profile_photo_url: profile.profile_photo_url || "",
+                phone_number: profile.phone_number || "",
+                address: profile.address || "",
+                gender: profile.gender || "",
+                age: profile.age || "",
+                bank_account: profile.bank_account || "",
+                education: profile.education || "",
+                employee_status: profile.employee_status || "",
+                portfolio_link: profile.portfolio_link || "",
+                placement_location: profile.placement_location || "",
+                position: profile.position || "",
+                status: profile.status || "",
+                work_duration: profile.work_duration || "",
+                work_location: profile.work_location || "",
+                weight: profile.weight || "",
+                height: profile.height || "",
+                nik: profile.nik || "",
+                grade: profile.grade || "",
+                email: profile.email || "",
+                religion: profile.religion || "",
+                place_date_of_birth: profile.place_date_of_birth || "",
+              });
+              
+              if (profile.profile_photo_url) {
+                // Tambahkan timestamp untuk bypass cache browser
+                const photoUrlWithTimestamp = `${profile.profile_photo_url}?t=${Date.now()}`;
+                setProfilePhoto(photoUrlWithTimestamp);
+                alert('Foto profil berhasil diupdate!');
+              } else {
+                alert('Profile berhasil diupdate, tapi URL foto tidak ditemukan dalam response.');
+              }
+            }
+          } else {
+            alert('Profile berhasil diupdate, tapi gagal refresh data.');
+          }
         }
         
       } catch (error) {
         console.error('Upload error:', error);
         alert('Gagal mengunggah foto: ' + error.message);
+        
         // Kembalikan ke foto sebelumnya jika ada
         if (formData.profile_photo_url) {
           setProfilePhoto(formData.profile_photo_url);
         } else {
           setProfilePhoto(null);
         }
+        setPhotoFile(null);
       } finally {
         setIsUploading(false);
         setUploadProgress(0);
@@ -333,62 +421,80 @@ const EditEmployeeDataForm = () => {
     }
   };
 
-  const ProfilePhoto = ({ profilePhoto, onUploadPhoto, isLoading, uploadProgress }) => {
-  return (
-    <div className="bg-white rounded-lg shadow-md p-6">
-      <h2 className="text-lg font-semibold text-gray-800 mb-4">Foto Profil</h2>
-      
-      <div className="flex flex-col items-center">
-        <div className="relative mb-4">
-          {profilePhoto ? (
-            <div className="relative">
-              <img
-                src={profilePhoto}
-                alt="Profile"
-                className="w-40 h-40 rounded-full object-cover border-4 border-blue-100"
-              />
-              {isLoading && (
-                <div className="absolute inset-0 bg-black bg-opacity-30 rounded-full flex items-center justify-center">
-                  <div className="text-white text-center">
-                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white mx-auto mb-2"></div>
-                    <span className="text-xs block">{uploadProgress}%</span>
-                  </div>
+  const PhotoProfileComponent = ({ profilePhoto, onUploadPhoto, isLoading, uploadProgress }) => {
+    return (
+      <div className="bg-white rounded-lg shadow-md p-6">
+        <h2 className="text-lg font-semibold text-gray-800 mb-4">Foto Profil</h2>
+        
+        <div className="flex flex-col items-center">
+          <div className="relative mb-4">
+            {profilePhoto ? (
+              <div className="relative">
+                <img
+                  src={profilePhoto}
+                  alt="Profile"
+                  className="w-40 h-40 rounded-full object-cover border-4 border-blue-100"
+                  onError={(e) => {
+                    console.error('Error loading image:', profilePhoto);
+                    e.target.style.display = 'none';
+                    e.target.nextSibling.style.display = 'flex';
+                  }}
+                  onLoad={() => {
+                    console.log('Image loaded successfully:', profilePhoto);
+                  }}
+                />
+                <div className="w-40 h-40 rounded-full bg-gray-200 flex items-center justify-center" style={{ display: 'none' }}>
+                  <span className="text-gray-500">Gagal Load Foto</span>
                 </div>
-              )}
-            </div>
-          ) : (
-            <div className="w-40 h-40 rounded-full bg-gray-200 flex items-center justify-center">
-              <span className="text-gray-500">No Photo</span>
+                {isLoading && (
+                  <div className="absolute inset-0 bg-black bg-opacity-30 rounded-full flex items-center justify-center">
+                    <div className="text-white text-center">
+                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white mx-auto mb-2"></div>
+                      <span className="text-xs block">{uploadProgress}%</span>
+                    </div>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <div className="w-40 h-40 rounded-full bg-gray-200 flex items-center justify-center">
+                <span className="text-gray-500">No Photo</span>
+              </div>
+            )}
+          </div>
+          
+          <button
+            onClick={onUploadPhoto}
+            disabled={isLoading}
+            className={`px-4 py-2 rounded-md text-sm font-medium text-white ${
+              isLoading ? 'bg-blue-300 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'
+            } transition-colors`}
+          >
+            {isLoading ? 'Mengunggah...' : 'Ubah Foto Profil'}
+          </button>
+          
+          <p className="mt-2 text-xs text-gray-500 text-center">
+            Format: JPG/PNG (Maks. 15MB)
+          </p>
+          
+          {isLoading && (
+            <div className="w-full bg-gray-200 rounded-full h-2.5 mt-2">
+              <div 
+                className="bg-blue-600 h-2.5 rounded-full" 
+                style={{ width: `${uploadProgress}%` }}
+              ></div>
             </div>
           )}
+          
+          {/* Debug info - hapus setelah testing */}
+          {profilePhoto && (
+            <p className="mt-2 text-xs text-gray-400 break-all">
+              Debug: {profilePhoto}
+            </p>
+          )}
         </div>
-        
-        <button
-          onClick={onUploadPhoto}
-          disabled={isLoading}
-          className={`px-4 py-2 rounded-md text-sm font-medium text-white ${
-            isLoading ? 'bg-blue-300 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'
-          } transition-colors`}
-        >
-          {isLoading ? 'Mengunggah...' : 'Ubah Foto Profil'}
-        </button>
-        
-        <p className="mt-2 text-xs text-gray-500 text-center">
-          Format: JPG/PNG (Maks. 15MB)
-        </p>
-        
-        {isLoading && (
-          <div className="w-full bg-gray-200 rounded-full h-2.5 mt-2">
-            <div 
-              className="bg-blue-600 h-2.5 rounded-full" 
-              style={{ width: `${uploadProgress}%` }}
-            ></div>
-          </div>
-        )}
       </div>
-    </div>
-  );
-};
+    );
+  };
 
   return (
     <div className="bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 min-h-screen">
@@ -400,7 +506,7 @@ const EditEmployeeDataForm = () => {
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           {/* Left Column - Profile Photo & Basic Info */}
           <div className="lg:col-span-1">
-            <ProfilePhoto
+            <PhotoProfileComponent
               profilePhoto={profilePhoto || formData.profile_photo_url}
               onUploadPhoto={handlePhotoUpload}
               isLoading={isUploading}

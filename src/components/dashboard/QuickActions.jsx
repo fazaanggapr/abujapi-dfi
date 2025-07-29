@@ -1,17 +1,21 @@
 import React from 'react';
 import { FileText, QrCode } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const QuickActions = () => {
+
+  const navigate = useNavigate();
+
   const actions = [
     {
       title: "Buat Laporan",
       icon: FileText,
-      onClick: () => console.log('Buat Laporan clicked')
+      onClick: () => navigate('/buat-laporan')
     },
     {
       title: "Scan QR Code",
       icon: QrCode,
-      onClick: () => console.log('Scan QR Code clicked')
+      onClick: () => navigate('/absensi/scan-qr') 
     }
   ];
 

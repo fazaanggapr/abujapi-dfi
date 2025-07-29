@@ -4,7 +4,7 @@ import { FaQrcode } from "react-icons/fa";
 const ScannerHeader = () => {
   return (
     <div className="bg-white/80 backdrop-blur-md border-b border-gray-200/50 sticky top-0 z-10">
-      <div className="max-w-4xl mx-auto px-4 py-6">
+      <div className="w-full px-6 py-8">
         <div className="flex items-center justify-center space-x-3">
           <div className="p-3 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl shadow-lg">
             <FaQrcode className="w-6 h-6 text-white" />

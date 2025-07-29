@@ -41,7 +41,7 @@ const ScanQR = () => {
         <ScannerHeader />
 
         {/* Main Content */}
-        <div className="max-w-4xl mx-auto px-4 py-8">
+        <div className="w-full px-6 py-8 ">
           <div className="grid md:grid-cols-2 gap-8 items-start">
             {/* Scanner Section */}
             <div className="space-y-6">

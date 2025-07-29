@@ -21,9 +21,6 @@ function EmployeeRow({ employee }) {
             <div className="font-semibold text-gray-900">
               {employee.name}
             </div>
-            <div className="text-sm text-gray-500 flex items-center mt-1">
-              <FaIdBadge className="mr-1" /> NIK: {employee.nik}
-            </div>
           </div>
         </div>
       </td>
@@ -33,14 +30,14 @@ function EmployeeRow({ employee }) {
           {employee.role}
         </span>
       </td>
-
+      
       <td className="px-6 py-5 text-center">
         <div className="flex justify-center">
           <Link
-            to="/lihat-profil-karyawan"
+            to="/lihat-laporan"
             className="bg-blue-500 hover:bg-blue-600 text-white hover:text-white px-3 py-2 rounded-lg text-sm font-semibold transition-colors shadow-md flex items-center"
           >
-            <FaEye className="mr-1" /> LIHAT PROFIL
+            <FaEye className="mr-1" /> LIHAT LAPORAN
           </Link>
         </div>
       </td>

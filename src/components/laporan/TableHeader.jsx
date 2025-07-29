@@ -13,7 +13,7 @@ function TableHeader() {
           <FaIdBadge className="mr-2 inline" /> Peran
         </th>
         <th className="px-6 py-4 text-center text-sm font-semibold text-gray-700 w-1/4">
-          <FaFileAlt className="mr-2 inline" /> Profil Lengkap
+          <FaRegFileAlt className="mr-2 inline" /> Lihat Laporan
         </th>
       </tr>
     </thead>

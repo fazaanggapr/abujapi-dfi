@@ -118,7 +118,7 @@ const AttendanceDataTable = () => {
         {/* Sidebar */}
         <Sidebar isOpen={isSidebarOpen} onClose={() => setSidebarOpen(false)} />
         
-        <div className="flex-1 overflow-y-auto">
+        <div className="flex-1 overflow-auto px-6 py-4">
           {/* Header */}
           <PageHeader 
             selectedDate={selectedDate}

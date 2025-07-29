@@ -2,7 +2,7 @@
 import React from "react";
 import { FaCalendarAlt } from "react-icons/fa";
 
-const HeaderSection = ({ ToggleSidebar }) => {
+const PageHeader = ({ ToggleSidebar }) => {
   return (
     <div className="bg-white p-6 border-b border-gray-200 shadow-sm">
       <h1 className="text-3xl font-bold text-gray-800">
@@ -25,10 +25,10 @@ const HeaderSection = ({ ToggleSidebar }) => {
             />
           </svg>
         </button>
-        DATA KARYAWAN
+        LIST LOCATION
       </h1>
     </div>
   );
 };
 
-export default HeaderSection;
+export default PageHeader;

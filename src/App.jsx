@@ -7,6 +7,7 @@ import Dashboard from "./pages/Dashboard";
 import DataAbsensi from "./pages/DataAbsensi";
 import DataKaryawan from "./pages/DataKaryawan";
 import Laporan from "./pages/Laporan";
+import ListLocation from "./pages/ListLocation";
 import LihatAkunProfil from "./features/profil/LihatAkunProfil";
 import TambahProfilKaryawan from "./features/profil/TambahProfilKaryawan";
 import BuatLaporan from "./features/profil/laporan/BuatLaporan";
@@ -58,6 +59,14 @@ function App() {
           element={
             <PrivateRoute>
               <Laporan />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/list-location"
+          element={
+            <PrivateRoute>
+              <ListLocation />
             </PrivateRoute>
           }
         />

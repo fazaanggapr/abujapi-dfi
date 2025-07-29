@@ -93,7 +93,7 @@ const ReportTable = () => {
     <div className="bg-gray-50 font-sans min-h-screen">
       <div className="flex min-h-screen overflow-hidden">
         <Sidebar isOpen={isSidebarOpen} onClose={() => setSidebarOpen(false)} />
-        <div className="flex-1 overflow-y-auto">
+        <div className="flex-1 overflow-auto px-6 py-4">
           <PageHeader
             selectedDate={selectedDate}
             onToggleSidebar={toggleSidebar}

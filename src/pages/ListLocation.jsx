@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Sidebar from "../components/Sidebar";
 import PageHeader from "../components/list_location/PageHeader";
-import EmployeeTable from "../components/list_location/EmployeeTable";
+import EmployeeTable from "../components/list_location/LocationTable";
 import ControlSection from "../components/list_location/ControlSection";
 import Pagination from "../components/list_location/Pagination";
 
@@ -14,35 +14,37 @@ function ListLocation() {
 
   const toggleSidebar = () => setSidebarOpen(!isSidebarOpen);
 
-  useEffect(() => {
-    const fetchDashboardData = async () => {
-      const token = localStorage.getItem("access_token");
+useEffect(() => {
+  const fetchDashboardData = async () => {
+    const token = localStorage.getItem("access_token");
 
-      try {
-        const response = await fetch(`${baseUrl}/admin/dashboard`, {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            Accept: "application/json",
-          },
-        });
+    try {
+      const response = await fetch(`${baseUrl}/admin/locations`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: "application/json",
+        },
+      });
 
-        const result = await response.json();
+      const result = await response.json();
+      console.log("API RESULT:", result); // ✅ debug
 
-        if (response.ok && result.data) {
-          setEmployees(result.data);
-        } else {
-          console.error("Failed to fetch dashboard:", result);
-        }
-      } catch (err) {
-        console.error("Error:", err);
-      } finally {
-        setLoading(false);
+      if (response.ok && Array.isArray(result)) {
+        setEmployees(result); // ⬅️ langsung pakai array
+      } else {
+        console.error("Failed to fetch locations:", result);
       }
-    };
+    } catch (err) {
+      console.error("Error:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    fetchDashboardData();
-  }, [baseUrl]);
+  fetchDashboardData();
+}, []);
+
 
   const filteredEmployees = employees.filter((employee) =>
     employee.name.toLowerCase().includes(searchTerm.toLowerCase())

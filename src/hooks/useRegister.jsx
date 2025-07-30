@@ -16,8 +16,9 @@ const useRegister = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
+
     // Clear error when user starts typing
-    if (error) setError("");
+    if (error) setError(""); 
   };
 
   const validateForm = () => {
@@ -30,6 +31,12 @@ const useRegister = () => {
     
     if (!email.trim()) {
       setError("Email is required");
+      return false;
+    }
+
+    const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+    if (!emailPattern.test(email)) {
+      setError("Please enter a valid email");
       return false;
     }
     
@@ -54,7 +61,7 @@ const useRegister = () => {
     }
 
     setIsLoading(true);
-    setError("");
+    setError(""); // Reset error before submitting
 
     const { name, email, password, confirmPassword } = formData;
 
@@ -76,16 +83,7 @@ const useRegister = () => {
 
       if (response.ok) {
         // Success
-        alert("Registration successful! Redirecting to login...");
-        
-        // Save user data if needed
-        if (data.token) {
-          localStorage.setItem("user_token", data.token);
-        }
-        localStorage.setItem("user_name", name);
-        localStorage.setItem("user_email", email);
-        
-        navigate("/login");
+        navigate("/login"); // Navigate to login page directly without alert
       } else {
         // Handle server errors
         setError(data.message || "Registration failed. Please try again.");

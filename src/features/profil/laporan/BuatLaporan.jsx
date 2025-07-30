@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import Header from "../../../components/buat_laporan/Header";
 import ReportTitle from "../../../components/buat_laporan/ReportTitle";
 import QRScannerModal from "../../../components/buat_laporan/QRScannerModal";
-import PatrolActivities from "../../../components/buat_laporan/PatrolActivities";
+// import PatrolActivities from "../../../components/buat_laporan/PatrolActivities"; 
 import RequiredFields from "../../../components/buat_laporan/RequiredFields";
 import ImageUpload from "../../../components/buat_laporan/ImageUpload";
 import QRScanSection from "../../../components/buat_laporan/QRScanSection";
@@ -149,14 +149,14 @@ const AddTask = () => {
         <form onSubmit={handleSubmit} className="mt-8">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             
-            {/* Left Column - Main Content (2/3 width) */}
+          {/* Left Column - Main Content (2/3 width) */}
             <div className="lg:col-span-2 space-y-8">
-              {/* Patrol Activities Section */}
-              <PatrolActivities
+
+              {/* <PatrolActivities
                 activities={patrolActivities}
                 onAddActivity={handleAddPatrolActivity}
                 onRemoveActivity={handleRemoveActivity}
-              />
+              />  */}
 
               {/* Required Fields Section */}
               <RequiredFields

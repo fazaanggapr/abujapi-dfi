@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+/* import React, { useState } from "react";
 import { Plus, Activity, Clock, X } from "lucide-react";
 
 const PatrolActivities = ({ activities = [], onAddActivity, onRemoveActivity }) => {
@@ -95,3 +95,4 @@ const PatrolActivities = ({ activities = [], onAddActivity, onRemoveActivity }) 
 };
 
 export default PatrolActivities;
+*/

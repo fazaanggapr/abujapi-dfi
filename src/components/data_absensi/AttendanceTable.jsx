@@ -4,6 +4,8 @@ import { FaUser, FaClock, FaCalendarAlt } from "react-icons/fa";
 
 const AttendanceTable = ({ employees }) => {
   const renderTable = () => {
+    console.log(employees);
+
     if (employees.length === 0) {
       return (
         <tr>
@@ -20,12 +22,12 @@ const AttendanceTable = ({ employees }) => {
           <div className="flex items-center gap-4">
             <img
               src={
-                emp.profile?.profile_photo_url ??
-                "https://via.placeholder.com/40"
+                emp.profile_photo_url ?? "https://via.placeholder.com/40"
               }
               alt="Profile"
               className="w-10 h-10 rounded-full object-cover"
             />
+
             <div>
               <div className="font-semibold text-gray-900">{emp.name}</div>
               <div className="text-sm text-gray-500">{emp.email}</div>

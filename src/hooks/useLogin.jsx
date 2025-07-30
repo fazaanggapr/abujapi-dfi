@@ -14,32 +14,43 @@ export const useLogin = () => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    const { email, password } = formData;
+  e.preventDefault();
+  const { email, password } = formData;
 
-    if (!email || !password) {
-      alert('Please fill in all fields');
-      return;
-    }
+  if (!email || !password) {
+    alert('Please fill in all fields');
+    return;
+  }
 
-    setLoading(true);
+  setLoading(true);
 
-    try {
-      const result = await loginService.login({ email, password });
+  try {
+    const result = await loginService.login({ email, password });
 
-      if (result.success) {
-        loginService.storeTokens(result.data);
+    if (result.success) {
+      loginService.storeTokens(result.data);
+
+      // 👉 Cek apakah user sudah punya profil lengkap
+      const user = result.data.user;
+      const hasProfile = user.profile !== null;
+
+      // Redirect sesuai status profil
+      if (hasProfile) {
         navigate('/dashboard');
       } else {
-        alert(result.message);
+        navigate('/tambah-profil-karyawan');
       }
-    } catch (error) {
-      console.error('Login error:', error);
-      alert('An error occurred. Please try again.');
-    } finally {
-      setLoading(false);
+
+    } else {
+      alert(result.message);
     }
-  };
+  } catch (error) {
+    console.error('Login error:', error);
+    alert('An error occurred. Please try again.');
+  } finally {
+    setLoading(false);
+  }
+};
 
   return {
     formData,

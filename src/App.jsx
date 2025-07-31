@@ -74,18 +74,20 @@ function App() {
           path="/lihat-akun-profil"
           element={
             <PrivateRoute>
-              <LihatAkunProfil />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/lihat-profil-karyawan"
-          element={
-            <PrivateRoute>
+              
               <LihatProfilKaryawan />
             </PrivateRoute>
           }
         />
+        <Route
+          path="/lihat-profil-karyawan/:id"
+          element={
+            <PrivateRoute>
+              <LihatAkunProfil />
+            </PrivateRoute>
+          }
+        />
+
         <Route
           path="/tambah-profil-karyawan"
           element={

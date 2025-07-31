@@ -5,13 +5,14 @@ import PageTitle from "../../components/lihat_akun_profil/PageTitle";
 import ProfilePhoto from "../../components/lihat_akun_profil/ProfilePhoto";
 import PersonalInfo from "../../components/lihat_akun_profil/PersonalInfo";
 import ActionButtons from "../../components/lihat_akun_profil/ActionButtons";
-
+import { useParams } from "react-router-dom";
 const baseUrl = import.meta.env.VITE_API_URL; // atau ganti dengan hardcoded URL jika perlu
 
 const LihatProfil = () => {
   const [employee, setEmployee] = useState(null);
   const [profilePhoto, setProfilePhoto] = useState(null);
   const [loading, setLoading] = useState(true);
+  const { id } = useParams();
 
   const [formData, setFormData] = useState({
     profile_photo_url: "",
@@ -25,7 +26,7 @@ const LihatProfil = () => {
     const fetchEmployee = async () => {
       const token = localStorage.getItem("access_token");
       try {
-        const response = await fetch(`${baseUrl}/profile`, {
+        const response = await fetch(`${baseUrl}/profile/${id}`, {
           method: "GET",
           headers: {
             Authorization: `Bearer ${token}`,
@@ -41,12 +42,13 @@ const LihatProfil = () => {
             grade: profile.grade,
           });
           setFormData({
-            profile_photo_url: profile.profile_photo_url || "",
-            name: profile.name || "",
-            email: profile.email || "",
-            password: "",
-            role: profile.role || "",
-          });
+              profile_photo_url: profile.profile_photo_url || "",
+              name: result.data.name || "",
+              email: result.data.email || "",
+              password: "",
+              role: result.data.role || "",
+            });
+
           console.log("DEBUG PROFILE", profile);
         } else {
           console.error("Failed to fetch employee data:", result);

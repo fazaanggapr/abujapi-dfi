@@ -12,11 +12,13 @@ import WorkData from "../../components/lihat_profil_karyawan/WorkData";
 import PortfolioLink from "../../components/lihat_profil_karyawan/PortfolioLink";
 import ActionButtons from "../../components/lihat_profil_karyawan/ActionButtons";
 // import LoadingSpinner from "./components/LoadingSpinner";
+import { useParams } from "react-router-dom";
 
 const ViewEmployeeProfile = () => {
   const [employee, setEmployee] = useState(null);
   const [loading, setLoading] = useState(true);
   const [profilePhoto, setProfilePhoto] = useState(null);
+  const { id } = useParams();
 
   // Dummy data
   const workHistory = [
@@ -63,7 +65,7 @@ const ViewEmployeeProfile = () => {
     const fetchEmployee = async () => {
       const token = localStorage.getItem("access_token");
       try {
-        const response = await fetch(`${baseUrl}/profile`, {
+        const response = await fetch(`${baseUrl}/profile/${id}`, {
           method: "GET",
           headers: {
             Authorization: `Bearer ${token}`,

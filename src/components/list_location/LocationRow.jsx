@@ -1,30 +1,30 @@
+// components/LocationRow.js
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { FaPen, FaTrashAlt } from 'react-icons/fa';
+import { FaEdit, FaTrashAlt } from 'react-icons/fa';
 
-function LocationRow({ location }) {
+function LocationRow({ location, index }) {
+  const handleEdit = () => {
+    // Tambahkan logika edit di sini
+    console.log(`Edit location ${location.id}`);
+  };
+
+  const handleDelete = () => {
+    // Tambahkan logika delete di sini
+    console.log(`Delete location ${location.id}`);
+  };
+
   return (
-    <tr className="hover:bg-gray-50 transition-colors">
-      <td className="px-6 py-5 text-sm font-semibold text-gray-800">{location.name}</td>
-      <td className="px-6 py-5 text-sm text-gray-700 text-center">{location.code}</td>
-      <td className="px-6 py-5 text-sm text-gray-500 text-center">
-        {new Date(location.created_at).toLocaleDateString("id-ID")}
-      </td>
-      <td className="px-6 py-5 text-center">
-        <div className="flex justify-center gap-2">
-          <Link
-            to={`/edit-location/${location.id}`}
-            className="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-2 rounded-lg text-sm font-semibold transition-colors shadow-md flex items-center"
-          >
-            <FaPen className="mr-1" />
-          </Link>
-          <button
-            onClick={() => {/* Handle delete action here */}}
-            className="bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-lg text-sm font-semibold transition-colors shadow-md flex items-center"
-          >
-            <FaTrashAlt className="mr-1" />
-          </button>
-        </div>
+    <tr className="border-b">
+      <td className="px-6 py-4">{index + 1}</td>
+      <td className="px-6 py-4">{location.name}</td>
+      <td className="px-6 py-4">{location.code}</td>
+      <td className="px-6 py-4 flex justify-center space-x-2">
+        <button onClick={handleEdit} className="text-blue-500 hover:text-blue-700">
+          <FaEdit />
+        </button>
+        <button onClick={handleDelete} className="text-red-500 hover:text-red-700">
+          <FaTrashAlt />
+        </button>
       </td>
     </tr>
   );

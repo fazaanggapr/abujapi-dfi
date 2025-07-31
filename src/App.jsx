@@ -8,7 +8,7 @@ import DataAbsensi from "./pages/DataAbsensi";
 import DataKaryawan from "./pages/DataKaryawan";
 import Laporan from "./pages/Laporan";
 import ListLocation from "./pages/ListLocation";
-import LihatAkunProfil from "./features/profil/LihatAkunProfil";
+import LihatProfilSaya from "./features/profil/LihatProfilSaya";
 import TambahProfilKaryawan from "./features/profil/TambahProfilKaryawan";
 import BuatLaporan from "./features/profil/laporan/BuatLaporan";
 import EditProfilKaryawan from "./features/profil/EditProfilKaryawan";
@@ -71,19 +71,19 @@ function App() {
           }
         />
         <Route
-          path="/lihat-akun-profil"
+          path="/lihat-profil-saya"
           element={
             <PrivateRoute>
               
-              <LihatProfilKaryawan />
+              <LihatProfilSaya />
             </PrivateRoute>
           }
         />
         <Route
-          path="/lihat-profil-karyawan/:id"
+          path="/lihat-profil-karyawan/"
           element={
             <PrivateRoute>
-              <LihatAkunProfil />
+              <LihatProfilKaryawan />
             </PrivateRoute>
           }
         />

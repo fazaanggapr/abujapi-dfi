@@ -14,41 +14,42 @@ function ListLocation() {
 
   const toggleSidebar = () => setSidebarOpen(!isSidebarOpen);
 
-useEffect(() => {
-  const fetchDashboardData = async () => {
-    const token = localStorage.getItem("access_token");
+  useEffect(() => {
+    const fetchDashboardData = async () => {
+      const token = localStorage.getItem("access_token");
 
-    try {
-      const response = await fetch(`${baseUrl}/admin/locations`, {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          Accept: "application/json",
-        },
-      });
+      try {
+        const response = await fetch(`${baseUrl}/admin/locations`, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            Accept: "application/json",
+          },
+        });
 
-      const result = await response.json();
-      console.log("API RESULT:", result); // ✅ debug
+        const result = await response.json();
+        console.log("API RESULT:", result); // ✅ debug
 
-      if (response.ok && Array.isArray(result)) {
-        setEmployees(result); // ⬅️ langsung pakai array
-      } else {
-        console.error("Failed to fetch locations:", result);
+        if (response.ok && Array.isArray(result)) {
+          setEmployees(result); // ⬅️ langsung pakai array
+        } else {
+          console.error("Failed to fetch locations:", result);
+        }
+      } catch (err) {
+        console.error("Error:", err);
+      } finally {
+        setLoading(false);
       }
-    } catch (err) {
-      console.error("Error:", err);
-    } finally {
-      setLoading(false);
-    }
-  };
+    };
 
-  fetchDashboardData();
-}, []);
+    fetchDashboardData();
+  }, []);
 
 
   const filteredEmployees = employees.filter((employee) =>
     employee.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
+  
   return (
     <div className="bg-gray-50 font-sans min-h-screen">
       <div className="flex min-h-screen overflow-hidden">
@@ -78,8 +79,6 @@ useEffect(() => {
       </div>
     </div>
   );
-}; 
+};
 
 export default ListLocation;
-
-

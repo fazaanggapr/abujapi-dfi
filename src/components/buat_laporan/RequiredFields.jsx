@@ -1,10 +1,16 @@
 import React from "react";
+import { FaInfoCircle } from 'react-icons/fa'; // Mengimpor ikon
 
 const RequiredFields = ({ formData, onChange }) => {
   return (
-    <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-white/20 p-6">
-      <h2 className="text-lg font-semibold text-slate-800 mb-4">Informasi Wajib</h2>
-      <div className="space-y-4">
+    <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-white/20 overflow-hidden">
+      <div className="bg-gradient-to-r from-blue-600 to-indigo-600 p-6">
+        <div className="flex items-center space-x-3">
+          <FaInfoCircle className="w-6 h-6 text-white" />
+          <h2 className="text-xl font-semibold text-white">Laporan Gambar*</h2>
+        </div>
+      </div>
+      <div className="space-y-4 p-6"> {/* Menambahkan padding agar tidak terlalu mepet */}
         <div>
           <label className="block text-sm font-medium text-slate-700 mb-1">Deskripsi*</label>
           <textarea

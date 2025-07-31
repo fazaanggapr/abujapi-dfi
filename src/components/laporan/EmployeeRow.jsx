@@ -1,22 +1,22 @@
 // components/EmployeeRow.js
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { FaIdBadge, FaEye } from 'react-icons/fa';
+import { FaEdit, FaTrashAlt } from 'react-icons/fa';
 
 function EmployeeRow({ employee }) {
-  const getInitials = (name) => {
-    const nameParts = name.split(" ");
-    if (nameParts.length >= 2) {
-      return nameParts[0][0] + nameParts[1][0];
-    }
-    return nameParts[0][0];
+  const handleEdit = () => {
+    // Tambahkan logika edit di sini
+    console.log(`Edit employee ${employee.id}`);
+  };
+
+  const handleDelete = () => {
+    // Tambahkan logika delete di sini
+    console.log(`Delete employee ${employee.id}`);
   };
 
   return (
     <tr className="hover:bg-gray-50 transition-colors">
       <td className="px-6 py-5">
         <div className="flex items-center">
-          
           <div>
             <div className="font-semibold text-gray-900">
               {employee.name}
@@ -32,13 +32,19 @@ function EmployeeRow({ employee }) {
       </td>
       
       <td className="px-6 py-5 text-center">
-        <div className="flex justify-center">
-          <Link
-            to="/lihat-laporan"
-            className="bg-blue-500 hover:bg-blue-600 text-white hover:text-white px-3 py-2 rounded-lg text-sm font-semibold transition-colors shadow-md flex items-center"
+        <div className="flex justify-center space-x-2">
+          <button
+            onClick={handleEdit}
+            className="text-blue-500 hover:text-blue-700 px-3 py-2 rounded-lg text-sm font-semibold transition-colors"
           >
-            <FaEye className="mr-1" /> LIHAT LAPORAN
-          </Link>
+            <FaEdit />
+          </button>
+          <button
+            onClick={handleDelete}
+            className="text-red-500 hover:text-red-700 px-3 py-2 rounded-lg text-sm font-semibold transition-colors"
+          >
+            <FaTrashAlt />
+          </button>
         </div>
       </td>
     </tr>

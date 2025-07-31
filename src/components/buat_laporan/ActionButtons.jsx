@@ -13,9 +13,9 @@ const ActionButtons = ({
         type="button"
         onClick={onCancel}
         disabled={isSubmitting}
-        className="flex-1 bg-gradient-to-r from-red-500 to-red-600 text-white font-semibold py-4 px-6 rounded-xl hover:from-red-600 hover:to-red-700 transition-all duration-200 shadow-lg hover:shadow-xl flex items-center justify-center space-x-2 disabled:opacity-50 max-w-xs"
+        className="flex-1 bg-gradient-to-r from-red-500 to-red-600 text-white font-semibold py-2 px-4 rounded-lg hover:from-red-600 hover:to-red-700 transition-all duration-200 shadow-lg hover:shadow-xl flex items-center justify-center space-x-2 disabled:opacity-50"
       >
-        <X className="w-5 h-5" />
+        <X className="w-4 h-4" />
         <span>Batal</span>
       </button>
 
@@ -23,7 +23,7 @@ const ActionButtons = ({
         type="submit"
         onClick={onSubmit}
         disabled={isSubmitting || isDisabled}
-        className="flex-1 bg-gradient-to-r from-emerald-500 to-green-600 text-white font-semibold py-4 px-6 rounded-xl hover:from-emerald-600 hover:to-green-700 transition-all duration-200 shadow-lg hover:shadow-xl flex items-center justify-center space-x-2 disabled:opacity-50"
+        className="flex-1 bg-gradient-to-r from-emerald-500 to-green-600 text-white font-semibold py-2 px-4 rounded-lg hover:from-emerald-600 hover:to-green-700 transition-all duration-200 shadow-lg hover:shadow-xl flex items-center justify-center space-x-2 disabled:opacity-50"
       >
         {isSubmitting ? (
           <>
@@ -35,7 +35,7 @@ const ActionButtons = ({
           </>
         ) : (
           <>
-            <Save className="w-5 h-5" />
+            <Save className="w-4 h-4" />
             <span>Upload Laporan</span>
           </>
         )}

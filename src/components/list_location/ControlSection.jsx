@@ -1,6 +1,7 @@
 // components/ControlSection.js
-import React from 'react';
-import SearchBar from './SearchBar';
+import React from "react";
+import SearchBar from "./SearchBar";
+import ActionButtons from "./ActionButtons";
 
 function ControlSection({ searchTerm, onSearchChange }) {
   return (
@@ -12,6 +13,7 @@ function ControlSection({ searchTerm, onSearchChange }) {
         <SearchBar searchTerm={searchTerm} onSearchChange={onSearchChange} />
       </div>
       <div className="flex gap-2">
+        <ActionButtons />
       </div>
     </div>
   );

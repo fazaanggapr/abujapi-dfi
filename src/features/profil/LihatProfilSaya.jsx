@@ -11,7 +11,7 @@ import Certifications from "../../components/lihat_profil_karyawan/Certification
 import WorkData from "../../components/lihat_profil_karyawan/WorkData";
 import PortfolioLink from "../../components/lihat_profil_karyawan/PortfolioLink";
 import ActionButtons from "../../components/lihat_profil_karyawan/ActionButtons";
-import LoadingSpinner from "./components/LoadingSpinner";
+//import LoadingSpinner from "./components/LoadingSpinner";
 
 const ViewEmployeeProfile = () => {
   const [employee, setEmployee] = useState(null);

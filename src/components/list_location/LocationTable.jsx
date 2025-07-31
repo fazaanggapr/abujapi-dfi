@@ -1,34 +1,29 @@
-import React from "react";
+// components/LocationTable.js
+import React from 'react';
+import TableHeader from './TableHeader'; // Impor komponen TableHeader
+import LocationRow from './LocationRow'; // Impor komponen LocationRow
 
-const LocationTable = ({ employees }) => {
+function LocationTable({ employees }) {
   return (
-    <table className="min-w-full table-auto text-sm">
-      <thead>
-        <tr className="bg-gray-100">
-          <th className="px-4 py-2 text-left">#</th>
-          <th className="px-4 py-2 text-left">Nama Lokasi</th>
-          <th className="px-4 py-2 text-left">Kode Lokasi</th>
-        </tr>
-      </thead>
-      <tbody>
-        {employees.length === 0 ? (
-          <tr>
-            <td colSpan="3" className="text-center py-4">
-              Tidak ada lokasi ditemukan.
-            </td>
-          </tr>
-        ) : (
-          employees.map((location, index) => (
-            <tr key={location.id} className="border-b">
-              <td className="px-4 py-2">{index + 1}</td>
-              <td className="px-4 py-2">{location.name}</td>
-              <td className="px-4 py-2">{location.code}</td>
+    <div className="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-200">
+      <table className="w-full table-auto table-layout-fixed">
+        <TableHeader />
+        <tbody className="divide-y divide-gray-100">
+          {employees.length === 0 ? (
+            <tr>
+              <td colSpan="4" className="text-center text-gray-500 py-4">
+                Tidak ada lokasi ditemukan.
+              </td>
             </tr>
-          ))
-        )}
-      </tbody>
-    </table>
+          ) : (
+            employees.map((location, index) => (
+              <LocationRow key={location.id} location={location} index={index} />
+            ))
+          )}
+        </tbody>
+      </table>
+    </div>
   );
-};
+}
 
 export default LocationTable;

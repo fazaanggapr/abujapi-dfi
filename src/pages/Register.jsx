@@ -1,8 +1,8 @@
 import React from "react";
-import AuthLayout from "../components/Auth/shared/AuthLayout";
+import AuthLayout from "../components/auth/shared/AuthLayout";
 import IllustrationSection from "../components/auth/shared/Illustration";
 import RegisterForm from "../components/register_form/RegisterForm";
-import ErrorMessage from "../components/Auth/shared/ErrorMessage";
+import ErrorMessage from "../components/auth/shared/ErrorMessage";
 import useRegister from "../hooks/useRegister"; // Menggunakan hook untuk handle registrasi
 
 const Register = () => {

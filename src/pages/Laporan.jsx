@@ -2,11 +2,11 @@ import React, { useState, useEffect } from "react";
 import Sidebar from "../components/Sidebar";
 import PageHeader from "../components/laporan/PageHeader";
 import Calendar from "../components/laporan/Calendar";
-import EmployeeTable from "../components/laporan/EmployeeTable";
+import ReportTable from "../components/laporan/ReportTable";
 import ControlSection from "../components/laporan/ControlSection";
 import Pagination from "../components/laporan/Pagination";
 
-const ReportTable = () => {
+const ReportTables = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -106,7 +106,7 @@ const ReportTable = () => {
                 onSearchChange={setSearchTerm}
               />
               <div className="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden">
-                <EmployeeTable
+                <ReportTable
                   employees={currentEmployees}
                   getInitials={getInitials}
                 />

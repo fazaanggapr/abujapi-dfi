@@ -28,10 +28,10 @@ function ListLocation() {
         });
 
         const result = await response.json();
-        console.log("API RESULT:", result); // ✅ debug
+        console.log("API RESULT:", result); 
 
         if (response.ok && Array.isArray(result)) {
-          setEmployees(result); // ⬅️ langsung pakai array
+          setEmployees(result); 
         } else {
           console.error("Failed to fetch locations:", result);
         }

@@ -1,22 +1,21 @@
-// components/EmployeeTable.js
 import React from 'react';
 import TableHeader from './TableHeader';
-import EmployeeRow from './EmployeeRow';
+import ReportRow from './ReportRow';
 
-function EmployeeTable({ employees }) {
+function ReportTable({ reports }) {
   return (
     <div className="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-200">
       <table className="w-full">
         <TableHeader />
         <tbody className="divide-y divide-gray-100">
-          {employees.length > 0 ? (
-            employees.map((employee, index) => (
-              <EmployeeRow key={index} employee={employee} />
+          {reports.length > 0 ? (
+            reports.map((report, index) => (
+              <ReportRow key={index} report={report} />
             ))
           ) : (
             <tr>
               <td colSpan="100%" className="text-center text-gray-500 py-4">
-                No employees available
+                No reports available
               </td>
             </tr>  
           )}
@@ -26,4 +25,4 @@ function EmployeeTable({ employees }) {
   );
 }
 
-export default EmployeeTable;
+export default ReportTable;

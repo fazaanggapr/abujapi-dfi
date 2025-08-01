@@ -1,17 +1,43 @@
 // components/LocationRow.js
 import React from 'react';
 import { FaEdit, FaTrashAlt } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
+import baseUrl from '../../utils/api'; // Pastikan path ini sesuai dengan struktur proyekmu
 
-function LocationRow({ location, index }) {
+
+function LocationRow({ location, index, onDeleteSuccess }) {
+  const navigate = useNavigate();
+
   const handleEdit = () => {
-    // Tambahkan logika edit di sini
-    console.log(`Edit location ${location.id}`);
+    navigate(`/location/${location.id}`);
   };
 
-  const handleDelete = () => {
-    // Tambahkan logika delete di sini
-    console.log(`Delete location ${location.id}`);
+  const handleDelete = async () => {
+    if (!window.confirm(`Yakin ingin menghapus lokasi "${location.name}"?`)) return;
+
+    try {
+      const token = localStorage.getItem("access_token");
+      console.log("Token diambil dari localStorage:", token);
+      const response = await fetch(`${baseUrl}/location/${location.id}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+            'Accept': 'application/json',
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error('Gagal menghapus lokasi');
+      }
+
+      if (onDeleteSuccess) onDeleteSuccess(location.id);
+    } catch (error) {
+      console.error(error);
+      alert("Terjadi kesalahan saat menghapus lokasi.");
+    }
   };
+
 
   return (
     <tr className="border-b">

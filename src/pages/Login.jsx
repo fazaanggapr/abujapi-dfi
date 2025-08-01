@@ -1,5 +1,5 @@
 import React from 'react';
-import AuthLayout from "../components/Auth/shared/AuthLayout";
+import AuthLayout from "../components/auth/shared/AuthLayout";
 import IllustrationSection from "../components/auth/shared/Illustration";
 import LoginForm from "../components/login_form/LoginForm";
 import { useLogin } from "../hooks/useLogin";

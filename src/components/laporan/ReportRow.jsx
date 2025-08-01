@@ -1,16 +1,15 @@
-// components/EmployeeRow.js
 import React from 'react';
 import { FaEdit, FaTrashAlt } from 'react-icons/fa';
 
-function EmployeeRow({ employee }) {
+function ReportRow({ report }) {
   const handleEdit = () => {
     // Tambahkan logika edit di sini
-    console.log(`Edit employee ${employee.id}`);
+    console.log(`Edit report ${report.id}`);
   };
 
   const handleDelete = () => {
     // Tambahkan logika delete di sini
-    console.log(`Delete employee ${employee.id}`);
+    console.log(`Delete report ${report.id}`);
   };
 
   return (
@@ -19,7 +18,7 @@ function EmployeeRow({ employee }) {
         <div className="flex items-center">
           <div>
             <div className="font-semibold text-gray-900">
-              {employee.name}
+              {report.name}
             </div>
           </div>
         </div>
@@ -27,10 +26,10 @@ function EmployeeRow({ employee }) {
 
       <td className="px-6 py-5 text-center">
         <span className="text-gray-700 font-medium">
-          {employee.role}
+          {report.role}
         </span>
       </td>
-      
+
       <td className="px-6 py-5 text-center">
         <div className="flex justify-center space-x-2">
           <button
@@ -51,4 +50,4 @@ function EmployeeRow({ employee }) {
   );
 }
 
-export default EmployeeRow;
+export default ReportRow;

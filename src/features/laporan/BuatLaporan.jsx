@@ -2,15 +2,15 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 // Import komponen yang sudah dipecah
-import Header from "../../../components/buat_laporan/Header";
-import ReportTitle from "../../../components/buat_laporan/ReportTitle";
-import QRScannerModal from "../../../components/buat_laporan/QRScannerModal";
-// import PatrolActivities from "../../../components/buat_laporan/PatrolActivities"; 
-import RequiredFields from "../../../components/buat_laporan/RequiredFields";
-import ImageUpload from "../../../components/buat_laporan/ImageUpload";
-import QRScanSection from "../../../components/buat_laporan/QRScanSection";
-import ActionButtons from "../../../components/buat_laporan/ActionButtons";
-import ErrorAlert from "../../../components/buat_laporan/ErrorAlert";
+import Header from "../../components/buat_laporan/Header";
+import ReportTitle from "../../components/buat_laporan/ReportTitle";
+import QRScannerModal from "../../components/buat_laporan/QRScannerModal";
+// import PatrolActivities from "../../components/buat_laporan/PatrolActivities"; 
+import RequiredFields from "../../components/buat_laporan/RequiredFields";
+import ImageUpload from "../../components/buat_laporan/ImageUpload";
+import QRScanSection from "../../components/buat_laporan/QRScanSection";
+import ActionButtons from "../../components/buat_laporan/ActionButtons";
+import ErrorAlert from "../../components/buat_laporan/ErrorAlert";
 
 const AddTask = () => {
   const navigate = useNavigate();
@@ -22,7 +22,7 @@ const AddTask = () => {
     location_code: "TL-1",
     image_description: ""
   });
-  const [patrolActivities, setPatrolActivities] = useState([]);
+//  const [patrolActivities, setPatrolActivities] = useState([]);
   const [selectedImage, setSelectedImage] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
@@ -31,13 +31,13 @@ const AddTask = () => {
   // Event handlers
   const handleBack = () => navigate(-1);
 
-  const handleAddPatrolActivity = (activity) => {
+/*  const handleAddPatrolActivity = (activity) => {
     setPatrolActivities([...patrolActivities, activity]);
-  };
+  }; */
 
-  const handleRemoveActivity = (id) => {
+/*  const handleRemoveActivity = (id) => {
     setPatrolActivities(patrolActivities.filter(activity => activity.id !== id));
-  };
+  }; */
 
   const handleFormChange = (e) => {
     const { name, value } = e.target;

@@ -14,7 +14,8 @@ import Laporan from "./pages/Laporan";
 
 // Location management
 import ListLocation from "./pages/ListLocation";
-import RegisterLocation from "./pages/RegisterLocation";
+import TambahLokasi from "./features/location/TambahLokasi";
+import EditLokasi from "./features/location/EditLokasi";
 
 // Absensi
 import ScanQR from "./pages/ScanQRAbsensi";
@@ -26,8 +27,8 @@ import EditProfilKaryawan from "./features/profil/EditProfilKaryawan";
 import LihatProfilKaryawan from "./features/profil/LihatProfilKaryawan";
 
 // Laporan (by Karyawan)
-import BuatLaporan from "./features/profil/laporan/BuatLaporan";
-import LihatLaporan from "./features/profil/laporan/LihatLaporan";
+import BuatLaporan from "./features/laporan/BuatLaporan";
+import LihatLaporan from "./features/laporan/LihatLaporan";
 
 // Middleware
 import PrivateRoute from "./routes/PrivateRoute";
@@ -40,7 +41,6 @@ function App() {
     <BrowserRouter>
       <Toaster position="top-right" reverseOrder={false} />
       <Routes>
-
         {/* AUTH ROUTES */}
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
@@ -151,14 +151,21 @@ function App() {
           }
         />
         <Route
-          path="/location/register"
+          path="/tambah-lokasi"
           element={
             <PrivateRoute>
-              <RegisterLocation />
+              <TambahLokasi />
             </PrivateRoute>
           }
         />
-
+        <Route
+          path="/edit-lokasi"
+          element={
+            <PrivateRoute>
+              <EditLokasi />
+            </PrivateRoute>
+          }
+        />
       </Routes>
     </BrowserRouter>
   );

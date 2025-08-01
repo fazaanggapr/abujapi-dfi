@@ -10,7 +10,7 @@ const ReportTables = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedDate, setSelectedDate] = useState(new Date());
-  const [employees, setEmployees] = useState([]);
+  const [reports, setReports] = useState([]); // Mengubah 'employees' menjadi 'reports'
   const [loading, setLoading] = useState(true);
   const [isSidebarOpen, setSidebarOpen] = useState(false);
 
@@ -35,7 +35,7 @@ const ReportTables = () => {
 
         const data = await response.json();
         console.log("DATA LAPORAN:", data);
-        setEmployees(data);
+        setReports(data); // Menyimpan data laporan ke state 'reports'
       } catch (error) {
         console.error("Error fetching reports:", error);
       } finally {
@@ -67,24 +67,24 @@ const ReportTables = () => {
   };
 
   // FILTER berdasarkan nama & tanggal
-  const filteredEmployees = employees.filter((employee) => {
-    const name = employee?.user?.name ?? "";
+  const filteredReports = reports.filter((report) => {
+    const name = report?.user?.name ?? ""; // Nama user di laporan
     const nameMatch = name.toLowerCase().includes(searchTerm.toLowerCase());
 
-    const attendanceDate = new Date(employee.reported_at);
+    const reportDate = new Date(report.reported_at);
     const selectedDateOnly = new Date(selectedDate);
 
-    attendanceDate.setHours(0, 0, 0, 0);
+    reportDate.setHours(0, 0, 0, 0);
     selectedDateOnly.setHours(0, 0, 0, 0);
 
-    const dateMatch = attendanceDate.getTime() === selectedDateOnly.getTime();
+    const dateMatch = reportDate.getTime() === selectedDateOnly.getTime();
 
     return nameMatch && dateMatch;
   });
 
-  const totalPages = Math.ceil(filteredEmployees.length / itemsPerPage);
+  const totalPages = Math.ceil(filteredReports.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
-  const currentEmployees = filteredEmployees.slice(
+  const currentReports = filteredReports.slice(
     startIndex,
     startIndex + itemsPerPage
   );
@@ -107,7 +107,7 @@ const ReportTables = () => {
               />
               <div className="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden">
                 <ReportTable
-                  employees={currentEmployees}
+                  reports={currentReports} // Menggunakan 'currentReports' yang sudah difilter
                   getInitials={getInitials}
                 />
               </div>
@@ -115,7 +115,7 @@ const ReportTables = () => {
                 currentPage={currentPage}
                 totalPages={totalPages}
                 onPageChange={setCurrentPage}
-                filteredEmployees={filteredEmployees}
+                filteredReports={filteredReports} // Menggunakan 'filteredReports'
                 itemsPerPage={itemsPerPage}
               />
             </div>
@@ -126,4 +126,4 @@ const ReportTables = () => {
   );
 };
 
-export default ReportTable;
+export default ReportTables;

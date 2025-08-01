@@ -14,21 +14,6 @@ function ReportRow({ report }) {
 
   return (
     <tr className="hover:bg-gray-50 transition-colors">
-      <td className="px-6 py-5">
-        <div className="flex items-center">
-          <div>
-            <div className="font-semibold text-gray-900">
-              {report.name}
-            </div>
-          </div>
-        </div>
-      </td>
-
-      <td className="px-6 py-5 text-center">
-        <span className="text-gray-700 font-medium">
-          {report.role}
-        </span>
-      </td>
 
       <td className="px-6 py-5 text-center">
         <div className="flex justify-center space-x-2">

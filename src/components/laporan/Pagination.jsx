@@ -6,7 +6,7 @@ const Pagination = ({
   currentPage, 
   totalPages, 
   onPageChange,
-  filteredEmployees,
+  filteredReports, // Mengganti filteredEmployees menjadi filteredReports
   itemsPerPage
 }) => {
   const startIndex = (currentPage - 1) * itemsPerPage;
@@ -29,11 +29,7 @@ const Pagination = ({
           onClick={() => onPageChange(i)}
           className={`
             px-3 py-2 text-sm rounded-lg border transition-colors duration-200
-            ${
-              currentPage === i
-                ? "bg-blue-600 text-white border-blue-600"
-                : "text-gray-500 border-gray-300 hover:bg-gray-50"
-            }
+            ${currentPage === i ? "bg-blue-600 text-white border-blue-600" : "text-gray-500 border-gray-300 hover:bg-gray-50"}
           `}
         >
           {i}
@@ -44,13 +40,16 @@ const Pagination = ({
     return pages;
   };
 
+  // Pastikan filteredReports bukan undefined dan memiliki panjang
+  const displayLength = filteredReports?.length || 0;
+
   return (
     <div className="mt-6 flex flex-col lg:flex-row items-center justify-between space-y-4 lg:space-y-0">
       <div className="text-sm text-gray-600 text-center lg:text-left">
         Menampilkan{" "}
-        {filteredEmployees.length === 0 ? 0 : startIndex + 1}-
-        {Math.min(endIndex, filteredEmployees.length)} dari{" "}
-        {filteredEmployees.length} data
+        {displayLength === 0 ? 0 : startIndex + 1}-
+        {Math.min(endIndex, displayLength)} dari{" "}
+        {displayLength} data
       </div>
       <div className="flex items-center space-x-2">
         <button

@@ -1,52 +1,82 @@
-import React from 'react';
-import { FaEdit, FaTrashAlt } from 'react-icons/fa';
+import React, { useState } from "react";
+import { FaEdit, FaTrashAlt, FaImage } from "react-icons/fa";
+import ImageModal from "./ImageModal";
 
-function ReportRow({ report }) {
+function ReportRow({ report, onDelete }) {
+  const { id, description, area, reported_at, user, image_url } = report;
+
+  const [isModalOpen, setModalOpen] = useState(false);
+
   const handleEdit = () => {
-    // Tambahkan logika edit di sini
-    console.log(`Edit report ${report.id}`);
+    console.log(`Edit report ${id}`);
   };
 
-  const handleDelete = () => {
-    // Tambahkan logika delete di sini
-    console.log(`Delete report ${report.id}`);
+  const handleDelete = async () => {
+    const confirmed = confirm("Yakin ingin menghapus laporan ini?");
+    if (!confirmed) return;
+
+    try {
+      const token = localStorage.getItem("access_token");
+      const apiBase = import.meta.env.VITE_API_URL;
+
+      const response = await fetch(`${apiBase}/reports/${id}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: "application/json",
+        },
+      });
+
+      if (!response.ok) throw new Error("Gagal menghapus laporan");
+
+      if (onDelete) onDelete(id);
+    } catch (error) {
+      console.error("Gagal menghapus laporan:", error.message);
+    }
   };
 
   return (
-    <tr className="hover:bg-gray-50 transition-colors">
-      <td className="px-6 py-5">
-        <div className="flex items-center">
-          <div>
-            <div className="font-semibold text-gray-900">
-              {report.name}
-            </div>
+    <>
+      <tr className="hover:bg-gray-50 transition-colors">
+        <td className="px-4 py-3 text-sm text-gray-700">{description}</td>
+        <td className="px-4 py-3 text-sm text-gray-700">{area}</td>
+        <td className="px-4 py-3 text-sm text-gray-700">
+          {reported_at ? new Date(reported_at).toLocaleDateString() : "-"}
+        </td>
+        <td className="px-4 py-3 text-sm text-gray-700">
+          {user?.name || "Tidak diketahui"}
+        </td>
+        <td className="px-6 py-5 text-center">
+          <div className="flex justify-center space-x-2">
+            <button
+              onClick={() => setModalOpen(true)}
+              className="text-green-600 hover:text-green-800 px-3 py-2 rounded-lg text-sm font-semibold transition-colors"
+            >
+              <FaImage />
+            </button>
+            <button
+              onClick={handleEdit}
+              className="text-blue-500 hover:text-blue-700 px-3 py-2 rounded-lg text-sm font-semibold transition-colors"
+            >
+              <FaEdit />
+            </button>
+            <button
+              onClick={handleDelete}
+              className="text-red-500 hover:text-red-700 px-3 py-2 rounded-lg text-sm font-semibold transition-colors"
+            >
+              <FaTrashAlt />
+            </button>
           </div>
-        </div>
-      </td>
+        </td>
+      </tr>
 
-      <td className="px-6 py-5 text-center">
-        <span className="text-gray-700 font-medium">
-          {report.role}
-        </span>
-      </td>
-
-      <td className="px-6 py-5 text-center">
-        <div className="flex justify-center space-x-2">
-          <button
-            onClick={handleEdit}
-            className="text-blue-500 hover:text-blue-700 px-3 py-2 rounded-lg text-sm font-semibold transition-colors"
-          >
-            <FaEdit />
-          </button>
-          <button
-            onClick={handleDelete}
-            className="text-red-500 hover:text-red-700 px-3 py-2 rounded-lg text-sm font-semibold transition-colors"
-          >
-            <FaTrashAlt />
-          </button>
-        </div>
-      </td>
-    </tr>
+      {/* Modal Komponen */}
+      <ImageModal
+        isOpen={isModalOpen}
+        onClose={() => setModalOpen(false)}
+        imageUrl={image_url}
+      />
+    </>
   );
 }
 

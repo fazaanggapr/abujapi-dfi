@@ -1,10 +1,10 @@
 // ReportViewer.jsx (Main Component)
 import React, { useState } from "react";
-import Header from "../../../components/lihat_laporan/Header";
-import ReportTitle from "../../../components/lihat_laporan/ReportTitle";
-import PatrolActivities from "../../../components/lihat_laporan/PatrolActivities";
-import PositionReport from "../../../components/lihat_laporan/PositionReport";
-import Documentation from "../../../components/lihat_laporan/Documentation";
+import Header from "../../components/lihat_laporan/Header";
+import ReportTitle from "../../components/lihat_laporan/ReportTitle";
+// import PatrolActivities from "../../components/lihat_laporan/PatrolActivities";
+import PositionReport from "../../components/lihat_laporan/PositionReport";
+import Documentation from "../../components/lihat_laporan/Documentation";
 
 const ReportViewer = () => {
   const [currentLocation, setCurrentLocation] = useState(0);
@@ -60,7 +60,7 @@ const ReportViewer = () => {
           {/* Left Column - Activities */}
           <div className="xl:col-span-2 space-y-8">
             {/* Patrol Activities Component */}
-            <PatrolActivities />
+            {/* <PatrolActivities /> */}
 
             {/* Position Report Component */}
             <PositionReport

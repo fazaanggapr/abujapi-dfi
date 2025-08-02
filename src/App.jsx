@@ -8,17 +8,24 @@ import DataAbsensi from "./pages/DataAbsensi";
 import DataKaryawan from "./pages/DataKaryawan";
 import Laporan from "./pages/Laporan";
 import ListLocation from "./pages/ListLocation";
+import TambahLokasi from "./features/location/TambahLokasi";
+import EditLokasi from "./features/location/EditLokasi";
+
+// Absensi
+import ScanQR from "./pages/ScanQRAbsensi";
+
+// Profil
 import LihatProfilSaya from "./features/profil/LihatProfilSaya";
 import TambahProfilKaryawan from "./features/profil/TambahProfilKaryawan";
-import BuatLaporan from "./features/profil/laporan/BuatLaporan";
 import EditProfilKaryawan from "./features/profil/EditProfilKaryawan";
-import LihatLaporan from "./features/profil/laporan/LihatLaporan";
 import LihatProfilKaryawan from "./features/profil/LihatProfilKaryawan";
-import RegisterLocation from "./pages/RegisterLocation";
+
+// Laporan (by Karyawan)
+import BuatLaporan from "./features/laporan/BuatLaporan";
+import LihatLaporan from "./features/laporan/LihatLaporan";
 
 import PrivateRoute from "./routes/PrivateRoute";
 import { Toaster } from "react-hot-toast";
-import ScanQR from "./pages/ScanQRAbsensi";
 import { useState } from "react";
 function App() {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
@@ -29,6 +36,7 @@ function App() {
     <BrowserRouter>
       <Toaster position="top-right" reverseOrder={false} />
       <Routes>
+        {/* AUTH ROUTES */}
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         {/* Routes yang butuh login */}
@@ -131,11 +139,28 @@ function App() {
           }
         />
 
+        {/* LOCATION */}
         <Route
-          path="/location/register"
+          path="/list-location"
           element={
             <PrivateRoute>
-              <RegisterLocation />
+              <ListLocation />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/tambah-lokasi"
+          element={
+            <PrivateRoute>
+              <TambahLokasi />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/edit-lokasi"
+          element={
+            <PrivateRoute>
+              <EditLokasi />
             </PrivateRoute>
           }
         />

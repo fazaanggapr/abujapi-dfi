@@ -23,6 +23,7 @@ import LihatProfilKaryawan from "./features/profil/LihatProfilKaryawan";
 // Laporan (by Karyawan)
 import BuatLaporan from "./features/laporan/BuatLaporan";
 import LihatLaporan from "./features/laporan/LihatLaporan";
+import EditLaporan from "./features/laporan/EditLaporan";
 
 import PrivateRoute from "./routes/PrivateRoute";
 import { Toaster } from "react-hot-toast";
@@ -135,6 +136,14 @@ function App() {
           element={
             <PrivateRoute>
               <LihatLaporan />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/edit-laporan"
+          element={
+            <PrivateRoute>
+              <EditLaporan />
             </PrivateRoute>
           }
         />

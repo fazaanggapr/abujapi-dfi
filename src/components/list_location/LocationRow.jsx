@@ -9,7 +9,7 @@ function LocationRow({ location, index, onDeleteSuccess }) {
 
   const handleEdit = () => {
     // Navigasi ke halaman edit dengan path '/edit-lokasi/:id'
-    navigate(`/edit-lokasi/${location.id}`); // Ganti URL menuju halaman edit
+    navigate(`/edit-lokasi`); // Ganti URL menuju halaman edit
   };
 
   const handleDelete = async () => {

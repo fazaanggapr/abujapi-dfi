@@ -15,7 +15,7 @@ function TableHeader() {
         <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700 w-1/4">
           <FaMapMarked className="mr-2 inline" /> Kode Lokasi
         </th>
-        <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700 w-1/4">
+        <th className="px-6 py-4 text-center text-sm font-semibold text-gray-700 w-1/4">
           <FaCog className="mr-2 inline" /> Aksi
         </th>
       </tr>

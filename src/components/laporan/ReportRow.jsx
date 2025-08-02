@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { FaEdit, FaTrashAlt, FaImage } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";  // Import useNavigate here
 import ImageModal from "./ImageModal";
 
 function ReportRow({ report, onDelete }) {
@@ -7,8 +8,11 @@ function ReportRow({ report, onDelete }) {
 
   const [isModalOpen, setModalOpen] = useState(false);
 
+  // Initialize the navigate function
+  const navigate = useNavigate();
+
   const handleEdit = () => {
-    console.log(`Edit report ${id}`);
+    navigate(`/edit-laporan`);  // Include id in the URL to edit specific report
   };
 
   const handleDelete = async () => {
@@ -70,7 +74,7 @@ function ReportRow({ report, onDelete }) {
         </td>
       </tr>
 
-      {/* Modal Komponen */}
+      {/* Modal Component */}
       <ImageModal
         isOpen={isModalOpen}
         onClose={() => setModalOpen(false)}

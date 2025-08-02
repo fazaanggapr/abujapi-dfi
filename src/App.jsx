@@ -1,61 +1,37 @@
-import React, { useState } from "react";
+// App.jsx
+import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Toaster } from "react-hot-toast";
-
-// Auth pages
 import Register from "./pages/Register";
 import Login from "./pages/Login";
-
-// Main pages
 import Dashboard from "./pages/Dashboard";
 import DataAbsensi from "./pages/DataAbsensi";
 import DataKaryawan from "./pages/DataKaryawan";
 import Laporan from "./pages/Laporan";
-
-// Location management
 import ListLocation from "./pages/ListLocation";
-import RegisterLocation from "./pages/RegisterLocation";
-
-// Absensi
-import ScanQR from "./pages/ScanQRAbsensi";
-
-// Profil
 import LihatProfilSaya from "./features/profil/LihatProfilSaya";
 import TambahProfilKaryawan from "./features/profil/TambahProfilKaryawan";
-import EditProfilKaryawan from "./features/profil/EditProfilKaryawan";
-import LihatProfilKaryawan from "./features/profil/LihatProfilKaryawan";
-
-// Laporan (by Karyawan)
 import BuatLaporan from "./features/profil/laporan/BuatLaporan";
+import EditProfilKaryawan from "./features/profil/EditProfilKaryawan";
 import LihatLaporan from "./features/profil/laporan/LihatLaporan";
+import LihatProfilKaryawan from "./features/profil/LihatProfilKaryawan";
+import RegisterLocation from "./pages/RegisterLocation";
 
-// Middleware
 import PrivateRoute from "./routes/PrivateRoute";
-
+import { Toaster } from "react-hot-toast";
+import ScanQR from "./pages/ScanQRAbsensi";
+import { useState } from "react";
 function App() {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
   const toggleSidebar = () => setSidebarOpen(!isSidebarOpen);
 
   return (
+    
     <BrowserRouter>
       <Toaster position="top-right" reverseOrder={false} />
       <Routes>
-
-        {/* AUTH ROUTES */}
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
-
-        {/* DASHBOARD */}
-        <Route
-          path="/dashboard"
-          element={
-            <PrivateRoute>
-              <Dashboard />
-            </PrivateRoute>
-          }
-        />
-
-        {/* ABSENSI */}
+        {/* Routes yang butuh login */}
         <Route
           path="/data-absensi"
           element={
@@ -65,15 +41,13 @@ function App() {
           }
         />
         <Route
-          path="/absensi/scan-qr"
+          path="/dashboard"
           element={
             <PrivateRoute>
-              <ScanQR />
+              <Dashboard />
             </PrivateRoute>
           }
         />
-
-        {/* KARYAWAN / PROFIL */}
         <Route
           path="/data-karyawan"
           element={
@@ -83,31 +57,32 @@ function App() {
           }
         />
         <Route
+          path="/laporan"
+          element={
+            <PrivateRoute>
+              <Laporan />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/list-location"
+          element={
+            <PrivateRoute>
+              <ListLocation />
+            </PrivateRoute>
+          }
+        />
+        <Route
           path="/lihat-profil-saya"
           element={
             <PrivateRoute>
+              
               <LihatProfilSaya />
             </PrivateRoute>
           }
         />
         <Route
-          path="/tambah-profil-karyawan"
-          element={
-            <PrivateRoute>
-              <TambahProfilKaryawan />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/edit-profil-karyawan"
-          element={
-            <PrivateRoute>
-              <EditProfilKaryawan />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/lihat-profil-karyawan"
+          path="/lihat-profil-karyawan/"
           element={
             <PrivateRoute>
               <LihatProfilKaryawan />
@@ -115,12 +90,11 @@ function App() {
           }
         />
 
-        {/* LAPORAN */}
         <Route
-          path="/laporan"
+          path="/tambah-profil-karyawan"
           element={
             <PrivateRoute>
-              <Laporan />
+              <TambahProfilKaryawan />
             </PrivateRoute>
           }
         />
@@ -133,6 +107,22 @@ function App() {
           }
         />
         <Route
+          path="/absensi/scan-qr"
+          element={
+            <PrivateRoute>
+              <ScanQR />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/edit-profil-karyawan"
+          element={
+            <PrivateRoute>
+              <EditProfilKaryawan />
+            </PrivateRoute>
+          }
+        />
+        <Route
           path="/lihat-laporan"
           element={
             <PrivateRoute>
@@ -141,15 +131,6 @@ function App() {
           }
         />
 
-        {/* LOCATION */}
-        <Route
-          path="/list-location"
-          element={
-            <PrivateRoute>
-              <ListLocation />
-            </PrivateRoute>
-          }
-        />
         <Route
           path="/location/register"
           element={
@@ -158,10 +139,10 @@ function App() {
             </PrivateRoute>
           }
         />
-
       </Routes>
     </BrowserRouter>
   );
 }
 
 export default App;
+

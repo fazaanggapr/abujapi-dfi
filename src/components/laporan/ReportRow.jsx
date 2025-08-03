@@ -3,41 +3,49 @@ import { FaEdit, FaTrashAlt, FaImage } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";  // Import useNavigate here
 import ImageModal from "./ImageModal";
 
+ import { toast } from "react-toastify";
+
+
 function ReportRow({ report, onDelete }) {
   const { id, description, area, reported_at, user, image_url } = report;
 
   const [isModalOpen, setModalOpen] = useState(false);
 
-  // Initialize the navigate function
   const navigate = useNavigate();
 
   const handleEdit = () => {
     navigate(`/edit-laporan`);  // Include id in the URL to edit specific report
   };
 
-  const handleDelete = async () => {
-    const confirmed = confirm("Yakin ingin menghapus laporan ini?");
-    if (!confirmed) return;
 
-    try {
-      const token = localStorage.getItem("access_token");
-      const apiBase = import.meta.env.VITE_API_URL;
+const handleDelete = async () => {
+  const confirmed = window.confirm("Yakin ingin menghapus laporan ini?");
+  if (!confirmed) return;
 
-      const response = await fetch(`${apiBase}/reports/${id}`, {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          Accept: "application/json",
-        },
-      });
+  try {
+    const token = localStorage.getItem("access_token");
+    const apiBase = import.meta.env.VITE_API_URL;
 
-      if (!response.ok) throw new Error("Gagal menghapus laporan");
+    const response = await fetch(`${apiBase}/reports/${id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: "application/json",
+      },
+    });
 
-      if (onDelete) onDelete(id);
-    } catch (error) {
-      console.error("Gagal menghapus laporan:", error.message);
+    if (!response.ok) {
+      throw new Error("Gagal menghapus laporan");
     }
-  };
+
+    toast.success("Laporan berhasil dihapus");
+
+    if (onDelete) onDelete(id);
+  } catch (error) {
+    console.error("Error saat menghapus:", error);
+    toast.error("Terjadi kesalahan saat menghapus laporan");
+  }
+};
 
   return (
     <>

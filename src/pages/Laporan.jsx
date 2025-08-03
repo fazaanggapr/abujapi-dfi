@@ -46,6 +46,11 @@ const ReportTables = () => {
     fetchReports();
   }, []);
 
+  const handleDeleteReport = (id) => {
+  setReports((prevReports) => prevReports.filter((r) => r.id !== id));
+};
+
+
   const getInitials = (name) => {
     if (!name) return "";
     const parts = name.trim().split(" ");
@@ -65,7 +70,7 @@ const ReportTables = () => {
     setSearchTerm(term);
     setCurrentPage(1);
   };
-
+  
   // FILTER berdasarkan nama & tanggal
   const filteredReports = reports.filter((report) => {
     const name = report?.user?.name ?? ""; // Nama user di laporan
@@ -109,6 +114,7 @@ const ReportTables = () => {
                 <ReportTable
                   reports={currentReports} // Menggunakan 'currentReports' yang sudah difilter
                   getInitials={getInitials}
+                   onDelete={handleDeleteReport}
                 />
               </div>
               <Pagination

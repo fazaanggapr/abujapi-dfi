@@ -28,6 +28,10 @@ import EditLaporan from "./features/laporan/EditLaporan";
 import PrivateRoute from "./routes/PrivateRoute";
 import { Toaster } from "react-hot-toast";
 import { useState } from "react";
+import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
+
+
 function App() {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
   const toggleSidebar = () => setSidebarOpen(!isSidebarOpen);
@@ -35,6 +39,7 @@ function App() {
   return (
     
     <BrowserRouter>
+     <ToastContainer position="top-right" autoClose={3000} hideProgressBar />
       <Toaster position="top-right" reverseOrder={false} />
       <Routes>
         {/* AUTH ROUTES */}

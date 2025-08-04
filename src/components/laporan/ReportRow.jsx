@@ -29,6 +29,7 @@ const handleDelete = async () => {
     const response = await fetch(`${apiBase}/reports/${id}`, {
       method: "DELETE",
       headers: {
+        'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,
         Accept: "application/json",
       },

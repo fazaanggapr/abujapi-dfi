@@ -9,7 +9,7 @@ const Header = () => {
       <div className="flex items-center justify-between p-6">
         <div className="flex items-center space-x-4">
           <Link
-            to="/lihat-profil-karyawan"
+            to="/data-karyawan"
             className="flex items-center px-3 py-2 rounded-lg text-sm font-semibold bg-blue-500 hover:bg-blue-600 text-white hover:text-white transition-colors shadow-md"
           >
             <ArrowLeft className="w-5 h-5 mr-2" />

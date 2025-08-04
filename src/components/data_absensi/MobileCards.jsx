@@ -14,7 +14,7 @@ const MobileCards = ({ employees, getInitials }) => {
         {employees.length === 0 ? (
           <div className="px-4 py-8 text-center text-gray-500">
             <FaUser className="text-4xl mb-2 text-gray-300 mx-auto" />
-            <p>Tidak ada data karyawan yang ditemukan</p>
+            <p>Tidak ada data absensi hari ini</p>
           </div>
         ) : (
           employees.map((employee) => (
@@ -42,10 +42,10 @@ const MobileCards = ({ employees, getInitials }) => {
                   </div>
                   <div className="flex items-center justify-between mt-2">
                     <Link
-                      to="/lihat-laporan"
+                      to="/lihat-PROFIL"
                       className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-lg text-sm font-semibold transition-colors shadow-md flex items-center"
                     >
-                      <FaEye className="mr-1" /> LIHAT LAPORAN
+                      <FaEye className="mr-1" /> LIHAT PROFIL
                     </Link>
                   </div>
                 </div>

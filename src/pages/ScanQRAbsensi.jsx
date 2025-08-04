@@ -34,6 +34,7 @@ const ScanQR = () => {
     clearStatus();
   };
 
+
   return (
     <div className="flex">
       <Sidebar isOpen={isSidebarOpen} onClose={toggleSidebar} />

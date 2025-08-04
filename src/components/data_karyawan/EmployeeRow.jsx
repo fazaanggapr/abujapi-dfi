@@ -1,48 +1,83 @@
 // components/EmployeeRow.js
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { FaIdBadge, FaEye } from 'react-icons/fa';
+import React from "react";
+import { FaIdBadge, FaEye, FaEdit, FaTrashAlt } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
-function EmployeeRow({ employee }) {
-  const getInitials = (name) => {
-    const nameParts = name.split(" ");
-    if (nameParts.length >= 2) {
-      return nameParts[0][0] + nameParts[1][0];
+function EmployeeRow({ employee, index, onDeleteSuccess }) {
+  const navigate = useNavigate(); // Inisialisasi useNavigate
+
+  // Fungsi untuk navigasi ke halaman profil
+  const handleViewProfile = () => {
+    navigate(`/lihat-profil-karyawan`); // Menggunakan ID karyawan
+  };
+
+  // Fungsi untuk navigasi ke halaman edit
+  const handleEditProfile = () => {
+    navigate(`/edit-profil-karyawan`); // Menggunakan ID karyawan
+  };
+
+  const handleDelete = async () => {
+    // Menampilkan konfirmasi menggunakan toast
+    const confirmDelete = await toast.promise(
+      new Promise((resolve, reject) => {
+        if (window.confirm(`Yakin ingin menghapus karyawan "${employee.name}"?`)) {
+          resolve(true); // Jika pengguna memilih Ya
+        } else {
+          reject(false); // Jika pengguna memilih Tidak
+        }
+      }),
+      {
+        pending: "Menunggu konfirmasi...",
+        success: "Karyawan berhasil dihapus!",
+        error: "Penghapusan karyawan dibatalkan.",
+      }
+    );
+
+    if (confirmDelete) {
+      try {
+        // Proses penghapusan karyawan
+        if (onDeleteSuccess) onDeleteSuccess(employee.id);
+      } catch (error) {
+        console.error("Error saat menghapus:", error);
+        toast.error("Terjadi kesalahan saat menghapus karyawan");
+      }
+    } else {
+      toast.info("Penghapusan karyawan dibatalkan.");
     }
-    return nameParts[0][0];
   };
 
   return (
     <tr className="hover:bg-gray-50 transition-colors">
-      <td className="px-6 py-5">
+      <td className="px-6 py-4">
         <div className="flex items-center">
-          
-          <div>
-            <div className="font-semibold text-gray-900">
-              {employee.name}
-            </div>
+          <div className="ml-3">
+            <div className="font-semibold text-gray-900">{employee.name}</div>
             <div className="text-sm text-gray-500 flex items-center mt-1">
               <FaIdBadge className="mr-1" /> NIK: {employee.nik}
             </div>
           </div>
         </div>
       </td>
-
-      <td className="px-6 py-5 text-center">
-        <span className="text-gray-700 font-medium">
-          {employee.role}
-        </span>
-      </td>
-
-      <td className="px-6 py-5 text-center">
-        <div className="flex justify-center">
-          <Link
-            to="/lihat-profil-karyawan"
-            className="bg-blue-500 hover:bg-blue-600 text-white hover:text-white px-3 py-2 rounded-lg text-sm font-semibold transition-colors shadow-md flex items-center"
-          >
-            <FaEye className="mr-1" /> LIHAT PROFIL
-          </Link>
-        </div>
+      <td className="px-6 py-4 text-center flex justify-center gap-2">
+        <button
+          onClick={handleViewProfile}
+          className="text-teal-500 hover:text-teal-700 flex items-center"
+        >
+          <FaEye className="mr-1" />
+        </button>
+        <button
+          onClick={handleEditProfile} 
+          className="text-blue-500 hover:text-blue-700"
+        >
+          <FaEdit />
+        </button>
+        <button
+          onClick={handleDelete}
+          className="text-red-500 hover:text-red-700"
+        >
+          <FaTrashAlt />
+        </button>
       </td>
     </tr>
   );

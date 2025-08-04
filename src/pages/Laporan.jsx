@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Sidebar from "../components/Sidebar";
+import LoadingAnimation from "../components/laporan/LoadingAnimation";
 import PageHeader from "../components/laporan/PageHeader";
 import Calendar from "../components/laporan/Calendar";
 import ReportTable from "../components/laporan/ReportTable";
@@ -93,6 +94,8 @@ const ReportTables = () => {
     startIndex,
     startIndex + itemsPerPage
   );
+
+  if (loading) return <LoadingAnimation />;
 
   return (
     <div className="bg-gray-50 font-sans min-h-screen">

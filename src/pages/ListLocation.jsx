@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Sidebar from "../components/Sidebar";
+import LoadingAnimation from "../components/list_location/LoadingAnimation";
 import PageHeader from "../components/list_location/PageHeader";
 import EmployeeTable from "../components/list_location/LocationTable";
 import ControlSection from "../components/list_location/ControlSection";
@@ -49,6 +50,8 @@ function ListLocation() {
   const filteredEmployees = employees.filter((employee) =>
     employee.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  if (loading) return <LoadingAnimation />;
   
   return (
     <div className="bg-gray-50 font-sans min-h-screen">

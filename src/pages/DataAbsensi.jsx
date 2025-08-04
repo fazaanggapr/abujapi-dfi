@@ -1,5 +1,6 @@
 // ResponsiveAttendanceTable.js
 import React, { useState, useEffect } from "react";
+import LoadingAnimation from "../components/data_absensi/LoadingAnimation";
 import Sidebar from "../components/Sidebar";
 import QRModal from "../components/data_absensi/QRModal";
 import AttendanceTable from "../components/data_absensi/AttendanceTable";
@@ -111,6 +112,8 @@ const AttendanceDataTable = () => {
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const currentEmployees = filteredEmployees.slice(startIndex, endIndex);
+
+  if (loading) return <LoadingAnimation />;
 
   return (
     <div className="bg-gray-50 font-sans min-h-screen">

@@ -15,14 +15,14 @@ import EditLokasi from "./features/location/EditLokasi";
 import ScanQR from "./pages/ScanQRAbsensi";
 
 // Profil
-import LihatProfilSaya from "./features/profil/LihatProfilSaya";
+import LihatProfil from "./features/profil/LihatProfil";
 import TambahProfilKaryawan from "./features/profil/TambahProfilKaryawan";
 import EditProfilKaryawan from "./features/profil/EditProfilKaryawan";
 import LihatProfilKaryawan from "./features/profil/LihatProfilKaryawan";
 
 // Laporan (by Karyawan)
 import BuatLaporan from "./features/laporan/BuatLaporan";
-import LihatLaporan from "./features/laporan/LihatLaporan";
+// import LihatLaporan from "./features/laporan/LihatLaporan";
 import EditLaporan from "./features/laporan/EditLaporan";
 
 import PrivateRoute from "./routes/PrivateRoute";
@@ -87,11 +87,11 @@ function App() {
           }
         />
         <Route
-          path="/lihat-profil-saya"
+          path="/lihat-profil"
           element={
             <PrivateRoute>
               
-              <LihatProfilSaya />
+              <LihatProfil />
             </PrivateRoute>
           }
         />
@@ -136,14 +136,14 @@ function App() {
             </PrivateRoute>
           }
         />
-        <Route
+        {/* <Route
           path="/lihat-laporan"
           element={
             <PrivateRoute>
               <LihatLaporan />
             </PrivateRoute>
           }
-        />
+        /> */}
         <Route
           path="/edit-laporan"
           element={

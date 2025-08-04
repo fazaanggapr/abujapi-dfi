@@ -17,8 +17,8 @@ const AddTask = () => {
   
   // State management
   const [formData, setFormData] = useState({
-    description: "",
     area: "",
+    description: "",
     location_code: "TL-1",
     image_description: ""
   });

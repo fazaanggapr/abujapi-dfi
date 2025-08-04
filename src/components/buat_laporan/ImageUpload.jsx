@@ -22,7 +22,7 @@ const ImageUpload = ({ selectedImage, onImageSelect, imageDescription, onDescrip
       <div className="bg-gradient-to-r from-blue-600 to-indigo-600 p-6">
         <div className="flex items-center space-x-3">
           <Camera className="w-6 h-6 text-white" />
-          <h2 className="text-xl font-semibold text-white">Laporan Gambar*</h2>
+          <h2 className="text-xl font-semibold text-white">Laporan Gambar</h2>
         </div>
       </div>
 

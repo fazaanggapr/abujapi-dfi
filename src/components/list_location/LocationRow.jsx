@@ -3,6 +3,8 @@ import React from "react";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import baseUrl from "../../utils/api"; // Pastikan path ini sesuai dengan struktur proyekmu
+import { toast } from "react-toastify";
+
 
 function LocationRow({ location, index, onDeleteSuccess }) {
   const navigate = useNavigate();
@@ -33,9 +35,11 @@ function LocationRow({ location, index, onDeleteSuccess }) {
       }
 
       if (onDeleteSuccess) onDeleteSuccess(location.id);
+      toast.success("Laporan berhasil dihapus");
+
     } catch (error) {
       console.error(error);
-      alert("Terjadi kesalahan saat menghapus lokasi.");
+      toast.error("Terjadi kesalahan saat menghapus laporan");
     }
   };
 

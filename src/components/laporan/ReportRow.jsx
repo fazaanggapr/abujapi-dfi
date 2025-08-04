@@ -51,8 +51,8 @@ const handleDelete = async () => {
   return (
     <>
       <tr className="hover:bg-gray-50 transition-colors">
-        <td className="px-4 py-3 text-sm text-gray-700">{description}</td>
         <td className="px-4 py-3 text-sm text-gray-700">{area}</td>
+        <td className="px-4 py-3 text-sm text-gray-700">{description}</td>
         <td className="px-4 py-3 text-sm text-gray-700">
           {reported_at ? new Date(reported_at).toLocaleDateString() : "-"}
         </td>

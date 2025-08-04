@@ -5,8 +5,8 @@ import baseUrl from "../../utils/api"; // Base URL for your API requests
 function EditReport() {
   const { id } = useParams(); // Extract the report ID from the URL
   const [formData, setFormData] = useState({
+    area: "",
     description: "",
-    location: "",
     date: "",
     sender: "",
     image: null,  // This will hold the image file
@@ -33,8 +33,8 @@ function EditReport() {
 
         const data = await res.json();
         setFormData({
+          area: data.area,
           description: data.description,
-          location: data.location,
           date: data.date,
           sender: data.sender,
           image: data.image_url || null,  // Add image URL if available
@@ -68,8 +68,8 @@ function EditReport() {
     setMessage("");
 
     const formDataToSend = new FormData();
+    formDataToSend.append("area", formData.area);
     formDataToSend.append("description", formData.description);
-    formDataToSend.append("location", formData.location);
     formDataToSend.append("date", formData.date);
     formDataToSend.append("sender", formData.sender);
 
@@ -119,6 +119,25 @@ function EditReport() {
         )}
 
         <form onSubmit={handleSubmit} className="space-y-5">
+          {/* Area */}
+          <div>
+            <label
+              htmlFor="area"
+              className="block text-gray-700 font-medium mb-1"
+            >
+            Area
+            </label>
+            <input
+              type="text"
+              id="area"
+              name="area"
+              value={formData.area}
+              onChange={handleChange}
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
+              required
+            />
+          </div>
+          
           {/* Deskripsi */}
           <div>
             <label
@@ -138,24 +157,6 @@ function EditReport() {
             />
           </div>
 
-          {/* Lokasi */}
-          <div>
-            <label
-              htmlFor="location"
-              className="block text-gray-700 font-medium mb-1"
-            >
-              Lokasi
-            </label>
-            <input
-              type="text"
-              id="location"
-              name="location"
-              value={formData.location}
-              onChange={handleChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
-              required
-            />
-          </div>
 
           {/* Tanggal */}
           <div>

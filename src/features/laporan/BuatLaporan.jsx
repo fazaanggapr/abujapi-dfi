@@ -16,12 +16,13 @@ const AddTask = () => {
   const navigate = useNavigate();
   
   // State management
-  const [formData, setFormData] = useState({
-    area: "",
-    description: "",
-    location_code: "TL-1",
-    image_description: ""
-  });
+    const [formData, setFormData] = useState({
+      area: "",
+      description: "",
+      location_code: "", // awalnya kosong
+      image_description: ""
+    });
+
 //  const [patrolActivities, setPatrolActivities] = useState([]);
   const [selectedImage, setSelectedImage] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -124,7 +125,7 @@ const AddTask = () => {
   };
 
   // Validation
-  const isFormValid = formData.description && formData.area && selectedImage;
+  const isFormValid = formData.description && formData.area && selectedImage && formData.location_code;
 
   return (
     <div className="bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 min-h-screen">
@@ -178,6 +179,11 @@ const AddTask = () => {
 
               {/* QR Scan Section */}
               <QRScanSection onStartScan={handleStartScan} />
+                {formData.location_code && (
+              <div className="text-sm text-slate-700">
+                Lokasi hasil scan: <span className="font-semibold">{formData.location_code}</span>
+              </div>
+            )}
 
               {/* Action Buttons - Sticky at bottom on mobile, normal on desktop */}
               <div className="lg:sticky lg:top-6">

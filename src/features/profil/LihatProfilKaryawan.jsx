@@ -17,99 +17,81 @@ const ViewEmployeeProfile = () => {
   const [loading, setLoading] = useState(true);
   const [profilePhoto, setProfilePhoto] = useState(null);
 
-  // Dummy data
-  const workHistory = [
-    {
-      company: "PT. Terbang kesatas",
-      position: "Junior Security",
-      period: "2018 - 2019",
-    },
-    {
-      company: "PT. Terbang kesatas",
-      position: "Senior Security",
-      period: "2019 - 2022",
-    },
-    {
-      company: "PT. Terbang kesatas",
-      position: "Security Supervisor",
-      period: "2022 - Sekarang",
-    },
-  ];
-
-  const skills = [
-    {
-      title: "Keahlian Teknis",
-      description: "Berdiskusi tentang masalah perkembangan zaman terkait cyber, keamanan, hacker dll.",
-    },
-    {
-      title: "Analisis Keamanan",
-      description: "Menganalisis resiko keamanan pada area kantor dan gedung",
-    },
-    {
-      title: "Operasional",
-      description: "Mengoperasikan alat komunikasi, bela diri, surveillance.",
-    },
-  ];
-
-  const certifications = [
-    { name: "Garda Madya", year: "2015" },
-    { name: "Security Basic", year: "2018" },
-    { name: "First Aid", year: "2020" },
-    { name: "Cyber Security", year: "2023" },
-  ];
-
   useEffect(() => {
-    const fetchEmployee = async () => {
-      const token = localStorage.getItem("access_token");
-      try {
-        const response = await fetch(`${baseUrl}/profile`, {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            Accept: "application/json",
-          },
-        });
+  const fetchEmployee = async () => {
+  const token = localStorage.getItem("access_token");
+  try {
+    const response = await fetch(`${baseUrl}/profile`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: "application/json",
+      },
+    });
 
-        const result = await response.json();
-        if (response.ok && result.data && result.data.profile) {
-          const profile = result.data.profile;
-          setEmployee({
-            profile_photo_url: profile.profile_photo_url,
-            user_id: profile.user_id,
-            name: result.data.name,
-            email: result.data.email,
-            nik: profile.nik,
-            phone: profile.phone_number,
-            status: profile.status,
-            address: profile.address,
-            gender: profile.gender,
-            age: profile.age + " tahun",
-            height: profile.height + " cm",
-            weight: profile.weight + " kg",
-            education: profile.education,
-            bankAccount: profile.bank_account,
-            employeeStatus: profile.employee_status,
-            position: profile.position,
-            workDuration: profile.work_duration,
-            location: profile.placement_location,
-            portfolio: profile.portfolio_link,
-            grade: profile.grade,
-            religion: profile.agama,
-            tanggal_lahir: profile.tanggal_lahir,
-            tempat_lahir: profile.tempat_lahir,
-          });
-          console.log("DEBUG PROFILE", profile); // untuk cek isi yang diterima
+    const result = await response.json();
+    if (response.ok && result.data && result.data.profile) {
+      const profile = result.data.profile;
 
-        } else {
-          console.error("Failed to fetch employee data:", result);
-        }
-      } catch (error) {
-        console.error("Error:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
+      const workHistoryParsed = typeof profile.work_experience === "string" && profile.work_experience.trim() !== ""
+        ? [
+            {
+              company: profile.work_experience.split(" (")[0],
+              position: "Security",
+              period: profile.work_experience.match(/\((.*)\)/)?.[1] || "",
+            },
+          ]
+        : [];
 
+      const skillsParsed = typeof profile.skills === "string" && profile.skills.trim() !== ""
+        ? profile.skills
+            .split(",")
+            .map(skill => skill.trim())
+            .filter(skill => skill.length > 0)
+            .map(skill => ({
+              title: skill,
+              description: `Kemampuan dalam bidang ${skill.toLowerCase()}`,
+            }))
+        : [];
+
+      setEmployee({
+        profile_photo_url: profile.profile_photo_url,
+        user_id: profile.user_id,
+        name: result.data.name,
+        email: result.data.email,
+        nik: profile.nik,
+        phone: profile.phone_number,
+        status: profile.status,
+        address: profile.address,
+        gender: profile.gender,
+        age: profile.age + " tahun",
+        height: profile.height + " cm",
+        weight: profile.weight + " kg",
+        education: profile.education,
+        bankAccount: profile.bank_account,
+        employeeStatus: profile.employee_status,
+        position: profile.position,
+        workDuration: profile.work_duration,
+        location: profile.placement_location,
+        portfolio: profile.portfolio_link,
+        grade: profile.grade,
+        religion: profile.agama,
+        tanggal_lahir: profile.tanggal_lahir,
+        tempat_lahir: profile.tempat_lahir,
+        workHistory: workHistoryParsed,
+        skills: skillsParsed,
+      });
+
+      console.log("DEBUG PROFILE", profile);
+    } else {
+      console.error("Failed to fetch employee data:", result);
+    }
+  } catch (error) {
+    console.error("Error:", error);
+  } finally {
+    setLoading(false);
+  }
+};
     fetchEmployee();
   }, []);
 
@@ -162,12 +144,16 @@ const ViewEmployeeProfile = () => {
           <div className="lg:col-span-2 space-y-8">
             <PersonalInfo employee={employee} />
             <AdditionalInfo employee={employee} />
-            <WorkHistoryAndSkills 
-              workHistory={workHistory}
-              skills={skills}
-            />
-            <Certifications certifications={certifications} />
+            {employee && (
+              <WorkHistoryAndSkills 
+                workHistory={employee.workHistory || []}
+                skills={employee.skills || []}
+              />
+            )}
+            
+
           </div>
+
 
           {/* Right Column - Work Data & Actions */}
           <div className="lg:col-span-1 space-y-8">

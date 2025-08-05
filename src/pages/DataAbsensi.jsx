@@ -63,6 +63,7 @@ const AttendanceDataTable = () => {
               id: item.id,
               name: item.user.name,
               email: item.user.email,
+              role: item.user.role,
               attendance: item.kehadiran.toLowerCase(),
               report: "Belum Dicek",
               avatar: getInitials(item.user.name),

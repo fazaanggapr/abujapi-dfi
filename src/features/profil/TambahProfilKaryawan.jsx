@@ -31,7 +31,6 @@ const initialFormData = {
   portfolio_link: "",
   placement_location: "",
   position: "",
-  status: "Aktif",
   work_duration: "",
   work_location: "",
   weight: "",
@@ -356,7 +355,7 @@ const AddEmployeeDataForm = () => {
       }
 
       alert("Data karyawan berhasil ditambahkan!");
-      navigate("/employees");
+      navigate("/data-karyawan");
 
     } catch (error) {
       console.error("Error adding employee:", error);

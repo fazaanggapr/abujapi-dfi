@@ -8,6 +8,7 @@ import {
   CreditCard,
   CalendarDays,
   Landmark,
+  CheckCircle,
   BadgeCheck,
 } from "lucide-react";
 
@@ -135,20 +136,26 @@ const PersonalInfo = ({ formData, onChange }) => {
             />
           </div>
 
-          {/* Status */}
-          <div className="bg-gradient-to-r from-emerald-50 to-green-50 rounded-xl p-4 border border-emerald-200">
-            <label className="block text-sm font-medium text-slate-600 mb-1 flex items-center">
-              <BadgeCheck className="w-4 h-4 mr-1" />
-              Status
-            </label>
-            <input
-              type="text"
-              name="status"
-              value={formData.status || ""}
-              onChange={onChange}
-              className="w-full border rounded px-3 py-2"
-            />
-          </div>
+        {/* Status Karyawan */}
+        <div className="bg-gradient-to-r from-emerald-50 to-green-50 rounded-xl p-4 border border-emerald-200">
+          <label className="block text-sm font-medium text-slate-600 mb-2">
+            <CheckCircle className="w-4 h-4 inline mr-1" />
+            Status Karyawan
+          </label>
+          <select
+            name="employee_status"
+            value={formData.employee_status}
+            onChange={onChange}
+            className="w-full px-3 py-2 rounded-md border border-slate-300 text-slate-800 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+          >
+            <option value="">Pilih</option>
+            <option value="Aktif">Aktif</option>
+            <option value="Tidak Aktif">Tidak Aktif</option>
+            <option value="Magang">Magang</option>
+            <option value="Kontrak">Kontrak</option>
+            <option value="Tetap">Tetap</option>
+          </select>
+        </div>
 
           {/* Tinggi / Berat */}
           <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-4 border border-blue-200">

@@ -18,7 +18,7 @@ export const useProfile = () => {
   };
 
   const handleViewProfile = () => {
-    navigate('/lihat-profil-karyawan');
+    navigate('/lihat-profil');
     setProfileDropdownOpen(false);
   };
 

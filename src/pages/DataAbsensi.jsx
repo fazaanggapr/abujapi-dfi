@@ -4,7 +4,6 @@ import LoadingAnimation from "../components/data_absensi/LoadingAnimation";
 import Sidebar from "../components/Sidebar";
 import QRModal from "../components/data_absensi/QRModal";
 import AttendanceTable from "../components/data_absensi/AttendanceTable";
-import MobileCards from "../components/data_absensi/MobileCards";
 import Pagination from "../components/data_absensi/Pagination";
 import Calendar from "../components/data_absensi/Calendar";
 import SearchBar from "../components/data_absensi/SearchBar";
@@ -148,12 +147,6 @@ const AttendanceDataTable = () => {
             <div className="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden">
               {/* Desktop Table */}
               <AttendanceTable 
-                employees={currentEmployees}
-                getInitials={getInitials}
-              />
-
-              {/* Mobile Cards */}
-              <MobileCards 
                 employees={currentEmployees}
                 getInitials={getInitials}
               />

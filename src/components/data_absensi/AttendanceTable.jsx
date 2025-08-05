@@ -57,35 +57,36 @@ const AttendanceTable = ({ employees }) => {
   };
 
   return (
-    <div className="overflow-x-auto">
-      <table className="w-full">
-        <thead>
-          <tr className="bg-gradient-to-r from-cyan-200 to-blue-200">
-            <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700 w-1/5">
-              <FaUser className="mr-2 inline" />
-              Nama
-            </th>
-            <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700 w-1/5">
-              <FaUserShield className="mr-2 inline" />
-              Role
-            </th>
-            <th className="px-6 py-4 text-center text-sm font-semibold text-gray-700 w-1/5">
-              <FaCheckCircle className="mr-2 inline" />
-              Absensi
-            </th>
-            <th className="px-6 py-4 text-center text-sm font-semibold text-gray-700 w-1/5">
-              <FaCalendarAlt className="mr-2 inline" />
-              Tanggal dan Waktu Absensi
-            </th>
-            <th className="px-6 py-4 text-center text-sm font-semibold text-gray-700 w-1/5">
-              <FaEye className="mr-2 inline" />
-              Profil
-            </th>
-          </tr>
-        </thead>
-        <tbody className="divide-y divide-gray-100">{renderTable()}</tbody>
-      </table>
-    </div>
+<div className="overflow-x-auto">
+  <table className="w-full">
+    <thead>
+      <tr className="bg-gradient-to-r from-cyan-200 to-blue-200">
+        <th className="px-6 py-4 text-center text-sm font-semibold text-gray-700 w-1/5">
+          <FaUser className="mr-2 inline" />
+          Nama
+        </th>
+        <th className="px-6 py-4 text-center text-sm font-semibold text-gray-700 w-1/5">
+          <FaUserShield className="mr-2 inline" />
+          Role
+        </th>
+        <th className="px-6 py-4 text-center text-sm font-semibold text-gray-700 w-1/5">
+          <FaCheckCircle className="mr-2 inline" />
+          Absensi
+        </th>
+        <th className="px-6 py-4 text-center text-sm font-semibold text-gray-700 w-1/5">
+          <FaCalendarAlt className="mr-2 inline" />
+          Tanggal dan Waktu Absensi
+        </th>
+        <th className="px-6 py-4 text-center text-sm font-semibold text-gray-700 w-1/5">
+          <FaEye className="mr-2 inline" />
+          Profil
+        </th>
+      </tr>
+    </thead>
+    <tbody className="divide-y divide-gray-100">{renderTable()}</tbody>
+  </table>
+</div>
+
   );
 };
 

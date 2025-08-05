@@ -11,15 +11,6 @@ const WorkData = ({ employee }) => {
         </div>
       </div>
       <div className="p-6 space-y-4">
-        <div className="bg-gradient-to-r from-emerald-50 to-green-50 rounded-xl p-4 border border-emerald-200">
-          <label className="block text-sm font-medium text-slate-600 mb-1">
-            Status Karyawan
-          </label>
-          <p className="text-emerald-800 font-semibold flex items-center">
-            <CheckCircle className="w-4 h-4 mr-2" />
-            {employee?.employeeStatus}
-          </p>
-        </div>
         <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-4 border border-blue-200">
           <label className="block text-sm font-medium text-slate-600 mb-1 flex items-center">
             <Briefcase className="w-4 h-4 mr-1" />

@@ -8,13 +8,13 @@ const SidebarNavigation = ({ userRole }) => {
       icon: Home,
       label: 'Dashboard',
       path: '/dashboard',
-      roles: ['admin', 'employee']
+      roles: ['admin', 'user']
     },
     {
       icon: QrCode,
       label: 'Absensi QR',
       path: '/absensi/scan-qr',
-      roles: ['admin']
+      roles: ['admin','user']
     },
     {
       icon: Calendar,
@@ -38,7 +38,7 @@ const SidebarNavigation = ({ userRole }) => {
       icon: AlertCircle,
       label: 'Laporan',
       path: '/laporan',
-      roles: ['admin']
+      roles: ['user', 'admin']
     }
   ];
 

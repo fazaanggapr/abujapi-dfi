@@ -1,17 +1,18 @@
-import React, { useEffect, useRef, useState } from 'react';
+// routes/PrivateRoute.jsx
+import React, { useEffect, useState } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import toast from 'react-hot-toast';
-
+import baseUrl from '../utils/api';
 const PrivateRoute = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(null);
-  const shownRef = useRef(false);
+  const [hasProfile, setHasProfile] = useState(null);
   const location = useLocation();
 
   useEffect(() => {
     const token = localStorage.getItem('access_token');
-    setIsAuthenticated(!!token); // convert to boolean
 
-    if (!token && !shownRef.current) {
+    if (!token) {
+      setIsAuthenticated(false);
       toast.error('Silakan login terlebih dahulu untuk melanjutkan.', {
         duration: 4000,
         icon: '🔒',
@@ -23,12 +24,39 @@ const PrivateRoute = ({ children }) => {
           borderRadius: '8px',
         },
       });
-      shownRef.current = true;
+      return;
     }
-  }, []);
 
-  // Menampilkan loading saat sedang mengecek autentikasi
-  if (isAuthenticated === null) {
+    setIsAuthenticated(true);
+
+    // Cek profil ke backend
+    fetch(`${baseUrl}/profile`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then(async (res) => {
+        if (!res.ok) {
+          const data = await res.json();
+          if (data.message === 'Profil belum dibuat.') {
+            setHasProfile(false);
+          } else {
+            throw new Error('Gagal memuat profil');
+          }
+        } else {
+          setHasProfile(true);
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+        toast.error('Terjadi kesalahan saat memeriksa profil.');
+        setHasProfile(false);
+      });
+  }, []);
+  console.log('Auth:', isAuthenticated);
+console.log('Has Profile:', hasProfile);
+
+  if (isAuthenticated === null || hasProfile === null) {
     return (
       <div className="text-center py-10 text-gray-600">
         Memeriksa akses... 🔐
@@ -36,14 +64,15 @@ const PrivateRoute = ({ children }) => {
     );
   }
 
-  // Redirect jika belum login
   if (!isAuthenticated) {
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
-  // Jika lolos autentikasi
+  if (!hasProfile && location.pathname !== '/edit-profil-karyawan') {
+    return <Navigate to="/edit-profil-karyawan" replace />;
+  }
+
   return children;
 };
 
 export default PrivateRoute;
-    

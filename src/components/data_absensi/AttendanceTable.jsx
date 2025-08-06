@@ -22,7 +22,12 @@ const AttendanceTable = ({ employees }) => {
         <td className="px-6 py-4">
           <div className="flex items-center gap-4">
             <img
-              src={emp.profile_photo_url ?? "https://via.placeholder.com/40"}
+              src={
+                    emp.profile_photo_url
+                      ? `${emp.profile_photo_url}?t=${new Date().getTime()}`
+                      : "profile-photo-default.png"
+                  }
+
               alt="Profile"
               className="w-10 h-10 rounded-full object-cover"
             />

@@ -17,28 +17,33 @@ const ProfilePhoto = ({ employee, uploadPhoto }) => {
       </div>
       <div className="p-6">
         {/* Profile Photo */}
-        <div className="text-center mb-6">
-          <div className="w-full h-48 bg-gradient-to-br from-slate-200 to-slate-300 rounded-2xl overflow-hidden relative flex items-center justify-center shadow-lg mx-auto">
-            {console.log("Profile photo:", employee?.profile_photo_url)}
+       <div className="text-center mb-6">
+  <div className="w-full h-48 bg-gradient-to-br from-slate-200 to-slate-300 rounded-2xl overflow-hidden relative flex items-center justify-center shadow-lg mx-auto">
+    {console.log("Profile photo:", employee?.profile_photo_url)}
 
-           <img
-                  src={employee?.profile_photo_url || "assets/profile-photo-default.png"}
-                  onError={(e) => {
-                    e.target.onerror = null;
-                    e.target.src = "assets/profile-photo-default.png";
-                  }}
-                  className="w-full h-full object-cover"
-                  alt="Profile Photo"
-                />
+          <img
+            src={
+              employee?.profile_photo_url
+                ? `${employee.profile_photo_url}?t=${Date.now()}`
+                : "assets/profile-photo-default.png"
+            }
+            onError={(e) => {
+              e.target.onerror = null;
+              e.target.src = "assets/profile-photo-default.png";
+            }}
+            className="w-full h-full object-cover"
+            alt="Profile Photo"
+          />
 
-            <button
-              onClick={uploadPhoto}
-              className="absolute bottom-2 right-2 bg-gradient-to-br from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white rounded-full p-2 shadow-lg transition-all duration-200"
-            >
-              <Camera className="w-4 h-4" />
-            </button>
-          </div>
+          <button
+            onClick={uploadPhoto}
+            className="absolute bottom-2 right-2 bg-gradient-to-br from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white rounded-full p-2 shadow-lg transition-all duration-200"
+          >
+            <Camera className="w-4 h-4" />
+          </button>
         </div>
+      </div>
+
 
         {/* Grade Badge */}
         <div className="text-center mb-4">

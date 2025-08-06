@@ -109,6 +109,14 @@ function EmployeeRow({ employee, index, onDeleteSuccess }) {
         </div>
       </td>
 
+      <td className="px-6 py-4">
+        <div className="flex items-center">
+          <div className="ml-3">
+            <div className="font-semibold text-gray-900">{employee.role}</div>
+          </div>
+        </div>
+      </td>
+
       <td className="px-6 py-4 text-center flex justify-center gap-2">
         <button
           onClick={handleViewProfile}

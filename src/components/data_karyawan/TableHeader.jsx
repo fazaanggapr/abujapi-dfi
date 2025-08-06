@@ -11,7 +11,9 @@ function TableHeader() {
         <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700 w-1/3">
           <FaUser className="mr-2 inline" /> Nama Karyawan
         </th>
-        
+        <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700 w-1/3">
+          <UserCog className="mr-2 inline" /> Role
+        </th>
         <th className="px-6 py-4 text-center text-sm font-semibold text-gray-700 w-1/3">
           <FaFileAlt className="mr-2 inline" /> Aksi
         </th>

@@ -37,9 +37,6 @@ const AttendanceTable = ({ employees }) => {
           </div>
         </td>
         <td className="px-6 py-4 text-center">
-          <span className="text-gray-700 font-medium">{emp.role}</span>
-        </td>
-        <td className="px-6 py-4 text-center">
           <span className="text-gray-700 font-medium">
             {emp.attendance}
           </span>
@@ -47,16 +44,7 @@ const AttendanceTable = ({ employees }) => {
         <td className="px-6 py-4 text-center">
           <span className="text-gray-500 text-sm">{emp.attended_at}</span>
         </td>
-        <td className="px-6 py-4 text-center">
-          <div className="flex justify-center">
-            <Link
-              to="/lihat-profil"
-              className="bg-blue-500 hover:bg-blue-600 text-white hover:text-white px-3 py-2 rounded-lg text-sm font-semibold transition-colors shadow-md flex items-center"
-            >
-              <FaEye className="mr-1" /> Lihat Profil
-            </Link>
-          </div>
-        </td>
+
       </tr>
     ));
   };
@@ -66,13 +54,9 @@ const AttendanceTable = ({ employees }) => {
   <table className="w-full">
     <thead>
       <tr className="bg-gradient-to-r from-cyan-200 to-blue-200">
-        <th className="px-6 py-4 text-center text-sm font-semibold text-gray-700 w-1/5">
+        <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700 w-1/5">
           <FaUser className="mr-2 inline" />
           Nama
-        </th>
-        <th className="px-6 py-4 text-center text-sm font-semibold text-gray-700 w-1/5">
-          <FaUserShield className="mr-2 inline" />
-          Role
         </th>
         <th className="px-6 py-4 text-center text-sm font-semibold text-gray-700 w-1/5">
           <FaCheckCircle className="mr-2 inline" />
@@ -81,10 +65,6 @@ const AttendanceTable = ({ employees }) => {
         <th className="px-6 py-4 text-center text-sm font-semibold text-gray-700 w-1/5">
           <FaCalendarAlt className="mr-2 inline" />
           Tanggal dan Waktu Absensi
-        </th>
-        <th className="px-6 py-4 text-center text-sm font-semibold text-gray-700 w-1/5">
-          <FaEye className="mr-2 inline" />
-          Profil
         </th>
       </tr>
     </thead>

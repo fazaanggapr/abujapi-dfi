@@ -10,11 +10,7 @@ function EmployeeRow({ employee, index, onDeleteSuccess }) {
 
   // Fungsi untuk navigasi ke halaman profil
   const handleViewProfile = () => {
-    navigate(`/lihat-profil-karyawan`);
-  };
-
-  const handleEditProfile = () => {
-    navigate(`/edit-profil-karyawan`); 
+    navigate(`/lihat-profil`);
   };
 
   const handleDelete = async (id) => {
@@ -102,9 +98,6 @@ function EmployeeRow({ employee, index, onDeleteSuccess }) {
         <div className="flex items-center">
           <div className="ml-3">
             <div className="font-semibold text-gray-900">{employee.name}</div>
-            <div className="text-sm text-gray-500 flex items-center mt-1">
-              <FaIdBadge className="mr-1" /> NIK: {employee.nik}
-            </div>
           </div>
         </div>
       </td>
@@ -123,12 +116,6 @@ function EmployeeRow({ employee, index, onDeleteSuccess }) {
           className="text-teal-500 hover:text-teal-700 flex items-center"
         >
           <FaEye className="mr-1" />
-        </button>
-        <button
-          onClick={handleEditProfile} 
-          className="text-blue-500 hover:text-blue-700"
-        >
-          <FaEdit />
         </button>
 
         <button

@@ -10,6 +10,7 @@ import WorkHistoryAndSkills from "../../components/lihat_profil_karyawan/WorkHis
 import Certifications from "../../components/lihat_profil_karyawan/Certifications";
 import WorkData from "../../components/lihat_profil_karyawan/WorkData";
 import PortfolioLink from "../../components/lihat_profil_karyawan/PortfolioLink";
+import ActionButtons from "../../components/lihat_profil_karyawan/ActionButtons";
 //import LoadingSpinner from "./components/LoadingSpinner";
 
 const ViewEmployeeProfile = () => {
@@ -158,6 +159,7 @@ const ViewEmployeeProfile = () => {
           <div className="lg:col-span-1 space-y-8">
             <WorkData employee={employee} />
             <PortfolioLink employee={employee} />
+            <ActionButtons employee={employee} />
           </div>
         </div>
       </div>

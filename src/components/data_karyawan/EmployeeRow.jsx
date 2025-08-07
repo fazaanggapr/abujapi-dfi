@@ -10,8 +10,11 @@ function EmployeeRow({ employee, index, onDeleteSuccess }) {
 
   // Fungsi untuk navigasi ke halaman profil
   const handleViewProfile = () => {
-    navigate(`/lihat-profil`);
-  };
+    navigate(`/lihat-profil/${employee.id}`, {
+      state: { employee }, // Pass the employee data if needed
+    });
+  } ;
+  
 
   const handleDelete = async (id) => {
     // Debug log to check if ID exists

@@ -16,14 +16,14 @@ const AddTask = () => {
   const navigate = useNavigate();
   
   // State management
-    const [formData, setFormData] = useState({
-      area: "",
-      description: "",
-      location_code: "", // awalnya kosong
-      image_description: ""
-    });
+  const [formData, setFormData] = useState({
+    area: "",
+    description: "",
+    location_code: "", // awalnya kosong
+    image_description: ""
+  });
 
-//  const [patrolActivities, setPatrolActivities] = useState([]);
+  //  const [patrolActivities, setPatrolActivities] = useState([]);
   const [selectedImage, setSelectedImage] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
@@ -32,13 +32,13 @@ const AddTask = () => {
   // Event handlers
   const handleBack = () => navigate(-1);
 
-/*  const handleAddPatrolActivity = (activity) => {
-    setPatrolActivities([...patrolActivities, activity]);
-  }; */
+  /*  const handleAddPatrolActivity = (activity) => {
+      setPatrolActivities([...patrolActivities, activity]);
+    }; */
 
-/*  const handleRemoveActivity = (id) => {
-    setPatrolActivities(patrolActivities.filter(activity => activity.id !== id));
-  }; */
+  /*  const handleRemoveActivity = (id) => {
+      setPatrolActivities(patrolActivities.filter(activity => activity.id !== id));
+    }; */
 
   const handleFormChange = (e) => {
     const { name, value } = e.target;
@@ -60,12 +60,44 @@ const AddTask = () => {
     }));
   };
 
-  const handleQRScanSuccess = (decodedText) => {
-    setFormData(prev => ({
-      ...prev,
-      location_code: decodedText
-    }));
-    setShowScanner(false);
+  
+  const handleQRScanSuccess = async (decodedText) => {
+    try {
+      const token = localStorage.getItem("access_token");
+      const baseUrl = import.meta.env.VITE_API_URL;
+
+      // Fetch location detail from backend by code
+      const response = await fetch(`${baseUrl}/locations/by-code?code=${decodedText}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Gagal mengambil lokasi dari kode QR");
+      }
+
+      const data = await response.json();
+
+      if (!data || !data.name) {
+        throw new Error("Data lokasi tidak ditemukan");
+      }
+
+      // Update form data with both location code and area name
+      setFormData((prev) => ({
+        ...prev,
+        location_code: decodedText,
+        area: data.name, // Auto-fill area with location name
+      }));
+
+      setShowScanner(false);
+      setError("");
+    } catch (err) {
+      console.error("QR Scan Error:", err);
+      setError("Gagal mengambil lokasi berdasarkan kode QR: " + err.message);
+      setShowScanner(false);
+    }
   };
 
   const handleStartScan = () => {
@@ -76,49 +108,48 @@ const AddTask = () => {
     setShowScanner(false);
   };
 
+  // Fixed submit handler - removed duplicate QR logic
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (!formData.description || !formData.area || !selectedImage) {
       setError("Harap isi semua field yang wajib diisi");
       return;
     }
 
     setIsSubmitting(true);
-    
+
     try {
-      const data = new FormData();
+      console.log("Mengirim:", formData, selectedImage);
+
+      // Add your actual API submission logic here
+      // Example:
+       const token = localStorage.getItem("access_token");
+       const baseUrl = import.meta.env.VITE_API_URL;
+       
+      const submitData = new FormData();
+        submitData.append('area', formData.area);
+       submitData.append('description', formData.description);
+       submitData.append('location_code', formData.location_code);
+       submitData.append('image', selectedImage);
       
-      // Append form fields
-      Object.entries(formData).forEach(([key, value]) => {
-        if (value) data.append(key, value);
-      });
-
-      // Append image
-      const blob = await fetch(selectedImage).then(res => res.blob());
-      data.append("image", blob, "patrol-image.jpg");
-
-      const token = localStorage.getItem("access_token");
-      const baseUrl = import.meta.env.VITE_API_URL;
-
-      const response = await fetch(`${baseUrl}/reports`, {
-        method: "POST",
-        headers: {
-          "Authorization": `Bearer ${token}`,
+       const response = await fetch(`${baseUrl}/reports`, {
+        method: 'POST',
+         headers: {
+           Authorization: `Bearer ${token}`,
         },
-        body: data,
-      });
+         body: submitData
+       });
+      
+       if (!response.ok) {
+         throw new Error("Gagal mengirim laporan");
+       }
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || "Gagal mengirim laporan");
-      }
-
-      alert("Laporan berhasil dibuat!");
-      navigate("/laporan");
+      // Navigasi atau notifikasi sukses
+      navigate("/success-page");
     } catch (err) {
-      console.error("Error:", err);
-      setError(err.message || "Terjadi kesalahan");
+      console.error("Submit Error:", err);
+      setError("Terjadi kesalahan saat mengirim data: " + err.message);
     } finally {
       setIsSubmitting(false);
     }
@@ -150,7 +181,7 @@ const AddTask = () => {
         <form onSubmit={handleSubmit} className="mt-8">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             
-          {/* Left Column - Main Content (2/3 width) */}
+            {/* Left Column - Main Content (2/3 width) */}
             <div className="lg:col-span-2 space-y-8">
 
               {/* <PatrolActivities
@@ -179,11 +210,14 @@ const AddTask = () => {
 
               {/* QR Scan Section */}
               <QRScanSection onStartScan={handleStartScan} />
-                {formData.location_code && (
-              <div className="text-sm text-slate-700">
-                Lokasi hasil scan: <span className="font-semibold">{formData.location_code}</span>
-              </div>
-            )}
+              {formData.location_code && (
+                <div className="bg-green-50 border border-green-200 rounded-lg p-3">
+                  <div className="text-sm text-green-700">
+                    <div>Kode Lokasi: <span className="font-semibold">{formData.location_code}</span></div>
+                    <div>Area: <span className="font-semibold">{formData.area}</span></div>
+                  </div>
+                </div>
+              )}
 
               {/* Action Buttons - Sticky at bottom on mobile, normal on desktop */}
               <div className="lg:sticky lg:top-6">
@@ -202,4 +236,4 @@ const AddTask = () => {
   );
 };
 
-export default AddTask
+export default AddTask;

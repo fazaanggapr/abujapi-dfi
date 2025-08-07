@@ -18,10 +18,10 @@ const RequiredFields = ({ formData, onChange }) => {
             name="area"
             value={formData.area}
             onChange={onChange}
-            placeholder="Masukkan area patroli..."
-            className="w-full bg-white/70 border border-white/50 rounded-lg px-4 py-3 text-slate-700 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            required
+            className="w-full border rounded px-3 py-2"
+            placeholder="Nama Area (otomatis dari QR)"
           />
+
         </div>
         <div>
           <label className="block text-sm font-medium text-slate-700 mb-1">Deskripsi*</label>

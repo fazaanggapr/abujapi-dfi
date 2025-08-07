@@ -87,7 +87,7 @@ function App() {
           }
         />
         <Route
-          path="/lihat-profil"
+          path="/lihat-profil/:id"
           element={
             <PrivateRoute>
               

@@ -26,7 +26,7 @@ const LihatProfil = () => {
     const fetchEmployee = async () => {
       const token = localStorage.getItem("access_token");
       try {
-        const response = await fetch(`${baseUrl}/profile/${id}`, {
+        const response = await fetch(`${baseUrl}/admin/user/${id}`, {
           method: "GET",
           headers: {
             Authorization: `Bearer ${token}`,
@@ -35,19 +35,24 @@ const LihatProfil = () => {
         });
 
         const result = await response.json();
-        if (response.ok && result.data && result.data.profile) {
+        if (response.ok && result.data) {
           const profile = result.data.profile;
+
           setEmployee({
-            profile_photo_url: profile.profile_photo_url,
-            grade: profile.grade,
+            profile_photo_url: result.data.profile_photo_url || "",
+            grade: profile?.grade || "",
+          
+            role: result.data.role || "",
           });
+
           setFormData({
-              profile_photo_url: profile.profile_photo_url || "",
-              name: result.data.name || "",
-              email: result.data.email || "",
-              password: "",
-              role: result.data.role || "",
-            });
+            profile_photo_url: result.data.profile_photo_url || "",
+            name: result.data.name || "",
+            email: result.data.email || "",
+            password: "",
+            role: result.data.role || "",
+          });
+
 
           console.log("DEBUG PROFILE", profile);
         } else {

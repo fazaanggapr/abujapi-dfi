@@ -71,9 +71,10 @@ const PersonalInfo = ({ formData, onChange }) => {
               className="w-full border rounded px-3 py-2"
             >
               <option value="">Pilih</option>
-              <option value="Laki-laki">Admin</option>
-              <option value="Perempuan">User</option>
+              <option value="admin">Admin</option>
+              <option value="user">User</option>
             </select>
+
           </div>
         </div>
       </div>

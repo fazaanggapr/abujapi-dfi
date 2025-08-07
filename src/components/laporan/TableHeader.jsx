@@ -3,7 +3,8 @@ import { FaFileAlt, FaMapPin, FaCalendarDay, FaUser, FaCog } from 'react-icons/f
 
 function TableHeader() {
   return (
-    <thead>
+    // Only show on desktop (md and up), hidden on mobile
+    <thead className="hidden md:table-header-group">
       <tr className="bg-gradient-to-r from-cyan-200 to-blue-200">
         <th className="px-2 py-4 text-left text-sm font-semibold text-gray-700 w-1/4">
           <FaMapPin className="mr-2 inline" /> Area

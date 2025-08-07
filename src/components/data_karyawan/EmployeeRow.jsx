@@ -1,6 +1,6 @@
 // components/EmployeeRow.js
 import React from "react";
-import { FaIdBadge, FaEye, FaEdit, FaTrashAlt } from "react-icons/fa";
+import { FaIdBadge, FaEye, FaEdit, FaTrashAlt, FaInfoCircle, FaHistory } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import baseUrl from "../../utils/api";
@@ -13,8 +13,7 @@ function EmployeeRow({ employee, index, onDeleteSuccess }) {
     navigate(`/lihat-profil/${employee.id}`, {
       state: { employee }, // Pass the employee data if needed
     });
-  } ;
-  
+  };
 
   const handleDelete = async (id) => {
     // Debug log to check if ID exists
@@ -95,40 +94,84 @@ function EmployeeRow({ employee, index, onDeleteSuccess }) {
     }
   };
 
+  // Format tanggal untuk tampilan
+  const formatDate = (dateString) => {
+    if (!dateString) return new Date().toLocaleDateString('id-ID');
+    return new Date(dateString).toLocaleDateString('id-ID');
+  };
+
   return (
-    <tr className="hover:bg-gray-50 transition-colors">
-      <td className="px-6 py-4">
-        <div className="flex items-center">
-          <div className="ml-3">
-            <div className="font-semibold text-gray-900">{employee.name}</div>
+    <>
+      {/* DESKTOP VERSION - Hidden on mobile (md and up) */}
+      <tr className="hidden md:table-row hover:bg-gray-50 transition-colors">
+        <td className="px-6 py-4">
+          <div className="flex items-center">
+            <div className="ml-3">
+              <div className="font-semibold text-gray-900">{employee.name}</div>
+            </div>
           </div>
-        </div>
-      </td>
+        </td>
 
-      <td className="px-6 py-4">
-        <div className="flex items-center">
-          <div className="ml-3">
-            <div className="font-semibold text-gray-900">{employee.role}</div>
+        <td className="px-6 py-4">
+          <div className="flex items-center">
+            <div className="ml-3">
+              <div className="font-semibold text-gray-900">{employee.role}</div>
+            </div>
           </div>
+        </td>
+
+        <td className="px-6 py-4 text-center flex justify-center gap-2">
+          <button
+            onClick={handleViewProfile}
+            className="text-teal-500 hover:text-teal-700 flex items-center"
+          >
+            <FaEye className="mr-1" />
+          </button>
+
+          <button
+            onClick={() => handleDelete(employee.id)}
+            className="text-red-500 hover:text-red-700"
+          >
+            <FaTrashAlt />
+          </button>
+        </td>
+      </tr>
+
+      {/* MOBILE VERSION - Visible only on mobile (below md) */}
+      <div className="block md:hidden bg-white rounded-lg shadow-sm border border-gray-200 mb-3 p-4 relative">
+        {/* Status Badge - Tidak Langkap */}
+        <div className="absolute top-3 right-3">
+          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+            {employee.role || 'Role'}
+          </span>
         </div>
-      </td>
 
-      <td className="px-6 py-4 text-center flex justify-center gap-2">
-        <button
-          onClick={handleViewProfile}
-          className="text-teal-500 hover:text-teal-700 flex items-center"
-        >
-          <FaEye className="mr-1" />
-        </button>
+        {/* Employee Name */}
+        <div className="mb-3">
+          <h3 className="text-lg font-semibold text-gray-900 mb-1">
+            {employee.name || 'Nama Karyawan'}
+          </h3>
+        </div>
 
-        <button
-          onClick={() => handleDelete(employee.id)}
-          className="text-red-500 hover:text-red-700"
-        >
-          <FaTrashAlt />
-        </button>
-      </td>
-    </tr>
+
+        {/* Action Buttons */}
+        <div className="flex items-center justify-start gap-4 pt-3 border-t border-gray-100">
+          <button
+            onClick={handleViewProfile}
+            className="flex items-center gap-1 text-teal-500 hover:text-teal-700 text-sm font-medium transition-colors"
+          >
+            <FaEye className="w-4 h-4" />
+          </button>
+
+          <button
+            onClick={() => handleDelete(employee.id)}
+            className="flex items-center gap-1 text-red-600 hover:text-red-800 text-sm font-medium transition-colors"
+          >
+            <FaTrashAlt className="w-4 h-4" />
+          </button>
+        </div>
+      </div>
+    </>
   );
 }
 

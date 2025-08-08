@@ -10,7 +10,7 @@ const errorConfig = {
     action: { label: "Kembali ke Dashboard", to: "/dashboard" }
   },
   403: {
-    image: "/assets/undraw_access-denied_krem.svg",
+    image: "/assets/access-denied.svg",
     title: "Akses Ditolak",
     message: "Kamu tidak memiliki izin untuk mengakses halaman ini.",
     action: { label: "Kembali", to: "/dashboard" }

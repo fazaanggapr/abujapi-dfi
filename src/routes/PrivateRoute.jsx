@@ -68,8 +68,8 @@ const PrivateRoute = ({ children, allowedRoles }) => {
   }
 
   // Belum punya profil
-  if (!hasProfile && location.pathname !== '/edit-profil-karyawan') {
-    return <Navigate to="/edit-profil-karyawan" replace />;
+  if (!hasProfile && location.pathname !== '/tambah-profil-karyawan') {
+    return <Navigate to="/tambah-profil-karyawan" replace />;
   }
 
   // Role tidak cocok → tampilkan halaman 403 inline

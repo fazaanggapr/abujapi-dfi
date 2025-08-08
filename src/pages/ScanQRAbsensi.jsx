@@ -7,7 +7,8 @@ import StatusMessage from "../components/scan_qr_absensi/StatusMessage";
 import Instructions from "../components/scan_qr_absensi/Instructions";
 import ScannerTips from "../components/scan_qr_absensi/ScannerTips";
 import LoadingOverlay from "../components/scan_qr_absensi/LoadingOverlay";
-import useAttendanceSubmission from "../hooks/useAttendanceSubmission";
+import useAttendanceSubmission from "../hooks/UseAttendanceSubmission";
+
 
 const ScanQR = () => {
   const [scannerActive, setScannerActive] = useState(false);

@@ -10,11 +10,13 @@ const errorConfig = {
     action: { label: "Kembali ke Dashboard", to: "/dashboard" }
   },
   403: {
+    image: "/assets/undraw_access-denied_krem.svg",
     title: "Akses Ditolak",
     message: "Kamu tidak memiliki izin untuk mengakses halaman ini.",
     action: { label: "Kembali", to: "/dashboard" }
   },
   500: {
+    image: "/assets/undraw_access-denied_krem.svg",
     title: "Kesalahan Server",
     message: "Terjadi kesalahan di server. Silakan coba lagi nanti.",
     action: { label: "Muat Ulang", to: "/dashboard" }
@@ -22,11 +24,11 @@ const errorConfig = {
 };
 
 export default function ErrorPage({ code = 404 }) {
-  const { image,title, message, action } = errorConfig[code] || errorConfig[404];
+  const { image, title, message, action } = errorConfig[code] || errorConfig[404];
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-6 text-center bg-gray-50">
-        <img src={image} alt="Error" className="w-1/2 max-w-md mb-6" />
+      <img src={image} alt={title} className="w-1/2 max-w-md mb-6" />
       <h3 className="text-6xl font-bold text-gray-800">{code}</h3>
       <h2 className="mt-4 text-2xl font-semibold">{title}</h2>
       <p className="mt-2 text-gray-600">{message}</p>

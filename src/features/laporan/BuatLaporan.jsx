@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+import { toast } from 'react-toastify';
 // Import komponen yang sudah dipecah
 import Header from "../../components/buat_laporan/Header";
 import ReportTitle from "../../components/buat_laporan/ReportTitle";
@@ -10,46 +10,38 @@ import RequiredFields from "../../components/buat_laporan/RequiredFields";
 import ImageUpload from "../../components/buat_laporan/ImageUpload";
 import QRScanSection from "../../components/buat_laporan/QRScanSection";
 import ActionButtons from "../../components/buat_laporan/ActionButtons";
+
+
 import ErrorAlert from "../../components/buat_laporan/ErrorAlert";
+
+import baseUrl from "../../utils/api";
+
+
 
 const AddTask = () => {
   const navigate = useNavigate();
-  
-  // State management
+
   const [formData, setFormData] = useState({
     area: "",
     description: "",
-    location_code: "", // awalnya kosong
+    location_code: "",
     image_description: ""
   });
 
-  //  const [patrolActivities, setPatrolActivities] = useState([]);
   const [selectedImage, setSelectedImage] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
   const [showScanner, setShowScanner] = useState(false);
 
-  // Event handlers
   const handleBack = () => navigate(-1);
-
-  /*  const handleAddPatrolActivity = (activity) => {
-      setPatrolActivities([...patrolActivities, activity]);
-    }; */
-
-  /*  const handleRemoveActivity = (id) => {
-      setPatrolActivities(patrolActivities.filter(activity => activity.id !== id));
-    }; */
 
   const handleFormChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
 
   const handleImageSelect = (imageData) => {
-    setSelectedImage(imageData);
+    setSelectedImage(imageData); // base64
     setError("");
   };
 
@@ -60,13 +52,10 @@ const AddTask = () => {
     }));
   };
 
-  
   const handleQRScanSuccess = async (decodedText) => {
     try {
       const token = localStorage.getItem("access_token");
-      const baseUrl = import.meta.env.VITE_API_URL;
 
-      // Fetch location detail from backend by code
       const response = await fetch(`${baseUrl}/locations/by-code?code=${decodedText}`, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -84,11 +73,10 @@ const AddTask = () => {
         throw new Error("Data lokasi tidak ditemukan");
       }
 
-      // Update form data with both location code and area name
       setFormData((prev) => ({
         ...prev,
         location_code: decodedText,
-        area: data.name, // Auto-fill area with location name
+        area: data.name,
       }));
 
       setShowScanner(false);
@@ -100,15 +88,22 @@ const AddTask = () => {
     }
   };
 
-  const handleStartScan = () => {
-    setShowScanner(true);
+  const handleStartScan = () => setShowScanner(true);
+  const handleStopScan = () => setShowScanner(false);
+
+  // 🔁 Konversi base64 ke Blob File
+  const dataURLtoBlob = (dataURL) => {
+    const arr = dataURL.split(',');
+    const mime = arr[0].match(/:(.*?);/)[1];
+    const bstr = atob(arr[1]);
+    let n = bstr.length;
+    const u8arr = new Uint8Array(n);
+    while (n--) {
+      u8arr[n] = bstr.charCodeAt(n);
+    }
+    return new Blob([u8arr], { type: mime });
   };
 
-  const handleStopScan = () => {
-    setShowScanner(false);
-  };
-
-  // Fixed submit handler - removed duplicate QR logic
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -120,33 +115,38 @@ const AddTask = () => {
     setIsSubmitting(true);
 
     try {
-      console.log("Mengirim:", formData, selectedImage);
+      const token = localStorage.getItem("access_token");
 
-      // Add your actual API submission logic here
-      // Example:
-       const token = localStorage.getItem("access_token");
-       const baseUrl = import.meta.env.VITE_API_URL;
-       
       const submitData = new FormData();
-        submitData.append('area', formData.area);
-       submitData.append('description', formData.description);
-       submitData.append('location_code', formData.location_code);
-       submitData.append('image', selectedImage);
-      
-       const response = await fetch(`${baseUrl}/reports`, {
-        method: 'POST',
-         headers: {
-           Authorization: `Bearer ${token}`,
-        },
-         body: submitData
-       });
-      
-       if (!response.ok) {
-         throw new Error("Gagal mengirim laporan");
-       }
+      submitData.append("area", formData.area);
+      submitData.append("description", formData.description);
+      submitData.append("location_code", formData.location_code || "");
 
-      // Navigasi atau notifikasi sukses
-      navigate("/success-page");
+      // Convert base64 to Blob
+      const imageBlob = dataURLtoBlob(selectedImage);
+      submitData.append("image", imageBlob, "laporan.jpg");
+
+      const response = await fetch(`${baseUrl}/reports`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: submitData,
+      });
+
+      if (!response.ok) {
+        throw new Error("Gagal mengirim laporan");
+      }
+
+      toast.success("Laporan berhasil dikirim!", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
     } catch (err) {
       console.error("Submit Error:", err);
       setError("Terjadi kesalahan saat mengirim data: " + err.message);
@@ -155,7 +155,6 @@ const AddTask = () => {
     }
   };
 
-  // Validation
   const isFormValid = formData.description && formData.area && selectedImage && formData.location_code;
 
   return (

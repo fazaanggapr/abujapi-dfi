@@ -12,7 +12,7 @@ const AttendanceTable = ({ employees }) => {
   // Fungsi untuk mendapatkan status badge
   const getStatusBadge = (status) => {
     const statusConfig = {
-      Hadir: {
+      "hadir": {
         color: "bg-green-100 text-green-700 border-green-200", // Hijau
         icon: <FaCheckCircle className="text-xs" />,
       },
@@ -38,7 +38,6 @@ const AttendanceTable = ({ employees }) => {
     );
   };
 
-  // Fungsi untuk memformat tanggal
   const formatDate = (dateString) => {
     if (!dateString) return "-";
     const [date, time] = dateString.split(" ");
@@ -72,15 +71,17 @@ const AttendanceTable = ({ employees }) => {
                 <tr key={employee.id || index} className="hover:bg-gray-50 transition-colors">
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-4">
-                      <img
-                        src={
-                          employee.profile_photo_url
-                            ? `${employee.profile_photo_url}?t=${new Date().getTime()}`
-                            : "profile-photo-default.png"
-                        }
-                        alt="Profile"
-                        className="w-10 h-10 rounded-full object-cover"
-                      />
+                      {employee.profile_photo_url ? (
+                        <img
+                          src={`${employee.profile_photo_url}?t=${new Date().getTime()}`}
+                          alt="Profile"
+                          className="w-10 h-10 rounded-full object-cover border-2 border-gray-200"
+                        />
+                      ) : (
+                        <div className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center">
+                          <FaUserCircle className="text-gray-400 text-lg" />
+                        </div>
+                      )}
                       <div>
                         <div className="font-semibold text-gray-900">{employee.name}</div>
                       </div>
@@ -174,7 +175,7 @@ const AttendanceTable = ({ employees }) => {
                 />
               </svg>
             </div>
-            <h3 className="text-lg font-medium text-gray-900 mb-2">Tidak ada data karyawan</h3>
+            <h3 className="text-lg font-medium text-gray-900 mb-2">Tidak ada data Absensi</h3>
             <p className="text-gray-500">Belum ada karyawan yang terdaftar dalam sistem.</p>
           </div>
         )}

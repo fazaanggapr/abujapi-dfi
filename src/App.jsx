@@ -11,6 +11,10 @@ import ListLocation from "./pages/ListLocation";
 import TambahLokasi from "./features/location/TambahLokasi";
 import EditLokasi from "./features/location/EditLokasi";
 
+
+
+import ErrorPage from "./components/ErrorPage";
+
 // Absensi
 import ScanQR from "./pages/ScanQRAbsensi";
 
@@ -65,7 +69,7 @@ function App() {
         <Route
           path="/data-karyawan"
           element={
-            <PrivateRoute>
+            <PrivateRoute allowedRoles={['admin']}> 
               <DataKaryawan />
             </PrivateRoute>
           }
@@ -73,7 +77,7 @@ function App() {
         <Route
           path="/laporan"
           element={
-            <PrivateRoute>
+            <PrivateRoute allowedRoles={['admin']}>
               <Laporan />
             </PrivateRoute>
           }
@@ -81,7 +85,7 @@ function App() {
         <Route
           path="/list-location"
           element={
-            <PrivateRoute>
+            <PrivateRoute allowedRoles={['admin']}>
               <ListLocation />
             </PrivateRoute>
           }
@@ -178,6 +182,10 @@ function App() {
             </PrivateRoute>
           }
         />
+
+        {/* Error Page */}
+        <Route path="*" element={<ErrorPage />} />
+
       </Routes>
     </BrowserRouter>
   );

@@ -11,8 +11,6 @@ import ListLocation from "./pages/ListLocation";
 import TambahLokasi from "./features/location/TambahLokasi";
 import EditLokasi from "./features/location/EditLokasi";
 
-
-
 import ErrorPage from "./components/ErrorPage";
 
 // Absensi
@@ -51,18 +49,18 @@ function App() {
         <Route path="/login" element={<Login />} />
         {/* Routes yang butuh login */}
         <Route
-          path="/data-absensi"
-          element={
-            <PrivateRoute>
-              <DataAbsensi />
-            </PrivateRoute>
-          }
-        />
-        <Route
           path="/dashboard"
           element={
             <PrivateRoute>
               <Dashboard />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/data-absensi"
+          element={
+            <PrivateRoute>
+              <DataAbsensi />
             </PrivateRoute>
           }
         />

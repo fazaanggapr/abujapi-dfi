@@ -94,6 +94,9 @@ const PrivateRoute = ({ children, allowedRoles }) => {
   // Jika profil belum dibuat
   if (!hasProfile && location.pathname !== '/edit-profil-karyawan') {
     return <Navigate to="/edit-profil-karyawan" state={{ from: location }} replace />;
+  // Belum punya profil
+  if (!hasProfile && location.pathname !== '/tambah-profil-karyawan') {
+    return <Navigate to="/tambah-profil-karyawan" replace />;
   }
 
   // Jika error lain

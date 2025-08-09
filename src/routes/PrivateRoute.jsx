@@ -10,11 +10,18 @@ const errorConfig = {
     title: "Akses Ditolak",
     message: "Kamu tidak memiliki izin untuk mengakses halaman ini.",
     action: { label: "Kembali ke Dashboard", to: "/dashboard" }
+  },
+  500: {
+    image: "/assets/server-error.svg",
+    title: "Kesalahan Server",
+    message: "Terjadi masalah pada server. Silakan coba lagi nanti.",
+    action: { label: "Muat Ulang", to: window.location.pathname }
   }
 };
 
 const PrivateRoute = ({ children, allowedRoles }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [hasProfile, setHasProfile] = useState(null);
   const [userRole, setUserRole] = useState(null);
   const [errorCode, setErrorCode] = useState(null);
@@ -26,35 +33,52 @@ const PrivateRoute = ({ children, allowedRoles }) => {
     if (!token) {
       setIsAuthenticated(false);
       toast.error('Silakan login terlebih dahulu untuk melanjutkan.');
+      setLoading(false);
       return;
     }
 
-    setIsAuthenticated(true);
-
-    fetch(`${baseUrl}/profile`, {
+    fetch(`${baseUrl}/me`, {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then(async (res) => {
         const data = await res.json();
+
+        if (res.status === 401) {
+          // Token kadaluarsa atau tidak valid
+          localStorage.removeItem('access_token');
+          toast.error('Sesi telah berakhir. Silakan login kembali.');
+          setIsAuthenticated(false);
+          setLoading(false);
+          return;
+        }
+
         if (!res.ok) {
+          // Error lain, misalnya profil belum dibuat
           if (data.message === 'Profil belum dibuat.') {
             setHasProfile(false);
-          } else {
-            throw new Error('Gagal memuat profil');
+            setIsAuthenticated(true);
+            setLoading(false);
+            return;
           }
-        } else {
-          setHasProfile(true);
-          setUserRole(data.role);
+          setErrorCode(res.status);
+          setLoading(false);
+          return;
         }
+
+        // Profil ada → tandai true
+        setHasProfile(true);
+        setIsAuthenticated(true);
+        setUserRole(data.role);
+        setLoading(false);
       })
       .catch(() => {
-        toast.error('Terjadi kesalahan saat memeriksa profil.');
-        setHasProfile(false);
+        setErrorCode(500);
+        setLoading(false);
       });
-  }, []);
+  }, [location.pathname]);
 
   // Loader
-  if (isAuthenticated === null || hasProfile === null) {
+  if (loading) {
     return (
       <div className="text-center py-10 text-gray-600">
         Memeriksa akses... 🔐
@@ -62,17 +86,35 @@ const PrivateRoute = ({ children, allowedRoles }) => {
     );
   }
 
-  // Belum login
+  // Jika tidak login
   if (!isAuthenticated) {
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
-  // Belum punya profil
+  // Jika profil belum dibuat
   if (!hasProfile && location.pathname !== '/edit-profil-karyawan') {
-    return <Navigate to="/edit-profil-karyawan" replace />;
+    return <Navigate to="/edit-profil-karyawan" state={{ from: location }} replace />;
   }
 
-  // Role tidak cocok → tampilkan halaman 403 inline
+  // Jika error lain
+  if (errorCode) {
+    const err = errorConfig[errorCode] || errorConfig[500];
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-6">
+        <img src={err.image} alt={err.title} className="w-64 mb-6" />
+        <h1 className="text-2xl font-bold text-gray-800">{err.title}</h1>
+        <p className="text-gray-600 mb-4">{err.message}</p>
+        <a
+          href={err.action.to}
+          className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+        >
+          {err.action.label}
+        </a>
+      </div>
+    );
+  }
+
+  // Jika role tidak sesuai
   if (allowedRoles && !allowedRoles.includes(userRole)) {
     const err = errorConfig[403];
     return (

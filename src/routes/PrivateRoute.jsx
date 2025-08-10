@@ -28,54 +28,70 @@ const PrivateRoute = ({ children, allowedRoles }) => {
   const location = useLocation();
 
   useEffect(() => {
-    const token = localStorage.getItem('access_token');
+  const token = localStorage.getItem('access_token');
 
-    if (!token) {
-      setIsAuthenticated(false);
-      toast.error('Silakan login terlebih dahulu untuk melanjutkan.');
-      setLoading(false);
-      return;
-    }
+  if (!token) {
+    setIsAuthenticated(false);
+    toast.error('Silakan login terlebih dahulu untuk melanjutkan.');
+    setLoading(false);
+    return;
+  }
 
-    fetch(`${baseUrl}/me`, {
-      headers: { Authorization: `Bearer ${token}` },
-    })
-      .then(async (res) => {
-        const data = await res.json();
+  // Step 1: Ambil role dari /me
+  fetch(`${baseUrl}/me`, {
+    headers: { Authorization: `Bearer ${token}` },
+  })
+    .then(async (res) => {
+      const data = await res.json();
 
-        if (res.status === 401) {
-          // Token kadaluarsa atau tidak valid
-          localStorage.removeItem('access_token');
-          toast.error('Sesi telah berakhir. Silakan login kembali.');
-          setIsAuthenticated(false);
-          setLoading(false);
-          return;
-        }
-
-        if (!res.ok) {
-          // Error lain, misalnya profil belum dibuat
-          if (data.message === 'Profil belum dibuat.') {
-            setHasProfile(false);
-            setIsAuthenticated(true);
-            setLoading(false);
-            return;
-          }
-          setErrorCode(res.status);
-          setLoading(false);
-          return;
-        }
-
-        // Profil ada → tandai true
-        setHasProfile(true);
-        setIsAuthenticated(true);
-        setUserRole(data.role);
+      if (res.status === 401) {
+        localStorage.removeItem('access_token');
+        toast.error('Sesi telah berakhir. Silakan login kembali.');
+        setIsAuthenticated(false);
         setLoading(false);
-      })
-      .catch(() => {
-        setErrorCode(500);
+        return;
+      }
+
+      if (!res.ok) {
+        setErrorCode(res.status);
         setLoading(false);
+        return;
+      }
+
+      setIsAuthenticated(true);
+      setUserRole(data.role);
+
+      // Step 2: Cek profil dari /profile
+      return fetch(`${baseUrl}/profile`, {
+        headers: { Authorization: `Bearer ${token}` },
       });
-  }, [location.pathname]);
+    })
+    .then(async (res) => {
+      if (!res) return; // kalau sudah stop di atas
+
+      if (res.status === 404) {
+        // Profil belum ada
+        setHasProfile(false);
+        setLoading(false);
+        return;
+      }
+
+      if (!res.ok) {
+        setErrorCode(res.status);
+        setLoading(false);
+        return;
+      }
+
+      // Profil ada
+      setHasProfile(true);
+      setLoading(false);
+    })
+    .catch(() => {
+      setErrorCode(500);
+      setLoading(false);
+    });
+}, [location.pathname]);
+
 
   // Loader
   if (loading) {

@@ -48,12 +48,15 @@ function LocationRow({ location, index, onDeleteSuccess }) {
         <td className="px-6 py-4">{location.name}</td>
         <td className="px-6 py-4">{location.code}</td>
         <td className="px-6 py-4 flex justify-center space-x-2">
-          <button
+
+          {/* <button
             onClick={handleEdit}
             className="text-blue-500 hover:text-blue-700"
           >
             <FaEdit />
-          </button>
+          </button> */}
+
+
           <button
             onClick={handleDelete}
             className="text-red-500 hover:text-red-700"
@@ -78,12 +81,12 @@ function LocationRow({ location, index, onDeleteSuccess }) {
 
         {/* Action Buttons */}
         <div className="flex items-center justify-start gap-4 pt-3 border-t border-gray-100">
-          <button
+        {/*   <button
             onClick={handleEdit}
             className="flex items-center gap-2 text-blue-600 hover:text-blue-800 text-sm font-medium transition-colors"
           >
             <FaEdit className="w-4 h-4" />
-          </button>
+          </button> */}
 
           <button
             onClick={handleDelete}

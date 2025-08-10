@@ -86,17 +86,14 @@ const PrivateRoute = ({ children, allowedRoles }) => {
     );
   }
 
-  // Jika tidak login
   if (!isAuthenticated) {
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
-  // Jika profil belum dibuat
   if (!hasProfile && location.pathname !== '/edit-profil-karyawan') {
     return <Navigate to="/edit-profil-karyawan" state={{ from: location }} replace />;
   }
 
-  // Jika error lain
   if (errorCode) {
     const err = errorConfig[errorCode] || errorConfig[500];
     return (

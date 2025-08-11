@@ -9,7 +9,8 @@ import {
   CalendarDays,
   Landmark,
   CheckCircle,
-  BadgeCheck,
+Pin,  
+BadgeCheck,
 } from "lucide-react";
 
 const PersonalInfo = ({ formData, onChange }) => {
@@ -44,12 +45,12 @@ const PersonalInfo = ({ formData, onChange }) => {
           <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-4 border border-blue-200">
             <label className="block text-sm font-medium text-slate-600 mb-1 flex items-center">
               <User className="w-4 h-4 mr-1" />
-              Nama Lengkap
+              Nama
             </label>
             <input
               type="text"
               name="name"
-              value={formData.name || ""}
+              value={formData.fname || ""}
               onChange={onChange}
               className="w-full border rounded px-3 py-2"
             />
@@ -59,12 +60,25 @@ const PersonalInfo = ({ formData, onChange }) => {
           <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-4 border border-blue-200">
             <label className="block text-sm font-medium text-slate-600 mb-1 flex items-center">
               <CalendarDays className="w-4 h-4 mr-1" />
-              Tempat, Tanggal Lahir
+              Tanggal Lahir
+            </label>
+            <input
+              type="date"
+              name="placeDateofBirth"
+              value={formData.tanggal_lahir || ""}
+              onChange={onChange}
+              className="w-full border rounded px-3 py-2"
+            />
+          </div>
+          <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-4 border border-blue-200">
+            <label className="block text-sm font-medium text-slate-600 mb-1 flex items-center">
+              <Pin className="w-4 h-4 mr-1" />
+              Tempat Lahir
             </label>
             <input
               type="text"
               name="placeDateofBirth"
-              value={formData.placeDateofBirth || ""}
+              value={formData.tempat_lahir || ""}
               onChange={onChange}
               className="w-full border rounded px-3 py-2"
             />
@@ -189,7 +203,7 @@ const PersonalInfo = ({ formData, onChange }) => {
             <input
               type="text"
               name="bankAccount"
-              value={formData.bankAccount || ""}
+              value={formData.bank_account || ""}
               onChange={onChange}
               className="w-full border rounded px-3 py-2"
             />

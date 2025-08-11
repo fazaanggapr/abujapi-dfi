@@ -44,7 +44,8 @@ const EditEmployeeDataForm = () => {
     grade: "",
     email: "",
     religion: "",
-    place_date_of_birth: "",
+    tempat_lahir: "",
+    tanggal_lahir: "",
   });
 
   const [profilePhoto, setProfilePhoto] = useState(null);
@@ -67,6 +68,7 @@ const EditEmployeeDataForm = () => {
         if (res.ok && result.data?.profile) {
           const profile = result.data.profile;
           setFormData({
+          fname: profile.name || "",
             ...formData,
             ...profile,
           });
@@ -310,7 +312,7 @@ const handleSave = async () => {
             />
           </div>
           <div className="lg:col-span-2 space-y-8">
-            <PersonalInfo formData={formData} onChange={handleInputChange} />
+            <PersonalInfo formData={formData}  onChange={handleInputChange} />
             <AdditionalInfo formData={formData} onChange={handleInputChange} />
             <WorkHistoryAndSkills
               workHistory={[]} // bisa diganti sesuai kebutuhan

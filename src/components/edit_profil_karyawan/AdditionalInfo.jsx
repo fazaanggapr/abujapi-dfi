@@ -36,7 +36,7 @@ const AdditionalInfo = ({ formData, onChange }) => {
             <input
               type="text"
               name="phone"
-              value={formData.phone || ""}
+              value={formData.phone_number || ""}
               onChange={onChange}
               className="w-full border rounded px-3 py-2"
             />

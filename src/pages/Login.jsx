@@ -4,17 +4,17 @@ import IllustrationSection from "../components/auth/shared/Illustration";
 import LoginForm from "../components/login_form/LoginForm";
 import { useLogin } from "../hooks/useLogin";
 
-const LoginComponent = () => {
+const Login = () => {
   const { formData, loading, handleInputChange, handleSubmit } = useLogin();
 
   return (
     <AuthLayout>
-      <IllustrationSection 
+      <IllustrationSection
         imageSrc="/assets/Door-Person.png"
-        alt="Ilustrasi Orang Masuk Pintu"
+        alt="Ilustrasi Gedung"
       />
       
-      <div className="w-1/2 flex items-center justify-start z-10 h-full pl-10 min-w-[400px]">
+      <div className="w-full lg:w-1/2 flex items-center justify-center z-10 h-full px-4">
         <LoginForm
           formData={formData}
           onInputChange={handleInputChange}
@@ -26,5 +26,4 @@ const LoginComponent = () => {
   );
 };
 
-export default LoginComponent;
-
+export default Login;

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { FaEnvelope, FaLock, FaEye } from 'react-icons/fa';
 import InputField from '../auth/shared/InputField';
 import LoadingDots from '../auth/shared/LoadingDots';
+import { FaDoorOpen } from 'react-icons/fa6';
 
 const LoginForm = ({
   formData,
@@ -30,7 +31,7 @@ const LoginForm = ({
       {/* Logo/Header */}
       <div className="text-center mb-8">
         <div className="inline-block bg-gradient-to-r from-blue-900 to-blue-800 text-white px-6 py-3 rounded-lg mb-4">
-          <h1 className="text-2xl font-bold ">LOGIN</h1>
+          <h1 className="text-2xl font-bold flex px-2"><span className="mr-2 pt-1"><FaDoorOpen/></span> LOGIN</h1>
         </div>
         <p className="text-gray-600 text-sm">Masuk ke sistem administrasi</p>
       </div>
@@ -73,8 +74,17 @@ const LoginForm = ({
         ) : (
           <button
             type="submit"
-            className="w-full py-4 bg-gradient-to-r from-yellow-400 to-yellow-500 text-gray-900 border-none rounded-lg text-base font-bold cursor-pointer hover:from-yellow-500 hover:to-yellow-600 transition-all duration-200 shadow-lg"
-          >
+            className="
+            w-full py-4 
+            bg-gradient-to-r from-yellow-400 to-yellow-500 
+            text-gray-900 font-bold 
+            border-2 border-transparent rounded-lg 
+            hover:from-white hover:to-white hover:border-yellow-500
+            transition-colors transition-shadow duration-300 ease-in-out
+            shadow-lg hover:shadow-xl
+            focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2
+          ">
+
             Login
           </button>
         )}

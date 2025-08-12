@@ -1,5 +1,6 @@
 // App.jsx
 import React from "react";
+import { Navigate } from "react-router-dom";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
@@ -45,6 +46,7 @@ function App() {
       <Toaster position="top-right" reverseOrder={false} />
       <Routes>
         {/* AUTH ROUTES */}
+        <Route path="/" element={<Navigate to="/login" replace />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         {/* Routes yang butuh login */}

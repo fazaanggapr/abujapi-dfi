@@ -12,8 +12,8 @@ const Register = () => {
   return (
     <AuthLayout>
       <IllustrationSection
-        imageSrc="/assets/Door-Person.png"
-        alt="Ilustrasi Gedung"
+        // imageSrc="/assets/Door-Person.png"
+        // alt="Ilustrasi Gedung"
       />
 
       <div className="w-full lg:w-1/2 flex flex-col items-center justify-center z-10 h-full px-4">

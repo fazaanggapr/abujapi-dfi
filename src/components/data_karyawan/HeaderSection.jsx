@@ -2,12 +2,12 @@
 import React from "react";
 import { FaCalendarAlt } from "react-icons/fa";
 
-const HeaderSection = ({ ToggleSidebar }) => {
+const HeaderSection = ({ onToggleSidebar }) => {
   return (
     <div className="bg-white p-6 border-b border-gray-200 shadow-sm">
       <h1 className="text-3xl font-bold text-gray-800">
         <button
-          onClick={ToggleSidebar}
+          onClick={onToggleSidebar}
           className="lg:hidden p-2 text-gray-800 bg-white rounded-md shadow"
         >
           <svg

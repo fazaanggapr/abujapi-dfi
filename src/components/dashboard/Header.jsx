@@ -13,7 +13,7 @@ const Header = ({ onMenuClick }) => {
             <Menu className="w-6 h-6" />
           </button>
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">
+            <h1 className="text-2xl font-bold text-gray-900">
               Selamat malam, Cipher!
             </h1>
             <p className="text-gray-600 mt-1">
@@ -21,10 +21,10 @@ const Header = ({ onMenuClick }) => {
             </p>
           </div>
         </div>
-        <div className="flex items-center space-x-2 bg-white px-4 py-2 rounded-lg shadow-sm">
+        {/* <div className="flex items-center space-x-2 bg-white px-4 py-2 rounded-lg shadow-sm">
           <User className="w-5 h-5 text-gray-500" />
           <span className="text-sm font-medium text-gray-700">Admin</span>
-        </div>
+        </div> */}
       </div>
     </div>
   );

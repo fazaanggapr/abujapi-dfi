@@ -79,7 +79,7 @@ const LoginForm = ({
             bg-gradient-to-r from-yellow-400 to-yellow-500 
             text-gray-900 font-bold 
             border-2 border-transparent rounded-lg 
-            hover:from-white hover:to-white hover:border-yellow-500
+            hover:from-yellow-500 hover:to-yellow-500 hover:border-yellow-500
             transition-colors transition-shadow duration-300 ease-in-out
             shadow-lg hover:shadow-xl
             focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2

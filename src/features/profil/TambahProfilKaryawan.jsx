@@ -39,10 +39,16 @@ const initialFormData = {
   grade: "",
   email: "",
   religion: "",
-  place_date_of_birth: "",
+  tempat_lahir: "",
+  tanggal_lahir: "",
 };
 
-const ProfilePhoto = ({ profilePhoto, onUploadPhoto, onRemovePhoto, isUploading }) => {
+const ProfilePhoto = ({
+  profilePhoto,
+  onUploadPhoto,
+  onRemovePhoto,
+  isUploading,
+}) => {
   return (
     <div className="bg-white rounded-lg shadow p-6">
       <div className="flex flex-col items-center">
@@ -64,7 +70,7 @@ const ProfilePhoto = ({ profilePhoto, onUploadPhoto, onRemovePhoto, isUploading 
             </div>
           )}
         </div>
-        
+
         <button
           onClick={onUploadPhoto}
           disabled={isUploading}
@@ -72,7 +78,7 @@ const ProfilePhoto = ({ profilePhoto, onUploadPhoto, onRemovePhoto, isUploading 
         >
           {profilePhoto ? "Ganti Foto" : "Upload Foto"}
         </button>
-        
+
         {profilePhoto && (
           <button
             onClick={onRemovePhoto}
@@ -82,7 +88,7 @@ const ProfilePhoto = ({ profilePhoto, onUploadPhoto, onRemovePhoto, isUploading 
             Hapus Foto
           </button>
         )}
-        
+
         <p className="text-xs text-gray-500 mt-2">
           Format: JPG/PNG (Maks. 2MB)
         </p>
@@ -147,66 +153,77 @@ const AddEmployeeDataForm = () => {
   // Handle input changes with validation
   const handleInputChange = useCallback((e) => {
     const { name, value } = e.target;
-    
+
     // Validate numeric fields
-    const numericFields = ['age', 'weight', 'height', 'work_duration'];
+    const numericFields = ["age", "weight", "height", "work_duration"];
     if (numericFields.includes(name)) {
       // Only allow numbers
-      const numericValue = value.replace(/[^0-9]/g, '');
-      setFormData(prev => ({ ...prev, [name]: numericValue }));
+      const numericValue = value.replace(/[^0-9]/g, "");
+      setFormData((prev) => ({ ...prev, [name]: numericValue }));
       return;
     }
 
     // Validate NIK (only numbers, max 16 digits)
-    if (name === 'nik') {
-      const nikValue = value.replace(/[^0-9]/g, '').slice(0, 16);
-      setFormData(prev => ({ ...prev, [name]: nikValue }));
+    if (name === "nik") {
+      const nikValue = value.replace(/[^0-9]/g, "").slice(0, 16);
+      setFormData((prev) => ({ ...prev, [name]: nikValue }));
       return;
     }
 
     // Validate phone number (only numbers and + at start)
-    if (name === 'phone_number') {
-      const phoneValue = value.replace(/[^0-9+]/g, '');
-      setFormData(prev => ({ ...prev, [name]: phoneValue }));
+    if (name === "phone_number") {
+      const phoneValue = value.replace(/[^0-9+]/g, "");
+      setFormData((prev) => ({ ...prev, [name]: phoneValue }));
       return;
     }
 
     // For other fields, use value as is
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   }, []);
 
   // Add new work history entry
   const addWorkHistory = useCallback(() => {
-    setWorkHistory(prev => [...prev, {
-      company: "",
-      position: "",
-      period: ""
-    }]);
+    setWorkHistory((prev) => [
+      ...prev,
+      {
+        company: "",
+        position: "",
+        period: "",
+      },
+    ]);
   }, []);
 
   // Add new skill entry
   const addSkill = useCallback(() => {
-    setSkills(prev => [...prev, {
-      title: "",
-      description: ""
-    }]);
+    setSkills((prev) => [
+      ...prev,
+      {
+        title: "",
+        description: "",
+      },
+    ]);
   }, []);
 
   // Add new certification entry
   const addCertification = useCallback(() => {
-    setCertifications(prev => [...prev, {
-      name: "",
-      year: ""
-    }]);
+    setCertifications((prev) => [
+      ...prev,
+      {
+        name: "",
+        year: "",
+      },
+    ]);
   }, []);
 
   // Validate form data
   const validateFormData = () => {
-    const requiredFields = ['name', 'email', 'nik'];
-    const missingFields = requiredFields.filter(field => !formData[field]?.trim());
-    
+    const requiredFields = ["name", "email", "nik"];
+    const missingFields = requiredFields.filter(
+      (field) => !formData[field]?.trim()
+    );
+
     if (missingFields.length > 0) {
-      throw new Error(`Field berikut harus diisi: ${missingFields.join(', ')}`);
+      throw new Error(`Field berikut harus diisi: ${missingFields.join(", ")}`);
     }
 
     // Validate email format
@@ -222,10 +239,10 @@ const AddEmployeeDataForm = () => {
 
     // Validate numeric fields
     const numericFields = {
-      age: 'Umur',
-      weight: 'Berat badan',
-      height: 'Tinggi badan',
-      work_duration: 'Durasi kerja'
+      age: "Umur",
+      weight: "Berat badan",
+      height: "Tinggi badan",
+      work_duration: "Durasi kerja",
     };
 
     Object.entries(numericFields).forEach(([field, label]) => {
@@ -235,15 +252,24 @@ const AddEmployeeDataForm = () => {
     });
 
     // Validate specific ranges
-    if (formData.age && (parseInt(formData.age) < 17 || parseInt(formData.age) > 65)) {
+    if (
+      formData.age &&
+      (parseInt(formData.age) < 17 || parseInt(formData.age) > 65)
+    ) {
       throw new Error("Umur harus antara 17-65 tahun");
     }
 
-    if (formData.height && (parseInt(formData.height) < 100 || parseInt(formData.height) > 250)) {
+    if (
+      formData.height &&
+      (parseInt(formData.height) < 100 || parseInt(formData.height) > 250)
+    ) {
       throw new Error("Tinggi badan harus antara 100-250 cm");
     }
 
-    if (formData.weight && (parseInt(formData.weight) < 30 || parseInt(formData.weight) > 200)) {
+    if (
+      formData.weight &&
+      (parseInt(formData.weight) < 30 || parseInt(formData.weight) > 200)
+    ) {
       throw new Error("Berat badan harus antara 30-200 kg");
     }
   };
@@ -256,7 +282,7 @@ const AddEmployeeDataForm = () => {
     Object.entries(formData).forEach(([key, value]) => {
       if (value !== undefined && value !== null && value !== "") {
         // Convert numeric fields to integers
-        const numericFields = ['age', 'weight', 'height', 'work_duration'];
+        const numericFields = ["age", "weight", "height", "work_duration"];
         if (numericFields.includes(key) && value) {
           formDataToSend.append(key, parseInt(value).toString());
         } else {
@@ -273,31 +299,35 @@ const AddEmployeeDataForm = () => {
     // Add dynamic data as JSON
     if (workHistory.length > 0) {
       // Filter out empty work history entries
-      const validWorkHistory = workHistory.filter(item => 
-        item.company?.trim() || item.position?.trim() || item.period?.trim()
+      const validWorkHistory = workHistory.filter(
+        (item) =>
+          item.company?.trim() || item.position?.trim() || item.period?.trim()
       );
       if (validWorkHistory.length > 0) {
         formDataToSend.append("work_history", JSON.stringify(validWorkHistory));
       }
     }
-    
+
     if (skills.length > 0) {
       // Filter out empty skills entries
-      const validSkills = skills.filter(item => 
-        item.title?.trim() || item.description?.trim()
+      const validSkills = skills.filter(
+        (item) => item.title?.trim() || item.description?.trim()
       );
       if (validSkills.length > 0) {
         formDataToSend.append("skills", JSON.stringify(validSkills));
       }
     }
-    
+
     if (certifications.length > 0) {
       // Filter out empty certification entries
-      const validCertifications = certifications.filter(item => 
-        item.name?.trim() || item.year?.trim()
+      const validCertifications = certifications.filter(
+        (item) => item.name?.trim() || item.year?.trim()
       );
       if (validCertifications.length > 0) {
-        formDataToSend.append("certifications", JSON.stringify(validCertifications));
+        formDataToSend.append(
+          "certifications",
+          JSON.stringify(validCertifications)
+        );
       }
     }
 
@@ -316,7 +346,7 @@ const AddEmployeeDataForm = () => {
     try {
       // Validate form data
       validateFormData();
-      
+
       setIsSubmitting(true);
 
       const formDataToSend = buildFormDataForSubmission();
@@ -344,8 +374,8 @@ const AddEmployeeDataForm = () => {
         if (res.status === 422) {
           // Validation errors
           const errorMessages = Object.entries(result.errors || {})
-            .map(([field, messages]) => `${field}: ${messages.join(', ')}`)
-            .join('\n');
+            .map(([field, messages]) => `${field}: ${messages.join(", ")}`)
+            .join("\n");
           throw new Error(`Validasi gagal:\n${errorMessages}`);
         } else if (res.status === 401) {
           throw new Error("Tidak diotorisasi. Silakan login kembali.");
@@ -355,12 +385,11 @@ const AddEmployeeDataForm = () => {
       }
 
       alert("Data karyawan berhasil ditambahkan!");
-      navigate("/data-karyawan");
-
+      navigate("/lihat-profil-karyawan");
     } catch (error) {
       console.error("Error adding employee:", error);
-      
-      if (error.name === 'TypeError' && error.message.includes('fetch')) {
+
+      if (error.name === "TypeError" && error.message.includes("fetch")) {
         alert("Gagal terhubung ke server. Periksa koneksi internet Anda.");
       } else {
         alert(`Gagal menambahkan karyawan: ${error.message}`);
@@ -372,7 +401,9 @@ const AddEmployeeDataForm = () => {
 
   // Reset form
   const handleCancel = useCallback(() => {
-    if (window.confirm("Yakin ingin membatalkan? Semua perubahan akan hilang.")) {
+    if (
+      window.confirm("Yakin ingin membatalkan? Semua perubahan akan hilang.")
+    ) {
       setFormData(initialFormData);
       setProfilePhoto(null);
       setPhotoFile(null);
@@ -416,14 +447,8 @@ const AddEmployeeDataForm = () => {
 
           {/* Middle Column - Personal & Work Information */}
           <div className="lg:col-span-2 space-y-8">
-            <PersonalInfo 
-              formData={formData} 
-              onChange={handleInputChange} 
-            />
-            <AdditionalInfo 
-              formData={formData} 
-              onChange={handleInputChange} 
-            />
+            <PersonalInfo formData={formData} onChange={handleInputChange} />
+            <AdditionalInfo formData={formData} onChange={handleInputChange} />
             <WorkHistoryAndSkills
               workHistory={workHistory}
               setWorkHistory={setWorkHistory}
@@ -441,16 +466,10 @@ const AddEmployeeDataForm = () => {
 
           {/* Right Column - Work Data & Actions */}
           <div className="lg:col-span-1 space-y-8">
-            <WorkData 
-              formData={formData} 
-              onChange={handleInputChange} 
-            />
-            <PortfolioLink 
-              formData={formData} 
-              onChange={handleInputChange} 
-            />
-            <ActionButtons 
-              onSave={handleSave} 
+            <WorkData formData={formData} onChange={handleInputChange} />
+            <PortfolioLink formData={formData} onChange={handleInputChange} />
+            <ActionButtons
+              onSave={handleSave}
               onCancel={handleCancel}
               isSubmitting={isSubmitting}
             />

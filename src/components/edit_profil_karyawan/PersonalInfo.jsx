@@ -7,6 +7,7 @@ import {
   Activity,
   CreditCard,
   CalendarDays,
+  MapPin,
   Landmark,
   CheckCircle,
 Pin,  
@@ -50,7 +51,7 @@ const PersonalInfo = ({ formData, onChange }) => {
             <input
               type="text"
               name="name"
-              value={formData.fname || ""}
+              value={formData.name || ""}
               onChange={onChange}
               className="w-full border rounded px-3 py-2"
             />
@@ -59,26 +60,26 @@ const PersonalInfo = ({ formData, onChange }) => {
           {/* Tempat, Tanggal Lahir */}
           <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-4 border border-blue-200">
             <label className="block text-sm font-medium text-slate-600 mb-1 flex items-center">
-              <CalendarDays className="w-4 h-4 mr-1" />
-              Tanggal Lahir
+              <MapPin className="w-4 h-4 mr-1" />
+              Tempat Lahir
             </label>
             <input
-              type="date"
-              name="placeDateofBirth"
-              value={formData.tanggal_lahir || ""}
+              type="text"
+              name="tempat_lahir"
+              value={formData.tempat_lahir || ""}
               onChange={onChange}
               className="w-full border rounded px-3 py-2"
             />
           </div>
           <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-4 border border-blue-200">
             <label className="block text-sm font-medium text-slate-600 mb-1 flex items-center">
-              <Pin className="w-4 h-4 mr-1" />
-              Tempat Lahir
+              <CalendarDays className="w-4 h-4 mr-1" />
+              Tanggal Lahir
             </label>
             <input
-              type="text"
-              name="placeDateofBirth"
-              value={formData.tempat_lahir || ""}
+              type="date"
+              name="tanggal_lahir"
+              value={formData.tanggal_lahir || ""}
               onChange={onChange}
               className="w-full border rounded px-3 py-2"
             />
@@ -203,7 +204,7 @@ const PersonalInfo = ({ formData, onChange }) => {
             <input
               type="text"
               name="bankAccount"
-              value={formData.bank_account || ""}
+              value={formData.bankAccount || ""}
               onChange={onChange}
               className="w-full border rounded px-3 py-2"
             />

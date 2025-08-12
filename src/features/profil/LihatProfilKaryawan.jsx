@@ -33,7 +33,7 @@ const ViewEmployeeProfile = () => {
     const result = await response.json();
     if (response.ok && result.data && result.data.profile) {
       const profile = result.data.profile;
-
+      
       const workHistoryParsed = typeof profile.work_experience === "string" && profile.work_experience.trim() !== ""
         ? [
             {
@@ -44,17 +44,13 @@ const ViewEmployeeProfile = () => {
           ]
         : [];
 
-      const skillsParsed = typeof profile.skills === "string" && profile.skills.trim() !== ""
-        ? profile.skills
-            .split(",")
-            .map(skill => skill.trim())
-            .filter(skill => skill.length > 0)
-            .map(skill => ({
-              title: skill,
-              description: `Kemampuan dalam bidang ${skill.toLowerCase()}`,
-            }))
-        : [];
-
+      let skillsParsed = [];
+      try {
+        skillsParsed = profile.skills ? JSON.parse(profile.skills) : [];
+      } catch (e) {
+        console.error("Gagal parse skills:", e);
+      }
+                  
       setEmployee({
         profile_photo_url: profile.profile_photo_url,
         user_id: profile.user_id,

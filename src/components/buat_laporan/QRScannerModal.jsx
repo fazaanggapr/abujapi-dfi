@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { X } from "lucide-react";
-import { Html5QrcodeScanner } from "html5-qrcode";
+import { Html5QrcodeScanner, Html5QrcodeScanType } from "html5-qrcode";
 
 const QRScannerModal = ({ isOpen, onClose, onScanSuccess }) => {
   const qrScannerRef = useRef(null);
@@ -12,7 +12,9 @@ const QRScannerModal = ({ isOpen, onClose, onScanSuccess }) => {
         {
           fps: 10,
           qrbox: { width: 250, height: 250 },
-          rememberLastUsedCamera: true
+          rememberLastUsedCamera: true,
+          // 🚫 Matikan opsi upload file, aktifkan hanya kamera
+          supportedScanTypes: [Html5QrcodeScanType.SCAN_TYPE_CAMERA]
         },
         false
       );

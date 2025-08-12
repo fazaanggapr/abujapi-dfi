@@ -14,7 +14,7 @@ const Header = ({ onMenuClick }) => {
           </button>
           <div>
             <h1 className="text-2xl font-bold text-gray-900">
-              Selamat malam, Cipher!
+              Selamat malam, Ciphera!
             </h1>
             <p className="text-gray-600 mt-1">
               Selamat datang di security management dashboard

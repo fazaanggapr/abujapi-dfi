@@ -6,38 +6,34 @@ import {
   Clock,
 } from 'lucide-react';
 import StatsCard from './StatsCard';
+import ProfileDropdown from '../sidebar/ProfileDropdown';
 
-const StatsGrid = () => {
-  const stats = [
+const StatsGrid = ({ profile,stats }) => {
+
+  const statItems = [
     {
       title: "Total Laporan",
-      value: "0",
-      subtitle: "0 pending review",
+      value: stats?.total_reports ?? "0",
+      subtitle: "Semua laporan kamu",
       icon: FileText
     },
     {
-      title: "Total Kehadiran",
-      value: "0",
-      subtitle: "Check-ins today",
+      title: "Kehadiran Hari Ini",
+      value: stats?.attendance_status ?? "-",
+      subtitle: "Status absen hari ini",
       icon: Calendar
     },
     {
-      title: "Active QR Codes",
-      value: "0",
-      subtitle: "Currently valid",
-      icon: QrCode
-    },
-    {
       title: "Status Anda",
-      value: "Aktif",
-      subtitle: "Employee",
+      value: profile?.employeeStatus ?? "-",
+      subtitle: "Status pegawai",
       icon: Clock
     }
   ];
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-      {stats.map((stat, index) => (
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+      {statItems.map((stat, index) => (
         <StatsCard
           key={index}
           title={stat.title}
@@ -49,5 +45,4 @@ const StatsGrid = () => {
     </div>
   );
 };
-
 export default StatsGrid;

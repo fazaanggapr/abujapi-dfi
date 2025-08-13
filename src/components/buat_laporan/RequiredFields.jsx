@@ -18,8 +18,9 @@ const RequiredFields = ({ formData, onChange }) => {
             name="area"
             value={formData.area}
             onChange={onChange}
-            className="w-full border rounded px-3 py-2"
+            className="w-full border rounded px-3 py-2 cursor-not-allowed bg-gray-100 text-slate-700"
             placeholder="Nama Area (otomatis dari QR)"
+            readOnly
           />
 
         </div>
@@ -42,7 +43,7 @@ const RequiredFields = ({ formData, onChange }) => {
             name="location_code"
             value={formData.location_code}
             onChange={onChange}
-            className="w-full bg-white/70 border border-white/50 rounded-lg px-4 py-3 text-slate-700 bg-gray-100 cursor-not-allowed"
+            className="w-full  border border-white/50 rounded-lg px-4 py-3 text-slate-700 bg-gray-100 cursor-not-allowed bg-gray-100 text-slate-700"
             readOnly
           />
         </div>

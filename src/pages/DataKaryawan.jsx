@@ -59,7 +59,11 @@ function DataKaryawan() {
 
       {/* Main Content */}
       <div className="flex-1 overflow-auto px-6 py-4">
-        <HeaderSection toggleSidebar={toggleSidebar} />
+        <HeaderSection 
+        toggleSidebar={toggleSidebar} 
+        onToggleSidebar={toggleSidebar}
+        />
+        
 
         {/* Content */}
         <div className="p-6">

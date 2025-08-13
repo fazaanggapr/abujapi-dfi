@@ -59,6 +59,7 @@ function ListLocation() {
         <Sidebar isOpen={isSidebarOpen} onClose={() => setSidebarOpen(false)} />
         <div className="flex-1 overflow-auto px-6 py-4">
           <PageHeader
+            toggleSidebar={toggleSidebar} 
             onToggleSidebar={toggleSidebar}
           />
           <div className="p-4 lg:p-6">

@@ -1,25 +1,31 @@
-// components/SearchBar.js
-import React from 'react';
-import { FaSearch } from 'react-icons/fa';
+import React from "react";
+import { Link } from 'react-router-dom';
+import { FaSearch, FaPlus } from "react-icons/fa";
 
-function SearchBar({ searchTerm, onSearchChange }) {
+const SearchBar = ({ searchTerm, onSearchChange, onAddLocationClick }) => {
   return (
-    <div className="flex items-center space-x-2">
-      <input
-        type="text"
-        placeholder="Cari lokasi..."
-        value={searchTerm}
-        onChange={(e) => onSearchChange(e.target.value)}
-        className="px-4 py-2 border-2 border-blue-400 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent w-64"
-      />
-      <button
-        onClick={() => onSearchChange(searchTerm)}
-        className="p-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors"
+    <div className="flex flex-col space-y-4 mb-6">
+      {/* Search Bar */}
+      <div className="flex-1 relative">
+        <input
+          type="text"
+          placeholder="Cari lokasi..."
+          value={searchTerm}
+          onChange={(e) => onSearchChange(e.target.value)}
+          className="w-full pl-4 pr-12 py-3 border-2 border-blue-400 rounded-lg focus:ring-2 focus:ring-blue-500 shadow-sm"
+        />
+        <button className="absolute right-3 top-1/2 transform -translate-y-1/2">
+          <FaSearch className="text-gray-400" />
+        </button>
+      </div>
+      <Link
+        to="/tambah-lokasi"
+        className="w-full py-3 px-4 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold shadow-md flex items-center justify-center"
       >
-        <FaSearch />
-      </button>
+        <FaPlus className="mr-2" /> TAMBAH LOKASI
+      </Link>
     </div>
   );
-}
+};
 
 export default SearchBar;

@@ -1,14 +1,13 @@
-// components/PageHeader.js
 import React from "react";
-import { FaCalendarAlt } from "react-icons/fa";
 
-const PageHeader = ({ ToggleSidebar }) => {
+const PageHeader = ({ onToggleSidebar }) => {
   return (
     <div className="bg-white p-6 border-b border-gray-200 shadow-sm">
-      <h1 className="text-3xl font-bold text-gray-800">
+      {/* Tombol Toggle Sidebar di atas */}
+      <div className="flex justify-between items-center mb-4">
         <button
-          onClick={ToggleSidebar}
-          className="lg:hidden p-2 text-gray-800 bg-white rounded-md shadow"
+          onClick={onToggleSidebar}
+          className="lg:hidden p-2 text-gray-800 rounded-md"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -25,6 +24,10 @@ const PageHeader = ({ ToggleSidebar }) => {
             />
           </svg>
         </button>
+      </div>
+
+      {/* Teks "LIST LOCATION" */}
+      <h1 className="text-2xl font-bold text-gray-800">
         LIST LOCATION
       </h1>
     </div>

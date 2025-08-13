@@ -1,4 +1,3 @@
-// components/PageHeader.js
 import React from "react";
 import { FaCalendarAlt } from "react-icons/fa";
 
@@ -10,10 +9,11 @@ const PageHeader = ({ selectedDate, onToggleSidebar }) => {
 
   return (
     <div className="bg-white p-6 border-b border-gray-200 shadow-sm">
-      <h1 className="text-3xl font-bold text-gray-800">
+      {/* Tombol Toggle Sidebar di atas */}
+      <div className="flex justify-between items-center mb-4">
         <button
           onClick={onToggleSidebar}
-          className="lg:hidden p-2 text-gray-800 bg-white rounded-md shadow"
+          className="lg:hidden p-2 text-gray-800 rounded-md"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -30,14 +30,20 @@ const PageHeader = ({ selectedDate, onToggleSidebar }) => {
             />
           </svg>
         </button>
-        RIWAYAT LAPORAN
-      </h1>
-      <p className="text-gray-500 text-sm mt-1 flex items-center">
-        <FaCalendarAlt className="mr-2" />
-        <span>
-          {monthInfo.month} {monthInfo.year}
-        </span>
-      </p>
+      </div>
+
+      {/* Teks "RIWAYAT LAPORAN" dan Kalender */}
+      <div className="flex items-center justify-between">
+        <h1 className="text-2xl font-bold text-gray-800">
+        LAPORAN
+        </h1>
+        <p className="text-gray-500 text-sm flex items-center">
+          <FaCalendarAlt className="mr-2" />
+          <span>
+            {monthInfo.month} {monthInfo.year}
+          </span>
+        </p>
+      </div>
     </div>
   );
 };

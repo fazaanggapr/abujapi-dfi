@@ -4,8 +4,8 @@ import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 
 function Pagination({ currentPage, totalPages, totalItems, displayedItems }) {
   return (
-    <div className="mt-6 flex items-center justify-between px-6 pb-4">
-      <div className="text-sm text-gray-600">
+    <div className="mt-6 flex flex-col lg:flex-row items-center justify-between space-y-4 lg:space-y-0">
+      <div className="text-sm text-gray-600 text-center lg:text-left">
         Menampilkan <span>1</span>-<span>{displayedItems}</span>{" "}
         dari <span>{totalItems}</span> data
       </div>

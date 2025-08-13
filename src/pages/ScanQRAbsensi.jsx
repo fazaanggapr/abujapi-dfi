@@ -9,18 +9,12 @@ import ScannerTips from "../components/scan_qr_absensi/ScannerTips";
 import LoadingOverlay from "../components/scan_qr_absensi/LoadingOverlay";
 import useAttendanceSubmission from "../hooks/UseAttendanceSubmission";
 
-
 const ScanQR = () => {
   const [scannerActive, setScannerActive] = useState(false);
   const [isSidebarOpen, setSidebarOpen] = useState(false);
-  
-  const {
-    message,
-    status,
-    isLoading,
-    submitAttendance,
-    clearStatus
-  } = useAttendanceSubmission();
+
+  const { message, status, isLoading, submitAttendance, clearStatus } =
+    useAttendanceSubmission();
 
   const toggleSidebar = () => setSidebarOpen(!isSidebarOpen);
 
@@ -35,12 +29,14 @@ const ScanQR = () => {
     clearStatus();
   };
 
-
   return (
     <div className="flex">
-      <Sidebar isOpen={isSidebarOpen} onClose={toggleSidebar} />
+      <Sidebar isOpen={isSidebarOpen} onClose={() => setSidebarOpen(false)} />
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50">
-        <ScannerHeader />
+        <ScannerHeader
+          toggleSidebar={toggleSidebar}
+          onToggleSidebar={toggleSidebar}
+        />
 
         {/* Main Content */}
         <div className="w-full px-6 py-8 ">

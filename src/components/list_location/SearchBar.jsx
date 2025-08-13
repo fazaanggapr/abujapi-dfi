@@ -18,12 +18,6 @@ const SearchBar = ({ searchTerm, onSearchChange, onAddLocationClick }) => {
           <FaSearch className="text-gray-400" />
         </button>
       </div>
-      <Link
-        to="/tambah-lokasi"
-        className="w-full py-3 px-4 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold shadow-md flex items-center justify-center"
-      >
-        <FaPlus className="mr-2" /> TAMBAH LOKASI
-      </Link>
     </div>
   );
 };

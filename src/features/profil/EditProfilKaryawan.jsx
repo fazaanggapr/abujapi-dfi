@@ -54,37 +54,41 @@ const EditEmployeeDataForm = () => {
   const [uploadProgress, setUploadProgress] = useState(0);
 
   useEffect(() => {
-    const fetchProfile = async () => {
-      const token = localStorage.getItem("access_token");
-      try {
-        const res = await fetch(`${baseUrl}/profile`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            Accept: "application/json",
-          },
+  const fetchProfile = async () => {
+    const token = localStorage.getItem("access_token");
+    try {
+      const res = await fetch(`${baseUrl}/profile`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: "application/json",
+        },
+      });
+
+      const result = await res.json();
+      if (res.ok && result.data) {
+        const profile = result.data.profile || {};
+
+        setFormData({
+          ...formData,
+          fname: result.data.name || "",
+          email: result.data.email || "",
+          role: result.data.role || "",
+          ...profile,
         });
 
-        const result = await res.json();
-        if (res.ok && result.data?.profile) {
-          const profile = result.data.profile;
-          setFormData({
-          fname: profile.name || "",
-            ...formData,
-            ...profile,
-          });
-
-          if (profile.profile_photo_url) {
-            setProfilePhoto(appendTimestamp(profile.profile_photo_url));
-          }
+        if (profile.profile_photo_url) {
+          setProfilePhoto(appendTimestamp(profile.profile_photo_url));
         }
-      } catch (err) {
-        toast.error("Gagal memuat profil.");
-        console.error("Fetch profile error:", err);
       }
-    };
-    console.log("profile details", formData);
-    fetchProfile();
-  }, []);
+    } catch (err) {
+      toast.error("Gagal memuat profil.");
+      console.error("Fetch profile error:", err);
+    }
+  };
+
+  fetchProfile();
+}, []);
+
 
   const handlePhotoUpload = () => {
   const fileInput = document.createElement("input");

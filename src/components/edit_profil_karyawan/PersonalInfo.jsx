@@ -51,7 +51,7 @@ const PersonalInfo = ({ formData, onChange }) => {
             <input
               type="text"
               name="name"
-              value={formData.name || ""}
+              value={formData.fname || ""}
               onChange={onChange}
               className="w-full border rounded px-3 py-2"
             />
@@ -204,7 +204,7 @@ const PersonalInfo = ({ formData, onChange }) => {
             <input
               type="text"
               name="bankAccount"
-              value={formData.bankAccount || ""}
+              value={formData.bank_account || ""}
               onChange={onChange}
               className="w-full border rounded px-3 py-2"
             />

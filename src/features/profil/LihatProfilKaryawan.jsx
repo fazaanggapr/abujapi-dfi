@@ -19,75 +19,77 @@ const ViewEmployeeProfile = () => {
   const [profilePhoto, setProfilePhoto] = useState(null);
 
   useEffect(() => {
-  const fetchEmployee = async () => {
-  const token = localStorage.getItem("access_token");
-  try {
-    const response = await fetch(`${baseUrl}/profile`, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        Accept: "application/json",
-      },
-    });
-
-    const result = await response.json();
-    if (response.ok && result.data && result.data.profile) {
-      const profile = result.data.profile;
-      
-      const workHistoryParsed = typeof profile.work_experience === "string" && profile.work_experience.trim() !== ""
-        ? [
-            {
-              company: profile.work_experience.split(" (")[0],
-              position: "Security",
-              period: profile.work_experience.match(/\((.*)\)/)?.[1] || "",
-            },
-          ]
-        : [];
-
-      let skillsParsed = [];
+    const fetchEmployee = async () => {
+      const token = localStorage.getItem("access_token");
       try {
-        skillsParsed = profile.skills ? JSON.parse(profile.skills) : [];
-      } catch (e) {
-        console.error("Gagal parse skills:", e);
-      }
-                  
-      setEmployee({
-        profile_photo_url: profile.profile_photo_url,
-        user_id: profile.user_id,
-        name: result.data.name,
-        email: result.data.email,
-        nik: profile.nik,
-        phone: profile.phone_number,
-        employeeStatus: profile.employee_status,
-        address: profile.address,
-        gender: profile.gender,
-        age: profile.age + " tahun",
-        height: profile.height + " cm",
-        weight: profile.weight + " kg",
-        education: profile.education,
-        bankAccount: profile.bank_account,
-        position: profile.position,
-        workDuration: profile.work_duration,
-        location: profile.placement_location,
-        portfolio: profile.portfolio_link,
-        grade: profile.grade,
-        religion: profile.agama,
-        tanggal_lahir: profile.tanggal_lahir,
-        tempat_lahir: profile.tempat_lahir,
-        workHistory: workHistoryParsed,
-        skills: skillsParsed,
-      });
+        const response = await fetch(`${baseUrl}/profile`, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            Accept: "application/json",
+          },
+        });
 
-      console.log("DEBUG PROFILE", profile);
-    } else {
-      console.error("Failed to fetch employee data:", result);
-    }
-  } catch (error) {
-    console.error("Error:", error);
-  } finally {
-    setLoading(false);
-  }
-};
+        const result = await response.json();
+        if (response.ok && result.data && result.data.profile) {
+          const profile = result.data.profile;
+
+          const workHistoryParsed =
+            typeof profile.work_experience === "string" &&
+            profile.work_experience.trim() !== ""
+              ? [
+                  {
+                    company: profile.work_experience.split(" (")[0],
+                    position: "Security",
+                    period:
+                      profile.work_experience.match(/\((.*)\)/)?.[1] || "",
+                  },
+                ]
+              : [];
+
+          let skillsParsed = [];
+          try {
+            skillsParsed = profile.skills ? JSON.parse(profile.skills) : [];
+          } catch (e) {
+            console.error("Gagal parse skills:", e);
+          }
+
+          setEmployee({
+            profile_photo_url: profile.profile_photo_url,
+            user_id: profile.user_id,
+            name: result.data.name,
+            email: result.data.email,
+            nik: profile.nik,
+            phone_number: profile.phone_number, // Konsisten dengan field name
+            employee_status: profile.employee_status, // Perbaikan field name
+            address: profile.address,
+            gender: profile.gender,
+            age: profile.age + " tahun",
+            height: profile.height + " cm",
+            weight: profile.weight + " kg",
+            education: profile.education,
+            bank_account: profile.bank_account, // Perbaikan field name
+            position: profile.position,
+            workDuration: profile.work_duration,
+            location: profile.placement_location,
+            portfolio: profile.portfolio_link,
+            grade: profile.grade,
+            religion: profile.religion || profile.agama, // Handle kedua kemungkinan field
+            tanggal_lahir: profile.tanggal_lahir,
+            tempat_lahir: profile.tempat_lahir,
+            workHistory: workHistoryParsed,
+            skills: skillsParsed,
+          });
+          console.log("DEBUG PROFILE", profile);
+        } else {
+          console.error("Failed to fetch employee data:", result);
+        }
+      } catch (error) {
+        console.error("Error:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
     fetchEmployee();
   }, []);
 
@@ -97,7 +99,7 @@ const ViewEmployeeProfile = () => {
     }
   };
 
-/*  if (loading) {
+  /*  if (loading) {
     return <LoadingSpinner />;
   } */
 
@@ -131,9 +133,7 @@ const ViewEmployeeProfile = () => {
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           {/* Left Column - Profile Photo & Basic Info */}
           <div className="lg:col-span-1">
-            <ProfilePhoto 
-            employee={employee}
-            />
+            <ProfilePhoto employee={employee} />
           </div>
 
           {/* Middle Column - Personal & Work Information */}
@@ -141,15 +141,12 @@ const ViewEmployeeProfile = () => {
             <PersonalInfo employee={employee} />
             <AdditionalInfo employee={employee} />
             {employee && (
-              <WorkHistoryAndSkills 
+              <WorkHistoryAndSkills
                 workHistory={employee.workHistory || []}
                 skills={employee.skills || []}
               />
             )}
-            
-
           </div>
-
 
           {/* Right Column - Work Data & Actions */}
           <div className="lg:col-span-1 space-y-8">

@@ -70,7 +70,7 @@ const EditEmployeeDataForm = () => {
 
         setFormData({
           ...formData,
-          fname: result.data.name || "",
+          name: result.data.name || "",
           email: result.data.email || "",
           role: result.data.role || "",
           ...profile,

@@ -31,7 +31,7 @@ const PersonalInfo = ({ employee }) => {
               NIK
             </label>
             <p className="text-slate-800 font-semibold text-sm">
-              {employee?.nik}
+              {employee?.nik || "-"}
             </p>
           </div>
           <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-4 border border-blue-200">
@@ -39,7 +39,7 @@ const PersonalInfo = ({ employee }) => {
               <User className="w-4 h-4 mr-1" />
               Nama Lengkap
             </label>
-            <p className="text-slate-800 font-semibold">{employee?.name}</p>
+            <p className="text-slate-800 font-semibold">{employee?.name || "-"}</p>
           </div>
           <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-4 border border-blue-200">
             <label className="block text-sm font-medium text-slate-600 mb-1 flex items-center">
@@ -47,7 +47,7 @@ const PersonalInfo = ({ employee }) => {
               Tempat, Tanggal Lahir
             </label>
             <p className="text-slate-800 font-semibold">
-              {employee?.tempat_lahir}, {employee?.tanggal_lahir} 
+              {employee?.tempat_lahir || "-"}, {employee?.tanggal_lahir || "-"} 
             </p>
           </div>
           <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-4 border border-blue-200">
@@ -55,21 +55,21 @@ const PersonalInfo = ({ employee }) => {
               <Users className="w-4 h-4 mr-1" />
               Jenis Kelamin
             </label>
-            <p className="text-slate-800 font-semibold">{employee?.gender}</p>
+            <p className="text-slate-800 font-semibold">{employee?.gender || "-"}</p>
           </div>
           <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-4 border border-blue-200">
             <label className="block text-sm font-medium text-slate-600 mb-1 flex items-center">
               <Calendar className="w-4 h-4 mr-1" />
               Umur
             </label>
-            <p className="text-slate-800 font-semibold">{employee?.age}</p>
+            <p className="text-slate-800 font-semibold">{employee?.age || "-"}</p>
           </div>
           <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-4 border border-blue-200">
             <label className="block text-sm font-medium text-slate-600 mb-1 flex items-center">
               <Landmark className="w-4 h-4 mr-1" />
               Agama
             </label>
-            <p className="text-slate-800 font-semibold">{employee?.religion}</p>
+            <p className="text-slate-800 font-semibold">{employee?.religion || "-"}</p>
           </div>
           <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-4 border border-blue-200">
             <label className="block text-sm font-medium text-slate-600 mb-1 flex items-center">
@@ -77,25 +77,25 @@ const PersonalInfo = ({ employee }) => {
               Pendidikan
             </label>
             <p className="text-slate-800 font-semibold">
-              {employee?.education}
+              {employee?.education || "-"}
             </p>
           </div>
-        <div className="bg-gradient-to-r from-emerald-50 to-green-50 rounded-xl p-4 border border-emerald-200">
-          <label className="block text-sm font-medium text-slate-600 mb-1">
-            Status Karyawan
-          </label>
-          <p className="text-emerald-800 font-semibold flex items-center">
-            <CheckCircle className="w-4 h-4 mr-2" />
-            {employee?.employeeStatus}
-          </p>
-        </div>
+          <div className="bg-gradient-to-r from-emerald-50 to-green-50 rounded-xl p-4 border border-emerald-200">
+            <label className="block text-sm font-medium text-slate-600 mb-1">
+              Status Karyawan
+            </label>
+            <p className="text-emerald-800 font-semibold flex items-center">
+              <CheckCircle className="w-4 h-4 mr-2" />
+              {employee?.employee_status || "-"}
+            </p>
+          </div>
           <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-4 border border-blue-200">
             <label className="block text-sm font-medium text-slate-600 mb-1 flex items-center">
               <Activity className="w-4 h-4 mr-1" />
               Tinggi / Berat
             </label>
             <p className="text-slate-800 font-semibold">
-              {employee?.height} / {employee?.weight}
+              {employee?.height || "-"} / {employee?.weight || "-"}
             </p>
           </div>
           <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-4 border border-blue-200">
@@ -104,7 +104,7 @@ const PersonalInfo = ({ employee }) => {
               Akun Bank
             </label>
             <p className="text-slate-800 font-semibold">
-              {employee?.bankAccount}
+              {employee?.bank_account || "-"}
             </p>
           </div>
         </div>

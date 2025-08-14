@@ -106,8 +106,8 @@ const PrivateRoute = ({ children, allowedRoles }) => {
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
-  if (!hasProfile && location.pathname !== '/edit-profil-karyawan') {
-    return <Navigate to="/edit-profil-karyawan" state={{ from: location }} replace />;
+  if (!hasProfile && location.pathname !== '/tambah-profil-karyawan') {
+    return <Navigate to="/tambah-profil-karyawan" state={{ from: location }} replace />;
   }
 
   if (errorCode) {

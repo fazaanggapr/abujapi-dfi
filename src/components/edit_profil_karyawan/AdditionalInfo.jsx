@@ -27,7 +27,7 @@ const AdditionalInfo = ({ formData, onChange }) => {
             />
           </div>
 
-          {/* No HP */}
+          {/* No HP - Perbaikan nama field */}
           <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-4 border border-blue-200">
             <label className="block text-sm font-medium text-slate-600 mb-1 flex items-center">
               <Phone className="w-4 h-4 mr-1" />
@@ -35,7 +35,7 @@ const AdditionalInfo = ({ formData, onChange }) => {
             </label>
             <input
               type="text"
-              name="phone"
+              name="phone_number"
               value={formData.phone_number || ""}
               onChange={onChange}
               className="w-full border rounded px-3 py-2"

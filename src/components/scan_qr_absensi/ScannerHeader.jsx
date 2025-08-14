@@ -5,11 +5,11 @@ const ScannerHeader = ({ onToggleSidebar }) => {
   return (
     <div className="bg-white/80 backdrop-blur-md border-b border-gray-200/50 sticky top-0 z-10">
       <div className="w-full px-6 py-8">
-        <div className="flex items-center space-x-3">
-          {/* Tombol Toggle Sidebar di sebelah kiri icon QR */}
+        <div className="flex items-center justify-center space-x-3">
+          {/* Tombol Toggle Sidebar - hanya tampil di mobile/tablet */}
           <button
             onClick={onToggleSidebar}
-            className="p-2 text-gray-800 bg-white rounded-md shadow"
+            className="lg:hidden absolute left-6 p-2 text-gray-800 bg-white rounded-md shadow"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"

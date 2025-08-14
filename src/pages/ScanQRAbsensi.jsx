@@ -30,40 +30,41 @@ const ScanQR = () => {
   };
 
   return (
-    <div className="flex">
-      <Sidebar isOpen={isSidebarOpen} onClose={() => setSidebarOpen(false)} />
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50">
-        <ScannerHeader
-          toggleSidebar={toggleSidebar}
-          onToggleSidebar={toggleSidebar}
-        />
+      <div className="flex min-h-screen overflow-hidden">
+    <Sidebar isOpen={isSidebarOpen} onClose={() => setSidebarOpen(false)} />
+    {/* Tambahkan flex-1 dan w-full pada div ini */}
+    <div className="flex-1 w-full bg-gradient-to-br from-blue-50 via-white to-indigo-50">
+      <ScannerHeader
+        onToggleSidebar={toggleSidebar}
+      />
 
-        {/* Main Content */}
-        <div className="w-full px-6 py-8 ">
-          <div className="grid md:grid-cols-2 gap-8 items-start">
-            {/* Scanner Section */}
-            <div className="space-y-6">
-              <ScannerCamera
-                onScanSuccess={handleScanSuccess}
-                scannerActive={scannerActive}
-                setScannerActive={setScannerActive}
-                isLoading={isLoading}
-                onRestartScanner={handleRestartScanner}
-              />
-            </div>
+      {/* Main Content */}
+      <div className="w-full px-6 py-8">
+        <div className="grid md:grid-cols-2 gap-8 items-start">
+          {/* Scanner Section */}
+          <div className="space-y-6">
+            <ScannerCamera
+              onScanSuccess={handleScanSuccess}
+              scannerActive={scannerActive}
+              setScannerActive={setScannerActive}
+              isLoading={isLoading}
+              onRestartScanner={handleRestartScanner}
+            />
+          </div>
 
-            {/* Status & Instructions Section */}
-            <div className="space-y-6">
-              <StatusMessage message={message} status={status} />
-              <Instructions />
-              <ScannerTips />
-            </div>
+          {/* Status & Instructions Section */}
+          <div className="space-y-6">
+            <StatusMessage message={message} status={status} />
+            <Instructions />
+            <ScannerTips />
           </div>
         </div>
-
-        <LoadingOverlay isVisible={isLoading} />
       </div>
+
+      <LoadingOverlay isVisible={isLoading} />
     </div>
+  </div>
+
   );
 };
 

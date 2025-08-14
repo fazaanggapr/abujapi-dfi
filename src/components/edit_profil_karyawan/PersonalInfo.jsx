@@ -10,8 +10,8 @@ import {
   MapPin,
   Landmark,
   CheckCircle,
-Pin,  
-BadgeCheck,
+  Pin,
+  BadgeCheck,
 } from "lucide-react";
 
 const PersonalInfo = ({ formData, onChange }) => {
@@ -51,7 +51,7 @@ const PersonalInfo = ({ formData, onChange }) => {
             <input
               type="text"
               name="name"
-              value={formData.fname || ""}
+              value={formData.name || ""}
               onChange={onChange}
               className="w-full border rounded px-3 py-2"
             />
@@ -101,7 +101,7 @@ const PersonalInfo = ({ formData, onChange }) => {
               <option value="Perempuan">Perempuan</option>
             </select>
           </div>
-          
+
           {/* Umur */}
           <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-4 border border-blue-200">
             <label className="block text-sm font-medium text-slate-600 mb-1 flex items-center">
@@ -151,27 +151,26 @@ const PersonalInfo = ({ formData, onChange }) => {
             />
           </div>
 
-        {/* Status Karyawan */}
-        <div className="bg-gradient-to-r from-emerald-50 to-green-50 rounded-xl p-4 border border-emerald-200">
-          <label className="block text-sm font-medium text-slate-600 mb-2">
-            <CheckCircle className="w-4 h-4 inline mr-1" />
-            Status Karyawan
-          </label>
-          <select
-            name="employee_status"
-            value={formData.employee_status}
-            onChange={onChange}
-            className="w-full px-3 py-2 rounded-md border border-slate-300 text-slate-800 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
-          >
-            <option value="">Pilih status karyawan</option>
-            <option value="Aktif">Aktif</option>
-            <option value="Tidak Aktif">Tidak Aktif</option>
-            <option value="Magang">Magang</option>
-            <option value="Kontrak">Kontrak</option>
-            <option value="Tetap">Tetap</option>
-          </select>
-        </div>
-
+          {/* Status Karyawan */}
+          <div className="bg-gradient-to-r from-emerald-50 to-green-50 rounded-xl p-4 border border-emerald-200">
+            <label className="block text-sm font-medium text-slate-600 mb-2">
+              <CheckCircle className="w-4 h-4 inline mr-1" />
+              Status Karyawan
+            </label>
+            <select
+              name="employee_status"
+              value={formData.employee_status}
+              onChange={onChange}
+              className="w-full px-3 py-2 rounded-md border border-slate-300 text-slate-800 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+            >
+              <option value="">Pilih status karyawan</option>
+              <option value="Aktif">Aktif</option>
+              <option value="Tidak Aktif">Tidak Aktif</option>
+              <option value="Magang">Magang</option>
+              <option value="Kontrak">Kontrak</option>
+              <option value="Tetap">Tetap</option>
+            </select>
+          </div>
 
           {/* Tinggi / Berat */}
           <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-4 border border-blue-200">
@@ -196,14 +195,14 @@ const PersonalInfo = ({ formData, onChange }) => {
             />
           </div>
 
-          {/* Akun Bank */}
+          {/* Akun Bank*/}
           <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-4 border border-blue-200">
             <label className="block text-sm font-medium text-slate-600 mb-1 flex items-center">
               <CreditCard className="w-4 h-4 mr-1" /> Akun Bank
             </label>
             <input
               type="text"
-              name="bankAccount"
+              name="bank_account"
               value={formData.bank_account || ""}
               onChange={onChange}
               className="w-full border rounded px-3 py-2"

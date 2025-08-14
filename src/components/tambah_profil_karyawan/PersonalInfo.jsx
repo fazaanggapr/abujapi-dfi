@@ -202,7 +202,7 @@ const PersonalInfo = ({ formData, onChange }) => {
             <input
               type="text"
               name="bankAccount"
-              value={formData.bank_account || ""}
+              value={formData.bankAccount || ""}
               onChange={onChange}
               className="w-full border rounded px-3 py-2"
             />

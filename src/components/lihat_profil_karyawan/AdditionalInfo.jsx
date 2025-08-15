@@ -29,7 +29,7 @@ const AdditionalInfo = ({ employee }) => {
               Nomor Handphone
             </label>
             <p className="text-slate-800 font-semibold">
-              {employee?.phone}
+              {employee?.phone_number}
             </p>
           </div>
           <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-4 border border-blue-200">

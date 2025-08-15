@@ -60,15 +60,15 @@ const ViewEmployeeProfile = () => {
             name: result.data.name,
             email: result.data.email,
             nik: profile.nik,
-            phone_number: profile.phone_number, // Konsisten dengan field name
-            employee_status: profile.employee_status, // Perbaikan field name
+            phone_number: profile.phone_number, 
+            employee_status: profile.employee_status, 
             address: profile.address,
             gender: profile.gender,
             age: profile.age + " tahun",
             height: profile.height + " cm",
             weight: profile.weight + " kg",
             education: profile.education,
-            bank_account: profile.bank_account, // Perbaikan field name
+            bank_account: profile.bank_account, 
             position: profile.position,
             workDuration: profile.work_duration,
             location: profile.placement_location,

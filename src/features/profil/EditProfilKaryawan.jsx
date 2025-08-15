@@ -43,7 +43,7 @@ const EditEmployeeDataForm = () => {
     nik: "",
     grade: "",
     email: "",
-    religion: "",
+    agama: "",
     tempat_lahir: "",
     tanggal_lahir: "",
   });

@@ -122,8 +122,8 @@ const PersonalInfo = ({ formData, onChange }) => {
               <Landmark className="w-4 h-4 mr-1" /> Agama
             </label>
             <select
-              name="religion"
-              value={formData.religion || ""}
+              name="agama"
+              value={formData.agama || ""}
               onChange={onChange}
               className="w-full border rounded px-3 py-2"
             >

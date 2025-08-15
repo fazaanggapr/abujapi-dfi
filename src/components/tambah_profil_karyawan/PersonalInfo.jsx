@@ -122,7 +122,7 @@ const PersonalInfo = ({ formData, onChange }) => {
             </label>
             <select
               name="religion"
-              value={formData.religion || ""}
+              value={formData.agama || ""}
               onChange={onChange}
               className="w-full border rounded px-3 py-2"
             >

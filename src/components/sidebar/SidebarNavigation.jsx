@@ -38,7 +38,7 @@ const SidebarNavigation = ({ userRole }) => {
       icon: AlertCircle,
       label: 'Laporan',
       path: '/laporan',
-      roles: ['user', 'admin']
+      roles: ['admin']
     }
   ];
 

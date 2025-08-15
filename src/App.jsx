@@ -61,7 +61,7 @@ function App() {
         <Route
           path="/data-absensi"
           element={
-            <PrivateRoute>
+            <PrivateRoute allowedRoles={['admin']}>
               <DataAbsensi />
             </PrivateRoute>
           }

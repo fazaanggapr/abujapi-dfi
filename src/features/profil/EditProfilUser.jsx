@@ -5,7 +5,9 @@ import PageTitle from "../../components/edit_profil_user/PageTitle";
 import ProfilePhoto from "../../components/edit_profil_user/ProfilePhoto";
 import PersonalInfo from "../../components/edit_profil_user/PersonalInfo";
 import ActionButtons from "../../components/edit_profil_user/ActionButtons";
+import toast from "react-hot-toast";
 import { useParams } from "react-router-dom";
+
 const baseUrl = import.meta.env.VITE_API_URL; // atau ganti dengan hardcoded URL jika perlu
 
 const EditProfilUser = () => {
@@ -22,51 +24,46 @@ const EditProfilUser = () => {
     role: "",
   });
 
-  useEffect(() => {
-    const fetchEmployee = async () => {
-      const token = localStorage.getItem("access_token");
-      try {
-        const response = await fetch(`${baseUrl}/admin/user/${id}`, {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            Accept: "application/json",
-          },
+
+useEffect(() => {
+  const fetchEmployee = async () => {
+    const token = localStorage.getItem("access_token");
+    try {
+      const response = await fetch(`${baseUrl}/me`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: "application/json",
+        },
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        // kalau API return { data: {...} } → ambil result.data
+        // kalau API return langsung {...} → ambil result
+        const user = result.data ? result.data : result;
+
+        setFormData({
+          name: user.name || "",
+          email: user.email || "",
+          password: "",
+          role: user.role || "",
         });
 
-        const result = await response.json();
-        if (response.ok && result.data) {
-          const profile = result.data.profile;
-
-          setEmployee({
-            profile_photo_url: result.data.profile_photo_url || "",
-            grade: profile?.grade || "",
-          
-            role: result.data.role || "",
-          });
-
-          setFormData({
-            profile_photo_url: result.data.profile_photo_url || "",
-            name: result.data.name || "",
-            email: result.data.email || "",
-            password: "",
-            role: result.data.role || "",
-          });
-
-
-          console.log("DEBUG PROFILE", profile);
-        } else {
-          console.error("Failed to fetch employee data:", result);
-        }
-      } catch (error) {
-        console.error("Error:", error);
-      } finally {
-        setLoading(false);
+      } else {
+        console.error("Failed to fetch employee data:", result);
       }
-    };
+    } catch (error) {
+      console.error("Error:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    fetchEmployee();
-  }, []);
+  fetchEmployee();
+}, []);
+
 
   const uploadPhoto = () => {
     const input = document.createElement("input");
@@ -98,14 +95,26 @@ const EditProfilUser = () => {
   const handleSave = async () => {
   const token = localStorage.getItem("access_token");
 
-  const dataToSend = { ...formData };
-  if (!dataToSend.password) {
-    delete dataToSend.password; // jangan kirim kalau kosong
+  let dataToSend = { ...formData };
+
+  if (dataToSend.old_password && dataToSend.new_password) {
+    dataToSend = {
+      email: dataToSend.email,
+      old_password: dataToSend.old_password,
+      new_password: dataToSend.new_password,
+      new_password_confirmation: dataToSend.new_password_confirmation,
+    };
+  } else {
+    // Kalau cuma update profil (tanpa password)
+    delete dataToSend.password;
+    delete dataToSend.old_password;
+    delete dataToSend.new_password;
+    delete dataToSend.new_password_confirmation;
   }
 
   try {
-    const response = await fetch(`${baseUrl}/admin/user/${id}`, {
-      method: "PATCH",
+    const response = await fetch(`${baseUrl}/update-account`, {
+      method: "POST",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
@@ -115,13 +124,25 @@ const EditProfilUser = () => {
     });
 
     const result = await response.json();
+
     if (response.ok) {
-      alert("Profil berhasil diperbarui!");
+      toast.success("Profil berhasil diperbarui!", {
+        position: "top-right",
+        style: {
+          borderRadius: "10px",
+          background: "#fff6f6ff",
+          color: "#000000ff",
+        },
+      });
     } else {
-      alert(result.message || "Gagal update profil.");
+      toast.error(result.message || "Gagal update profil.", {
+        position: "top-right",
+      });
     }
   } catch (error) {
-    alert("Terjadi kesalahan saat update profil.");
+    toast.error("Terjadi kesalahan saat update profil.", {
+      position: "top-right",
+    });
   }
 };
 
@@ -145,9 +166,7 @@ const EditProfilUser = () => {
         <PageTitle />
 
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-          <div className="lg:col-span-1">
-            <ProfilePhoto employee={employee} uploadPhoto={uploadPhoto} />
-          </div>
+          
 
           <div className="lg:col-span-2 space-y-8">
             <PersonalInfo formData={formData} onChange={handleInputChange} />

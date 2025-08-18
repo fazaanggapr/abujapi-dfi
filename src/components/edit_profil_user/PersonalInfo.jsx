@@ -54,7 +54,7 @@ const PersonalInfo = ({ formData, onChange }) => {
             <input
               type="password"
               name="password"
-              value={formData.password || ""}
+              value={formData.new_password || ""}
               onChange={onChange}
               className="w-full border rounded px-3 py-2"
             />
@@ -66,12 +66,13 @@ const PersonalInfo = ({ formData, onChange }) => {
              Konfirmasi Password
             </label>
             <input
-              type="password"
-              name="password"
-              value={formData.password || ""}
-              onChange={onChange}
-              className="w-full border rounded px-3 py-2"
-            />
+            type="password"
+            name="confirm_password"
+            value={formData.confirm_password || ""}
+            onChange={onChange}
+            className="w-full border rounded px-3 py-2"
+          />
+
           </div>
           
           

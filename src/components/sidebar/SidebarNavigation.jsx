@@ -1,5 +1,5 @@
 import React from 'react';
-import { Home, QrCode, Calendar, User, MapPin, AlertCircle, Edit } from 'lucide-react';
+import { Home, QrCode, Calendar, User, MapPin, AlertCircle, Edit, Settings } from 'lucide-react';
 import SidebarMenuItem from './SidebarMenuItem';
 
 const SidebarNavigation = ({ userRole }) => {
@@ -29,8 +29,8 @@ const SidebarNavigation = ({ userRole }) => {
       roles: ['admin']
     },
     {
-      icon: Edit,
-      label: 'Edit Profil',
+      icon: Settings,
+      label: 'Pengaturan Akun',
       path: '/edit-profil-user',
       roles: ['user']
     },

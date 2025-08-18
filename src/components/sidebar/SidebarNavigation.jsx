@@ -32,7 +32,7 @@ const SidebarNavigation = ({ userRole }) => {
       icon: Settings,
       label: 'Pengaturan Akun',
       path: '/edit-profil-user',
-      roles: ['user']
+      roles: ['admin','user']
     },
     {
       icon: MapPin,

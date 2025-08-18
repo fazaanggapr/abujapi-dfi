@@ -105,7 +105,6 @@ useEffect(() => {
       new_password_confirmation: dataToSend.new_password_confirmation,
     };
   } else {
-    // Kalau cuma update profil (tanpa password)
     delete dataToSend.password;
     delete dataToSend.old_password;
     delete dataToSend.new_password;

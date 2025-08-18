@@ -3,21 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import baseUrl from '../utils/api';
-
-const errorConfig = {
-  403: {
-    image: "/assets/access-denied.svg",
-    title: "Akses Ditolak",
-    message: "Kamu tidak memiliki izin untuk mengakses halaman ini.",
-    action: { label: "Kembali ke Dashboard", to: "/dashboard" }
-  },
-  500: {
-    image: "/assets/server-error.svg",
-    title: "Kesalahan Server",
-    message: "Terjadi masalah pada server. Silakan coba lagi nanti.",
-    action: { label: "Muat Ulang", to: window.location.pathname }
-  }
-};
+import { errorConfig } from '../components/ErrorPage';
 
 const PrivateRoute = ({ children, allowedRoles }) => {
   const [loading, setLoading] = useState(true);
@@ -37,7 +23,6 @@ const PrivateRoute = ({ children, allowedRoles }) => {
     return;
   }
 
-  // Step 1: Ambil role dari /me
   fetch(`${baseUrl}/me`, {
     headers: { Authorization: `Bearer ${token}` },
   })

@@ -95,10 +95,36 @@ const LihatProfil = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSave = () => {
-    alert("Simpan data profil (simulasi)");
-    // Kirim ke API jika sudah siap
-  };
+  const handleSave = async () => {
+  const token = localStorage.getItem("access_token");
+
+  const dataToSend = { ...formData };
+  if (!dataToSend.password) {
+    delete dataToSend.password; // jangan kirim kalau kosong
+  }
+
+  try {
+    const response = await fetch(`${baseUrl}/admin/user/${id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+        Accept: "application/json",
+      },
+      body: JSON.stringify(dataToSend),
+    });
+
+    const result = await response.json();
+    if (response.ok) {
+      alert("Profil berhasil diperbarui!");
+    } else {
+      alert(result.message || "Gagal update profil.");
+    }
+  } catch (error) {
+    alert("Terjadi kesalahan saat update profil.");
+  }
+};
+
 
   const handleCancel = () => {
     alert("Perubahan dibatalkan.");

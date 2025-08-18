@@ -2,7 +2,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const errorConfig = {
+export const errorConfig = {
   404: {
     image: "/assets/404-page.svg",
     title: "Halaman Tidak Ditemukan",

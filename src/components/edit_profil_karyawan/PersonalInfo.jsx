@@ -42,7 +42,7 @@ const PersonalInfo = ({ formData, onChange }) => {
             />
           </div>
 
-          {/* Nama Lengkap */}
+          {/* Nama Lengkap
           <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-4 border border-blue-200">
             <label className="block text-sm font-medium text-slate-600 mb-1 flex items-center">
               <User className="w-4 h-4 mr-1" />
@@ -55,7 +55,7 @@ const PersonalInfo = ({ formData, onChange }) => {
               onChange={onChange}
               className="w-full border rounded px-3 py-2"
             />
-          </div>
+          </div> */}
 
           {/* Tempat, Tanggal Lahir */}
           <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-4 border border-blue-200">

@@ -19,6 +19,7 @@ import ScanQR from "./pages/ScanQRAbsensi";
 
 // Profil
 import LihatProfil from "./features/profil/LihatProfil";
+import EditProfilUser from "./features/profil/EditProfilUser";
 import TambahProfilKaryawan from "./features/profil/TambahProfilKaryawan";
 import EditProfilKaryawan from "./features/profil/EditProfilKaryawan";
 import LihatProfilKaryawan from "./features/profil/LihatProfilKaryawan";
@@ -96,6 +97,15 @@ function App() {
             <PrivateRoute>
               
               <LihatProfil />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/edit-profil-user"
+          element={
+            <PrivateRoute>
+              
+              <EditProfilUser />
             </PrivateRoute>
           }
         />

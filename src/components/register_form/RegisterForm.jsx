@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FaEnvelope, FaLock, FaUser, FaEye, FaEyeSlash } from 'react-icons/fa';
+import { FaEnvelope, FaLock, FaUser, FaEye, FaEyeSlash, FaDoorOpen } from 'react-icons/fa';
 
 // InputField component dengan password toggle
 const InputField = ({ 
@@ -116,12 +116,14 @@ const RegisterForm = ({
   return (
     <div className="bg-white/95 backdrop-blur-sm p-6 rounded-2xl shadow-2xl w-[90%] max-w-[400px] m-3 border border-white/20">
       {/* Logo/Header */}
-      <div className="text-center mb-4">
-        <div className="inline-block bg-gradient-to-r from-blue-900 to-blue-800 text-white px-6 py-2 rounded-lg mb-2">
-          <h1 className="text-lg font-bold">REGISTER</h1>
-        </div>
-        <p className="text-gray-600 text-sm">Daftar akun baru untuk login</p>
-      </div>
+            <div className="text-center mb-6">
+              <div className="inline-block bg-gradient-to-r from-blue-900 to-blue-800 text-white px-6 py-3 rounded-lg mb-3">
+                <h1 className="text-xl font-bold flex px-2">
+                  <span className="mr-2 pt-1"><FaDoorOpen/></span> REGISTER
+                </h1>
+              </div>
+              <p className="text-gray-600 text-sm">Daftar akun baru untuk login</p>
+            </div>
 
       <div onSubmit={onSubmit} className="space-y-4">
         {inputFields.map((field, index) => (

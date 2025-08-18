@@ -9,7 +9,7 @@ const Header = () => {
       <div className="flex items-center justify-between p-6">
         <div className="flex items-center space-x-4">
           <Link
-            to="/data-karyawan"
+            to="/dashboard"
             className="flex items-center px-3 py-2 rounded-lg text-sm font-semibold bg-blue-500 hover:bg-blue-600 text-white hover:text-white transition-colors shadow-md"
           >
             <ArrowLeft className="w-5 h-5 mr-2" />
@@ -19,7 +19,7 @@ const Header = () => {
         <div className="flex items-center space-x-4">
           <div className="text-right">
             <p className="text-sm text-slate-600">Profil</p>
-            <p className="font-semibold text-slate-800">Admin</p>
+            <p className="font-semibold text-slate-800">User</p>
           </div>
           <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center shadow-lg">
             <User className="w-6 h-6 text-white" />

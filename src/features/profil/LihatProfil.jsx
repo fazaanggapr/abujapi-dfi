@@ -128,8 +128,7 @@ const LihatProfil = () => {
 
   const handleCancel = () => {
     alert("Perubahan dibatalkan.");
-    // Reset ke data awal jika perlu
-  };
+    };
 
   if (loading) {
     return (
